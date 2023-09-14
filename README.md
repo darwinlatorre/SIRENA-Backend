@@ -9,9 +9,10 @@
   Tecnologias a usar:
   <br/>
   <img src="https://img.shields.io/badge/-SpringBoot-05122A?style=for-the-badge&logo=SpringBoot"/>
+  <img src="https://img.shields.io/badge/-MySQL-05122A?style=for-the-badge&logo=mysql"/>
   <br/>
 </p>
 
 <h1 align="center">
-  🧜‍♀️
+  -🧜‍♀️-
 </h1>
