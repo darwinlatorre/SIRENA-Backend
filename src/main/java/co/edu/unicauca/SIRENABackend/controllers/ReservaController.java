@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/reservas")
+@RequestMapping("api/v1/reservas")
 public class ReservaController {
 
     private final IReservaRepository reservaRepository;
