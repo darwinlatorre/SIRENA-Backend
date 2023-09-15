@@ -1,9 +1,22 @@
 package co.edu.unicauca.SIRENABackend.models;
 
-import jakarta.persistence.*;
-
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Classroom")
 public class ClassroomModel implements Serializable {
@@ -16,52 +29,4 @@ public class ClassroomModel implements Serializable {
     private  String clsState;
     private  String clsBuilding;
     private  String clsType;
-
-    public Integer getClsId() {
-        return clsId;
-    }
-
-    public void setClsId(Integer clsId) {
-        this.clsId = clsId;
-    }
-
-    public String getClsName() {
-        return clsName;
-    }
-
-    public void setClsName(String clsName) {
-        this.clsName = clsName;
-    }
-
-    public Integer getClsCapacity() {
-        return clsCapacity;
-    }
-
-    public void setClsCapacity(Integer clsCapacity) {
-        this.clsCapacity = clsCapacity;
-    }
-
-    public String getClsState() {
-        return clsState;
-    }
-
-    public void setClsState(String clsState) {
-        this.clsState = clsState;
-    }
-
-    public String getClsBuilding() {
-        return clsBuilding;
-    }
-
-    public void setClsBuilding(String clsBuilding) {
-        this.clsBuilding = clsBuilding;
-    }
-
-    public String getClsType() {
-        return clsType;
-    }
-
-    public void setClsType(String clsType) {
-        this.clsType = clsType;
-    }
 }

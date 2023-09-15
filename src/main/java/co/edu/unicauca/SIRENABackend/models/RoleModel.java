@@ -21,10 +21,10 @@ public class RoleModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id", unique = true)
+    @Column(name = "rol_id", unique = true)
     private Integer roleID;
 
-    @Column(name = "role_name", nullable = false, length = 20)
+    @Column(name = "rol_name", nullable = false, length = 20)
     private String roleName;
     
 }

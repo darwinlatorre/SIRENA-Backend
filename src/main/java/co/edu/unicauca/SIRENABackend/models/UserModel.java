@@ -24,25 +24,25 @@ public class UserModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", unique = true)
+    @Column(name = "usr_id", unique = true)
     private Integer userID;
 
-    @Column(name = "user_name", nullable = false, length = 20)
+    @Column(name = "usr_name", nullable = false, length = 20)
     private String userName;
 
-    @Column(name = "user_firstname", nullable = false, length = 20)
+    @Column(name = "usr_firstname", nullable = false, length = 20)
     private String userFirstName;
 
-    @Column(name = "user_lastname", nullable = false, length = 20)
+    @Column(name = "usr_lastname", nullable = false, length = 20)
     private String userLastName;
 
-    @Column(name = "user_email", nullable = false, length = 70, unique = true)
+    @Column(name = "usr_email", nullable = false, length = 70, unique = true)
     private String userEmail;
 
-    @Column(name = "user_password", nullable = false, length = 45)
+    @Column(name = "usr_password", nullable = false, length = 45)
     private String userPassword;
 
-    @Column(name = "user_role")
+    @Column(name = "usr_role")
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private RoleModel userRole;
 
