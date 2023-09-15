@@ -1,8 +1,5 @@
 package co.edu.unicauca.SIRENABackend.models;
 
-<<<<<<< HEAD
-import jakarta.persistence.*;
-=======
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +15,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
->>>>>>> c89f3b2a845cd617136907c49fb0e553b4823d07
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -53,11 +49,7 @@ public class UserModel implements UserDetails{
     private String password;
 
     @ManyToOne
-<<<<<<< HEAD
-    @JoinColumn(name = "role_id")
-=======
     @JoinColumn(name = "usr_role")
->>>>>>> c89f3b2a845cd617136907c49fb0e553b4823d07
     private RoleModel userRole;
 
     @Override
