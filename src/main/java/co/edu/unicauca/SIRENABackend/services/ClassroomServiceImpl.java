@@ -1,18 +1,19 @@
 package co.edu.unicauca.SIRENABackend.services;
 
-import co.edu.unicauca.SIRENABackend.dao.ClassroomDao;
-import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
+import co.edu.unicauca.SIRENABackend.repositories.IClassroomRepository;
 
 @Service
 public class ClassroomServiceImpl implements ClassRoomService {
 
     @Autowired
-    private ClassroomDao classroomDao;
+    private IClassroomRepository classroomDao;
 
     @Override
     @Transactional(readOnly = false)

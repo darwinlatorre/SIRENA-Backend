@@ -13,7 +13,6 @@ import java.util.List;
 public class ClassroomController {
     @Autowired
     private ClassRoomService classRoomService;
-
     @PostMapping
     public ClassroomModel save(@RequestBody ClassroomModel classroom){
         return  classRoomService.save(classroom);
@@ -38,7 +37,6 @@ public class ClassroomController {
         classroomCurrent.setClsType(classroom.getClsType());
         return  classRoomService.save(classroomCurrent);
     }
-
     @DeleteMapping("/{id}")
     public  void delete(@PathVariable Integer id){
         classRoomService.delete(id);
