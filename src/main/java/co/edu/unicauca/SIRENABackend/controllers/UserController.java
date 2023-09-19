@@ -16,7 +16,7 @@ import co.edu.unicauca.SIRENABackend.models.UserModel;
 import co.edu.unicauca.SIRENABackend.services.UserService;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
     @Autowired
     UserService userService;

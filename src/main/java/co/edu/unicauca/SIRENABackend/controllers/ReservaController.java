@@ -1,17 +1,25 @@
 package co.edu.unicauca.SIRENABackend.controllers;
 
-import co.edu.unicauca.SIRENABackend.models.ReservaModel;
-import co.edu.unicauca.SIRENABackend.repositories.IReservaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import co.edu.unicauca.SIRENABackend.models.ReservaModel;
+import co.edu.unicauca.SIRENABackend.repositories.IReservaRepository;
+
 @RestController
-@RequestMapping("api/v1/reservas")
+@RequestMapping("/api/v1/reservas")
 public class ReservaController {
 
     private final IReservaRepository reservaRepository;
