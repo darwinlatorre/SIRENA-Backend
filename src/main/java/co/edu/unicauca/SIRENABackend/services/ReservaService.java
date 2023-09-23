@@ -1,17 +1,20 @@
 package co.edu.unicauca.SIRENABackend.services;
 
-import co.edu.unicauca.SIRENABackend.models.ReservaModel;
-import co.edu.unicauca.SIRENABackend.repositories.IReservaRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import co.edu.unicauca.SIRENABackend.models.ReservaModel;
+import co.edu.unicauca.SIRENABackend.repositories.IReservaRepository;
+
 
 @Service
 public class ReservaService {
 
-    private final IReservaRepository reservaRepository;
+    @Autowired
+    private IReservaRepository reservaRepository;
 
     @Autowired
     public ReservaService(IReservaRepository reservaRepository) {
@@ -26,11 +29,11 @@ public class ReservaService {
         return reservaRepository.findAll();
     }
 
-    public Optional<ReservaModel> obtenerReservaPorId(Long id) {
+    public Optional<ReservaModel> obtenerReservaPorId(Integer id) {
         return reservaRepository.findById(id);
     }
 
-    public ReservaModel actualizarReserva(Long id, ReservaModel reservaActualizada) {
+    public ReservaModel actualizarReserva(Integer id, ReservaModel reservaActualizada) {
         Optional<ReservaModel> reservaExistente = reservaRepository.findById(id);
         if (reservaExistente.isPresent()) {
             reservaActualizada.setId(id);
@@ -40,7 +43,7 @@ public class ReservaService {
         }
     }
 
-    public void eliminarReserva(Long id) {
+    public void eliminarReserva(Integer id) {
         Optional<ReservaModel> reservaExistente = reservaRepository.findById(id);
         if (reservaExistente.isPresent()) {
             reservaRepository.deleteById(id);
