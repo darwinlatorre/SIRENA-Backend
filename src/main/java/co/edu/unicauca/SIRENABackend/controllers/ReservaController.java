@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unicauca.SIRENABackend.models.ReservaModel;
 import co.edu.unicauca.SIRENABackend.repositories.IReservaRepository;
 
-
 @RestController
 @RequestMapping("/api/v1/reservas")
 public class ReservaController {
@@ -30,21 +29,36 @@ public class ReservaController {
         this.reservaRepository = reservaRepository;
     }
 
-    // Endpoint para crear una reserva
+    /**
+     * Crea una nueva reserva.
+     *
+     * @param reservaModel El objeto ReservaModel que se desea crear y guardar.
+     * @return Una respuesta HTTP con el objeto ReservaModel creado y el código de estado 201 (CREATED).
+     */
     @PostMapping
     public ResponseEntity<ReservaModel> crearReserva(@RequestBody ReservaModel reservaModel) {
         ReservaModel nuevaReserva = reservaRepository.save(reservaModel);
         return new ResponseEntity<>(nuevaReserva, HttpStatus.CREATED);
     }
 
-    // Endpoint para obtener todas las reservas
+    /**
+     * Obtiene todas las reservas almacenadas en la base de datos.
+     *
+     * @return Una respuesta HTTP con una lista de objetos ReservaModel y el código de estado 200 (OK).
+     */
     @GetMapping
     public ResponseEntity<List<ReservaModel>> obtenerTodasLasReservas() {
         List<ReservaModel> reservas = reservaRepository.findAll();
         return new ResponseEntity<>(reservas, HttpStatus.OK);
     }
 
-    // Endpoint para obtener una reserva por su ID
+    /**
+     * Obtiene una reserva por su ID.
+     *
+     * @param id El identificador único de la reserva que se desea obtener.
+     * @return Una respuesta HTTP con el objeto ReservaModel encontrado y el código de estado 200 (OK)
+     *         si la reserva existe, o código de estado 404 (NOT FOUND) si no se encuentra.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ReservaModel> obtenerReservaPorId(@PathVariable Integer id) {
         Optional<ReservaModel> reserva = reservaRepository.findById(id);
@@ -55,7 +69,14 @@ public class ReservaController {
         }
     }
 
-    // Endpoint para actualizar una reserva por su ID
+    /**
+     * Actualiza una reserva por su ID.
+     *
+     * @param id                  El identificador único de la reserva que se desea actualizar.
+     * @param reservaActualizada  El objeto ReservaModel con los datos actualizados.
+     * @return Una respuesta HTTP con el objeto ReservaModel actualizado y el código de estado 200 (OK)
+     *         si la reserva existe, o código de estado 404 (NOT FOUND) si no se encuentra.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<ReservaModel> actualizarReserva(@PathVariable Integer id, @RequestBody ReservaModel reservaActualizada) {
         Optional<ReservaModel> reservaExistente = reservaRepository.findById(id);
@@ -68,7 +89,13 @@ public class ReservaController {
         }
     }
 
-    // Endpoint para eliminar una reserva por su ID
+    /**
+     * Elimina una reserva por su ID.
+     *
+     * @param id El identificador único de la reserva que se desea eliminar.
+     * @return Una respuesta HTTP con el código de estado 204 (NO CONTENT) si la reserva se eliminó con éxito,
+     *         o código de estado 404 (NOT FOUND) si no se encuentra.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarReserva(@PathVariable Integer id) {
         Optional<ReservaModel> reservaExistente = reservaRepository.findById(id);
@@ -80,4 +107,3 @@ public class ReservaController {
         }
     }
 }
-

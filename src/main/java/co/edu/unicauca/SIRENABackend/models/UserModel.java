@@ -20,6 +20,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un modelo de usuarios en la aplicación.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,30 +31,54 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class UserModel{
 
+    /**
+     * Identificador único del usuario.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usr_int_id", unique = true)
     private Integer id;
 
+    /**
+     * Nombre del usuario.
+     */
     @Column(name = "usr_name", nullable = false, length = 20)
     private String name;
 
+    /**
+     * Primer nombre del usuario.
+     */
     @Column(name = "usr_firstname", nullable = false, length = 20)
     private String firstName;
 
+    /**
+     * Apellido del usuario.
+     */
     @Column(name = "usr_lastname", nullable = false, length = 20)
     private String lastName;
 
+    /**
+     * Email del usuario.
+     */
     @Column(name = "usr_email", nullable = false, length = 70, unique = true)
     private String email;
 
+    /**
+     * contraseña del usuario.
+     */
     @Column(name = "usr_password", nullable = false, length = 45)
     private String password;
 
+    /**
+     * Rol del usuario.
+     */
     @ManyToOne
     @JoinColumn(name = "usr_role", nullable = false)
     private RoleModel role;
 
+    /**
+     * Salon asociado al usuario.
+     */
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(

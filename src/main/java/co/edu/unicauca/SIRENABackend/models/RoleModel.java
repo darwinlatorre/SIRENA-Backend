@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un modelo de rol en la aplicación.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,11 +22,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "roles")
 public class RoleModel {
 
+    /**
+     * Identificador único del rol.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rol_int_id", unique = true)
     private Integer id;
 
+    /**
+     * nombre del rol.
+     */
     @Column(name = "rol_name", nullable = false, length = 20)
     private String name;
     

@@ -21,29 +21,51 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
+    /**
+     * Obtiene una lista de todos los roles disponibles.
+     *
+     * @return Una lista de objetos RoleModel que representan todos los roles.
+     */
     @GetMapping()
-    public ArrayList<RoleModel> getRoles(){
+    public ArrayList<RoleModel> getRoles() {
         return roleService.getRoles();
     }
 
+    /**
+     * Guarda un nuevo rol.
+     *
+     * @param prmRole El objeto RoleModel que se desea guardar.
+     * @return El objeto RoleModel guardado en la base de datos.
+     */
     @PostMapping()
-    public RoleModel saveRole(@RequestBody RoleModel prmRole){
+    public RoleModel saveRole(@RequestBody RoleModel prmRole) {
         return this.roleService.saveRole(prmRole);
     }
 
-    @GetMapping( path = "/{id}" )
-    public Optional<RoleModel> getRoleById(@PathVariable("id") Integer roleID){
+    /**
+     * Obtiene un rol por su ID.
+     *
+     * @param roleID El identificador único del rol que se desea obtener.
+     * @return Un objeto Optional que contiene el rol si se encuentra, o vacío si no se encuentra.
+     */
+    @GetMapping(path = "/{id}")
+    public Optional<RoleModel> getRoleById(@PathVariable("id") Integer roleID) {
         return this.roleService.getRoleById(roleID);
     }
 
-    @DeleteMapping( path = "/{id}" )
-    public String deleteById(@PathVariable("id") Integer roleID){
+    /**
+     * Elimina un rol por su ID.
+     *
+     * @param roleID El identificador único del rol que se desea eliminar.
+     * @return Un mensaje que indica si se eliminó o no el rol con el ID proporcionado.
+     */
+    @DeleteMapping(path = "/{id}")
+    public String deleteById(@PathVariable("id") Integer roleID) {
         boolean confirmation = this.roleService.deleteRoleById(roleID);
         if (confirmation) {
             return "Se ha eliminado el rol con id = " + roleID;
         } else {
-            return "No se elimino el rol con id = " + roleID;
+            return "No se eliminó el rol con id = " + roleID;
         }
     }
-
 }
