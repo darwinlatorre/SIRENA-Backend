@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unicauca.SIRENABackend.models.ReservaModel;
 import co.edu.unicauca.SIRENABackend.repositories.IReservaRepository;
 
+
 @RestController
 @RequestMapping("/api/v1/reservas")
 public class ReservaController {
@@ -45,7 +46,7 @@ public class ReservaController {
 
     // Endpoint para obtener una reserva por su ID
     @GetMapping("/{id}")
-    public ResponseEntity<ReservaModel> obtenerReservaPorId(@PathVariable Long id) {
+    public ResponseEntity<ReservaModel> obtenerReservaPorId(@PathVariable Integer id) {
         Optional<ReservaModel> reserva = reservaRepository.findById(id);
         if (reserva.isPresent()) {
             return new ResponseEntity<>(reserva.get(), HttpStatus.OK);
@@ -56,7 +57,7 @@ public class ReservaController {
 
     // Endpoint para actualizar una reserva por su ID
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaModel> actualizarReserva(@PathVariable Long id, @RequestBody ReservaModel reservaActualizada) {
+    public ResponseEntity<ReservaModel> actualizarReserva(@PathVariable Integer id, @RequestBody ReservaModel reservaActualizada) {
         Optional<ReservaModel> reservaExistente = reservaRepository.findById(id);
         if (reservaExistente.isPresent()) {
             reservaActualizada.setId(id);
@@ -69,7 +70,7 @@ public class ReservaController {
 
     // Endpoint para eliminar una reserva por su ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarReserva(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarReserva(@PathVariable Integer id) {
         Optional<ReservaModel> reservaExistente = reservaRepository.findById(id);
         if (reservaExistente.isPresent()) {
             reservaRepository.deleteById(id);

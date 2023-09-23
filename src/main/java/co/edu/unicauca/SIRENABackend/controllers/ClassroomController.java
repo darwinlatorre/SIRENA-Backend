@@ -39,11 +39,11 @@ public class ClassroomController {
     @PutMapping("/{id}")
     public ClassroomModel update(@RequestBody ClassroomModel classroom, @PathVariable Integer id){
         ClassroomModel classroomCurrent=classRoomService.findById(id);
-        classroomCurrent.setClsName(classroom.getClsName());
-        classroomCurrent.setClsBuilding(classroom.getClsBuilding());
-        classroomCurrent.setClsCapacity(classroom.getClsCapacity());
-        classroomCurrent.setClsState(classroom.getClsState());
-        classroomCurrent.setClsType(classroom.getClsType());
+        classroomCurrent.setName(classroom.getName());
+        classroomCurrent.setBuilding(classroom.getBuilding());
+        classroomCurrent.setCapacity(classroom.getCapacity());
+        classroomCurrent.setState(classroom.getState());
+        classroomCurrent.setClassroomType(classroom.getClassroomType());
         return  classRoomService.save(classroomCurrent);
     }
     @DeleteMapping("/{id}")
