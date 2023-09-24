@@ -14,12 +14,12 @@ public class ClassroomTypeService {
     private IClassroomTypeRepository classroomTypeRepository;
 
     @Transactional(readOnly = true)
-    public ArrayList<ClassroomTypeModel> getUsers() {
+    public ArrayList<ClassroomTypeModel> getClassroomType() {
         return (ArrayList<ClassroomTypeModel>) classroomTypeRepository.findAll();
     }
 
     @Transactional
-    public ClassroomTypeModel saveUser(ClassroomTypeModel ClassroomTypeModel) {
+    public ClassroomTypeModel saveClassroomType(ClassroomTypeModel ClassroomTypeModel) {
         return classroomTypeRepository.save(ClassroomTypeModel);
     }
 
