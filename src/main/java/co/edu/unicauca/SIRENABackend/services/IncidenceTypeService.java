@@ -14,22 +14,22 @@ public class IncidenceTypeService {
     private IIncidenceTypeRepository incidenceTypeRepository;
 
     @Transactional(readOnly = true)
-    public ArrayList<IncidenceTypeModel> getIncidences() {
+    public ArrayList<IncidenceTypeModel> getIncidenceTypes() {
         return (ArrayList<IncidenceTypeModel>) incidenceTypeRepository.findAll();
     }
 
     @Transactional
-    public IncidenceTypeModel saveIncidence(IncidenceTypeModel prmIncidence) {
+    public IncidenceTypeModel saveIncidenceTypes(IncidenceTypeModel prmIncidence) {
         return incidenceTypeRepository.save(prmIncidence);
     }
 
     @Transactional(readOnly = true)
-    public Optional<IncidenceTypeModel> getIncidenceById(Integer prmId) {
+    public Optional<IncidenceTypeModel> getIncidenceTypeById(Integer prmId) {
         return incidenceTypeRepository.findById(prmId);
     }
 
     @Transactional
-    public boolean deleteIncidenceById(Integer prmId) {
+    public boolean deleteIncidenceTypeById(Integer prmId) {
         try {
             incidenceTypeRepository.deleteById(prmId);
             return true;
