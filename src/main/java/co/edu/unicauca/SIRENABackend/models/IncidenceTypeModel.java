@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "insidencia_types")
-public class InsidenciasTypeModel {
+@Table(name = "incidences_types")
+public class IncidenceTypeModel {
 
     /**
      * Identificador único del tipo de insidencia.

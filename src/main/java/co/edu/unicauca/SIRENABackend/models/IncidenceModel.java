@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "insidencias")
-public class InsidenciasModel {
+@Table(name = "incidences")
+public class IncidenceModel {
 
     /**
      * Identificador único de la insidencia
@@ -58,12 +58,12 @@ public class InsidenciasModel {
      */
     @ManyToOne
     @JoinColumn(name = "ins_insidencias", nullable = false)
-    private ReservaModel insidencias;
+    private BookingModel insidencias;
 
     /**
      * tipo de insidencia.
      */
     @ManyToOne
     @JoinColumn(name = "ins_type", nullable = false)
-    private InsidenciasTypeModel insidenciaType;
+    private IncidenceTypeModel insidenciaType;
 }
