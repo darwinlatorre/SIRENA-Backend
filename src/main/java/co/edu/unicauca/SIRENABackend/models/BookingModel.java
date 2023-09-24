@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "reservas")
-public class ReservaModel {
+@Table(name = "booking")
+public class BookingModel {
 
     /**
      * Identificador único de la reserva.
