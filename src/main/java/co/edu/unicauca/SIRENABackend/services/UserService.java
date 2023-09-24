@@ -17,7 +17,7 @@ import co.edu.unicauca.SIRENABackend.repositories.IUserRepository;
 public class UserService {
 
     @Autowired
-    IUserRepository userRepository;
+    private IUserRepository userRepository;
 
     /**
      * Obtiene una lista de todos los usuarios registrados.
