@@ -26,7 +26,7 @@ public class IncidenceService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<IncidenceModel> getUserById(Integer prmId) {
+    public Optional<IncidenceModel> getIncidenceById(Integer prmId) {
         return incidenceRepository.findById(prmId);
     }
 
