@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
-import co.edu.unicauca.SIRENABackend.services.ClassRoomService;
+import co.edu.unicauca.SIRENABackend.services.ClassroomService;
 
 @RestController
 @CrossOrigin(origins = {"*"})
 @RequestMapping("/api/v1/classroom")
 public class ClassroomController {
     @Autowired
-    private ClassRoomService classRoomService;
+    private ClassroomService ClassroomService;
 
     /**
      * Crea una nueva instancia de aula (classroom) y la guarda en la base de datos.
@@ -31,7 +31,7 @@ public class ClassroomController {
      */
     @PostMapping
     public ClassroomModel save(@RequestBody ClassroomModel classroom) {
-        return classRoomService.save(classroom);
+        return ClassroomService.save(classroom);
     }
 
     /**
@@ -41,7 +41,7 @@ public class ClassroomController {
      */
     @GetMapping
     public List<ClassroomModel> classrooms() {
-        return classRoomService.findAll();
+        return ClassroomService.findAll();
     }
 
     /**
@@ -52,7 +52,7 @@ public class ClassroomController {
      */
     @GetMapping("/{id}")
     public ClassroomModel show(@PathVariable Integer id) {
-        return classRoomService.findById(id);
+        return ClassroomService.findById(id);
     }
 
     /**
@@ -64,13 +64,13 @@ public class ClassroomController {
      */
     @PutMapping("/{id}")
     public ClassroomModel update(@RequestBody ClassroomModel classroom, @PathVariable Integer id) {
-        ClassroomModel classroomCurrent = classRoomService.findById(id);
+        ClassroomModel classroomCurrent = ClassroomService.findById(id);
         classroomCurrent.setName(classroom.getName());
         classroomCurrent.setBuilding(classroom.getBuilding());
         classroomCurrent.setCapacity(classroom.getCapacity());
         classroomCurrent.setState(classroom.getState());
         classroomCurrent.setClassroomType(classroom.getClassroomType());
-        return classRoomService.save(classroomCurrent);
+        return ClassroomService.save(classroomCurrent);
     }
 
     /**
@@ -80,6 +80,6 @@ public class ClassroomController {
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
-        classRoomService.delete(id);
+        ClassroomService.delete(id);
     }
 }

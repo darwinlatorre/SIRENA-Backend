@@ -1,13 +1,22 @@
 package co.edu.unicauca.SIRENABackend.services;
 
-import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
+import co.edu.unicauca.SIRENABackend.repositories.IClassroomRepository;
+
 /**
- * Interfaz que define un servicio para operaciones relacionadas con aulas (classrooms).
+ * Implementación de la interfaz ClassRoomService para operaciones relacionadas con aulas (classrooms).
  */
-public interface ClassRoomService {
+@Service
+public class ClassroomService {
+
+    @Autowired
+    private IClassroomRepository classroomDao;
 
     /**
      * Guarda una instancia de ClassroomModel en la base de datos.
@@ -15,14 +24,20 @@ public interface ClassRoomService {
      * @param classroom El objeto ClassroomModel que se desea guardar.
      * @return La instancia de ClassroomModel guardada en la base de datos.
      */
-    ClassroomModel save(ClassroomModel classroom);
+    @Transactional(readOnly = false)
+    public ClassroomModel save(ClassroomModel classroom) {
+        return classroomDao.save(classroom);
+    }
 
     /**
      * Elimina una aula por su identificador único.
      *
      * @param id El identificador único del aula que se desea eliminar.
      */
-    void delete(Integer id);
+    @Transactional(readOnly = false)
+    public void delete(Integer id) {
+        classroomDao.deleteById(id);
+    }
 
     /**
      * Busca una aula por su identificador único.
@@ -30,12 +45,18 @@ public interface ClassRoomService {
      * @param id El identificador único del aula que se desea buscar.
      * @return El objeto ClassroomModel encontrado, o null si no se encuentra.
      */
-    ClassroomModel findById(Integer id);
+    @Transactional(readOnly = true)
+    public ClassroomModel findById(Integer id) {
+        return classroomDao.findById(id).orElse(null);
+    }
 
     /**
      * Obtiene una lista de todas las aulas en la base de datos.
      *
      * @return Una lista de objetos ClassroomModel que representan todas las aulas.
      */
-    List<ClassroomModel> findAll();
+    @Transactional(readOnly = true)
+    public List<ClassroomModel> findAll() {
+        return (List<ClassroomModel>) classroomDao.findAll();
+    }
 }
