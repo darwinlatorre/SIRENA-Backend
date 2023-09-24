@@ -12,28 +12,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Clase que representa un modelo de rol en la aplicación.
+ * Clase que representa un modelo del tipo de aula (classroomType) en la aplicación.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "roles")
-public class RoleModel {
+@Table(name = "classroom_types")
+public class ClassroomTypeModel {
 
     /**
-     * Identificador único del rol.
+     * Identificador único del tipo de aula.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rol_int_id", unique = true)
+    @Column(name = "cls_type_int_id", unique = true)
     private Integer id;
 
     /**
-     * nombre del rol.
+     * Nombre del tipo de aula.
      */
-    @Column(name = "rol_name", nullable = false, length = 20)
+    @Column(name = "cls_type_name", nullable = false, length = 20)
     private String name;
     
 }

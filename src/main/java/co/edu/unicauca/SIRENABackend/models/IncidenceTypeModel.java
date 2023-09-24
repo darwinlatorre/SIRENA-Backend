@@ -12,28 +12,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Clase que representa un modelo de rol en la aplicación.
+ * Clase que representa un modelo del tipo de insidencia en la aplicación.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "roles")
-public class RoleModel {
+@Table(name = "incidences_types")
+public class IncidenceTypeModel {
 
     /**
-     * Identificador único del rol.
+     * Identificador único del tipo de insidencia.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "rol_int_id", unique = true)
+    @Column(name = "ins_type_int_id", unique = true)
     private Integer id;
 
     /**
-     * nombre del rol.
+     * Nombre de la insidencia.
      */
-    @Column(name = "rol_name", nullable = false, length = 20)
+    @Column(name = "ins_type_name", nullable = false, length = 20)
     private String name;
     
 }
