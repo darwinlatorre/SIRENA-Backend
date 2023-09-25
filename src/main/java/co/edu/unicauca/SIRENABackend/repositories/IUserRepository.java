@@ -18,4 +18,5 @@ public interface IUserRepository extends JpaRepository<UserModel, Integer>{
      * @return Un objeto Optional que contiene el usuario si se encuentra, o vacío si no se encuentra.
      */
     Optional<UserModel> findByEmail(String prmEmail);
+    Optional<UserModel> findByUsername(String prmUsername);
 }
