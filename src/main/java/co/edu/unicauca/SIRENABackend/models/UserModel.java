@@ -88,6 +88,7 @@ public class UserModel{
         )
     private Set<ClassroomModel> classroom_assigned = new HashSet<>();
 
+
     // @Override
     // public Collection<? extends GrantedAuthority> getAuthorities() {
     //     return List.of(new SimpleGrantedAuthority(userRole.getRoleName()));
