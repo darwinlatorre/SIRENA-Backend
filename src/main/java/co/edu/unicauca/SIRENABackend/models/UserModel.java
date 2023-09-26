@@ -48,11 +48,13 @@ public class UserModel implements UserDetails{
     /**
      * Nombre del usuario.
      */
-    @Column(name = "usr_name", nullable = false, length = 20)
-    private String name;
+    //@Column(name = "usr_name", nullable = false, length = 20)
+    @Column(name = "username", nullable = false, length = 70, unique = true)
+    private String username;
 
     /**
      * Primer nombre del usuario.
+     *
      */
     @Column(name = "usr_firstname", nullable = false, length = 20)
     private String firstName;
@@ -66,20 +68,20 @@ public class UserModel implements UserDetails{
     /**
      * Email del usuario.
      */
-    @Column(name = "usr_email", nullable = false, length = 70, unique = true)
+    @Column(name = "user_email", nullable = false, length = 70, unique = true)
     private String email;
 
     /**
      * contraseña del usuario.
      */
-    @Column(name = "usr_password", nullable = false, length = 45)
+    @Column(name = "password", nullable = false, length = 512)
     private String password;
 
     /**
      * Rol del usuario.
      */
     @ManyToOne
-    @JoinColumn(name = "usr_role", nullable = false)
+    @JoinColumn(name = "usr_role")
     private RoleModel role;
 
     /**
@@ -107,8 +109,7 @@ public class UserModel implements UserDetails{
 
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+        return username;
     }
 
     @Override
@@ -130,4 +131,6 @@ public class UserModel implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
+
+
 }

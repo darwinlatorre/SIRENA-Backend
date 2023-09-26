@@ -52,13 +52,13 @@ public class AuthService {
         .role(request.getUsr_role())
         .firstName(request.usr_firstname)
         .lastName(request.usr_lastname)
-        .name(request.getUsr_name())
+        .username(request.getUsr_name())
         .password(passwordEncoder.encode(request.getUsr_password()))
         .email(request.usr_email)
         .build();
-
+        System.out.println(passwordEncoder.encode(request.getUsr_password()));
         userRepository.save(user);
-        return AuthResponse.builder().token(null).build();
+        return AuthResponse.builder().token(jwtService.getToken(user)).build();
         
     }
 }
