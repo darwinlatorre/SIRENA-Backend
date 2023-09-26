@@ -39,7 +39,7 @@ public class AuthService {
         .firstName(request.usr_firstname)
         .lastName(request.usr_lastname)
         .name(request.getUsr_name())
-        .password(request.getUsr_password())
+        .password(passwordEncoder.encode(request.getUsr_password()))
         .email(request.usr_email)
         .build();
 

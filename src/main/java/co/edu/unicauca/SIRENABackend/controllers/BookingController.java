@@ -35,7 +35,6 @@ public class BookingController {
      * @param bookingModel El objeto BookingModel que se desea crear y guardar.
      * @return Una respuesta HTTP con el objeto BookingModel creado y el código de estado 201 (CREATED).
      */
-    @PostMapping
     public ResponseEntity<BookingModel> crearBooking(@RequestBody BookingModel bookingModel) {
         BookingModel nuevaBooking = bookingRepository.save(bookingModel);
         return new ResponseEntity<>(nuevaBooking, HttpStatus.CREATED);

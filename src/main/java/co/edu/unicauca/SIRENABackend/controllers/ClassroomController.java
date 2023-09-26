@@ -29,7 +29,6 @@ public class ClassroomController {
      * @param classroom El objeto ClassroomModel que se desea crear y guardar.
      * @return La instancia de ClassroomModel creada y almacenada en la base de datos.
      */
-    @PostMapping
     public ClassroomModel save(@RequestBody ClassroomModel classroom) {
         return ClassroomService.save(classroom);
     }
