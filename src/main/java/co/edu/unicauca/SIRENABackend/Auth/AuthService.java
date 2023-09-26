@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import co.edu.unicauca.SIRENABackend.controllers.UserController;
 import co.edu.unicauca.SIRENABackend.jwt.JwtService;
 import co.edu.unicauca.SIRENABackend.models.UserModel;
 import co.edu.unicauca.SIRENABackend.repositories.IUserRepository;
