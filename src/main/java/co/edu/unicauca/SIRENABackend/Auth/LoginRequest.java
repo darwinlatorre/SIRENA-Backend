@@ -10,7 +10,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    String username;
-    String password; 
+    /**
+     * Nombre de usuario para la autenticación.
+     */
+    protected String username;
+
+    /**
+     * Contraseña asociada al nombre de usuario.
+     */
+    protected String password; 
 }
 

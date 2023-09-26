@@ -20,12 +20,24 @@ public class ApplicationConfig {
 
     private final IUserRepository userRepository;
 
+    /**
+     * Crea y devuelve un gestor de autenticación.
+     *
+     * @param config Configuración de autenticación.
+     * @return El gestor de autenticación.
+     * @throws Exception Si hay un error al obtener el gestor de autenticación.
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
     {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Crea y devuelve un proveedor de autenticación.
+     *
+     * @return El proveedor de autenticación.
+     */
     @Bean
     public AuthenticationProvider authenticationProvider()
     {
@@ -35,11 +47,21 @@ public class ApplicationConfig {
         return authenticationProvider;
     }
 
+    /**
+     * Crea y devuelve un codificador de contraseñas.
+     *
+     * @return El codificador de contraseñas.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Crea y devuelve un servicio de detalles de usuario basado en el nombre de usuario.
+     *
+     * @return El servicio de detalles de usuario.
+     */
     @Bean
     public UserDetailsService userDetailService() {
         return username -> userRepository.findByUsername(username)

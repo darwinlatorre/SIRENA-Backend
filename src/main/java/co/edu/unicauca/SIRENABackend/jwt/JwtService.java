@@ -20,6 +20,12 @@ public class JwtService {
     
     private static final String SECRET_KEY="586E3272357538782F413F4428472B4B6250655368566B597033733676397924";
 
+    /**
+     * Genera un token JWT para un usuario.
+     *
+     * @param user Detalles del usuario.
+     * @return El token JWT generado.
+     */
     public String getToken(UserDetails user)
     {
         return getToken(new HashMap<>(), user);
@@ -41,10 +47,23 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /**
+     * Obtiene el nombre de usuario desde un token JWT.
+     *
+     * @param token El token JWT.
+     * @return El nombre de usuario obtenido del token.
+     */
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
     }
 
+    /**
+     * Verifica si un token JWT es válido para un UserDetails dado.
+     *
+     * @param token       El token JWT a verificar.
+     * @param userDetails Los detalles del usuario contra los cuales verificar el token.
+     * @return true si el token es válido, false de lo contrario.
+     */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username=getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername())&& !isTokenExpired(token));

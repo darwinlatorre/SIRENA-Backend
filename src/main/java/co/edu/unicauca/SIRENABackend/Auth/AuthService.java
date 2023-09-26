@@ -21,6 +21,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     
+
+    /**
+     * Realiza la autenticación del usuario y genera un token de autenticación.
+     *
+     * @param request La solicitud de inicio de sesión.
+     * @return La respuesta de autenticación que contiene el token.
+     * @throws AuthenticationException Si la autenticación falla.
+     */
     public AuthResponse login(LoginRequest request)
     {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
@@ -31,6 +39,12 @@ public class AuthService {
             .build();
     }
 
+    /**
+     * Registra un nuevo usuario y retorna una respuesta de autenticación sin token.
+     *
+     * @param request La solicitud de registro.
+     * @return La respuesta de autenticación sin token.
+     */
     public AuthResponse register(RegisterRequest request)
     {
         UserModel user=UserModel.builder()

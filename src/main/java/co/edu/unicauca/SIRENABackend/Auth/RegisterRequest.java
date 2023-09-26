@@ -11,11 +11,38 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterRequest {
-    Integer usr_id;
-    RoleModel usr_role;
-    String usr_firstname;
-    String usr_lastname;
-    String usr_name; 
-    String usr_password;
-    String usr_email;
+    /**
+     * Identificador del usuario.
+     */
+    protected Integer usr_id;
+
+    /**
+     * Rol del usuario.
+     */
+    protected RoleModel usr_role;
+
+    /**
+     * Primer nombre del usuario.
+     */
+    protected String usr_firstname;
+
+    /**
+     * Apellido del usuario.
+     */
+    protected String usr_lastname;
+
+    /**
+     * Nombre del usuario.
+     */
+    protected String usr_name;
+
+    /**
+     * Contraseña del usuario.
+     */
+    protected String usr_password;
+
+    /**
+     * Correo electrónico del usuario.
+     */
+    protected String usr_email;
 }
