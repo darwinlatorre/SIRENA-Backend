@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig{
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
@@ -37,6 +37,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authRequest ->
               authRequest
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/swagger-ui/**",
+                "/swagger-resources/*",
+                "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 )
             .sessionManagement(sessionManager->
@@ -45,8 +48,7 @@ public class SecurityConfig {
             .authenticationProvider(authProvider)
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
-            
-            
     }
 
+    
 }
