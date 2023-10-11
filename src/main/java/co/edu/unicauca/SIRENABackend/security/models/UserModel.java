@@ -22,6 +22,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -70,6 +71,7 @@ public class UserModel implements UserDetails {
      * Email del usuario.
      */
     @Column(name = "user_email", nullable = false, length = 70, unique = true)
+    @Email
     private String email;
 
     /**
