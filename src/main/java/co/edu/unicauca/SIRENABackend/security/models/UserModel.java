@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.models;
+package co.edu.unicauca.SIRENABackend.security.models;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,7 +36,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class UserModel implements UserDetails{
+public class UserModel implements UserDetails {
 
     /**
      * Identificador único del usuario.
@@ -48,7 +49,7 @@ public class UserModel implements UserDetails{
     /**
      * Nombre del usuario.
      */
-    //@Column(name = "usr_name", nullable = false, length = 20)
+    // @Column(name = "usr_name", nullable = false, length = 20)
     @Column(name = "username", nullable = false, length = 70, unique = true)
     private String username;
 
@@ -89,27 +90,12 @@ public class UserModel implements UserDetails{
      */
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(
-        name = "users_classrooms",
-        joinColumns = @JoinColumn(name = "usr_int_id"),
-        inverseJoinColumns = @JoinColumn(name = "cls_int_id")
-        )
+    @JoinTable(name = "users_classrooms", joinColumns = @JoinColumn(name = "usr_int_id"), inverseJoinColumns = @JoinColumn(name = "cls_int_id"))
     private Set<ClassroomModel> classroom_assigned = new HashSet<>();
-
-
-
-    /*
-     * Metodos de UserDetails
-     */
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority((role.getName())));
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     @Override
@@ -131,6 +117,5 @@ public class UserModel implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
-
 
 }

@@ -2,6 +2,7 @@ package co.edu.unicauca.SIRENABackend.models;
 
 import java.util.Date;
 
+import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

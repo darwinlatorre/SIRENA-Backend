@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.Auth;
+package co.edu.unicauca.SIRENABackend.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
+public class AuthTokenRes {
     /**
      * Token de autenticación generado para el usuario.
      */

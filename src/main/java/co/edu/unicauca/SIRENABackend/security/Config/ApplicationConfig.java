@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.Config;
+package co.edu.unicauca.SIRENABackend.security.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import co.edu.unicauca.SIRENABackend.repositories.IUserRepository;
+import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -65,7 +65,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailService() {
         return username -> userRepository.findByUsername(username)
-        .orElseThrow(()-> new UsernameNotFoundException("User not fournd"));
+        .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 
 }

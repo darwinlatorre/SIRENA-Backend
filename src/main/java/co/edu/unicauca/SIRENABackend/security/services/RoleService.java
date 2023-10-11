@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.services;
+package co.edu.unicauca.SIRENABackend.security.services;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.unicauca.SIRENABackend.models.RoleModel;
-import co.edu.unicauca.SIRENABackend.repositories.IRoleRepository;
+import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
+import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
 
 /**
  * Servicio para gestionar roles de usuarios.
@@ -28,6 +28,11 @@ public class RoleService {
         return (ArrayList<RoleModel>) roleRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
+    public Optional<RoleModel> getByRoleName(String prmRoleName) {
+        return roleRepository.findByName(prmRoleName);
+    }
+
     /**
      * Guarda un nuevo rol en la base de datos.
      *
@@ -43,7 +48,8 @@ public class RoleService {
      * Obtiene un rol por su identificador único.
      *
      * @param prmId El identificador único del rol que se desea obtener.
-     * @return Un objeto Optional que contiene el rol si se encuentra, o vacío si no se encuentra.
+     * @return Un objeto Optional que contiene el rol si se encuentra, o vacío si no
+     *         se encuentra.
      */
     @Transactional(readOnly = true)
     public Optional<RoleModel> getRoleById(Integer prmId) {
@@ -54,7 +60,8 @@ public class RoleService {
      * Elimina un rol por su identificador único.
      *
      * @param prmId El identificador único del rol que se desea eliminar.
-     * @return `true` si el rol se eliminó con éxito, `false` si no se pudo eliminar.
+     * @return `true` si el rol se eliminó con éxito, `false` si no se pudo
+     *         eliminar.
      */
     @Transactional
     public boolean deleteRoleById(Integer prmId) {

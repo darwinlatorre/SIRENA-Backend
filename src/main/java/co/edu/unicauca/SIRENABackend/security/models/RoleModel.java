@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.models;
+package co.edu.unicauca.SIRENABackend.security.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

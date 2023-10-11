@@ -1,6 +1,5 @@
-package co.edu.unicauca.SIRENABackend.Auth;
+package co.edu.unicauca.SIRENABackend.security.dto;
 
-import co.edu.unicauca.SIRENABackend.models.RoleModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,16 +9,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class UserRegisterReq {
     /**
      * Identificador del usuario.
      */
     protected Integer usr_id;
 
     /**
-     * Rol del usuario.
+     * Nombre del usuario.
      */
-    protected RoleModel usr_role;
+    protected String usr_name;
 
     /**
      * Primer nombre del usuario.
@@ -32,17 +31,17 @@ public class RegisterRequest {
     protected String usr_lastname;
 
     /**
-     * Nombre del usuario.
+     * Correo electrónico del usuario.
      */
-    protected String usr_name;
-
+    protected String usr_email;
+    
     /**
      * Contraseña del usuario.
      */
     protected String usr_password;
 
     /**
-     * Correo electrónico del usuario.
+     * Rol del usuario.
      */
-    protected String usr_email;
+    protected String usr_role;
 }
