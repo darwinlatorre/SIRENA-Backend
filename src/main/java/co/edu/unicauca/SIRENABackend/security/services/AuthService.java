@@ -23,68 +23,80 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-        private final IUserRepository userRepository;
-        private final IRoleRepository roleRepository;
-        private final ITokenRepository tokenRepository;
-        private final JwtService jwtService;
-        private final PasswordEncoder passwordEncoder;
-        private final AuthenticationManager authenticationManager;
+    private final IUserRepository userRepository;
+    private final IRoleRepository roleRepository;
+    private final ITokenRepository tokenRepository;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-        /**
-         * Realiza la autenticación del usuario y genera un token de autenticación.
-         *
-         * @param request La solicitud de inicio de sesión.
-         * @return La respuesta de autenticación que contiene el token.
-         * @throws AuthenticationException Si la autenticación falla.
-         */
-        public AuthTokenRes login(UserLoginReq request) {
-                authenticationManager
-                                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
-                                                request.getPassword()));
-                var user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+    /**
+     * Realiza la autenticación del usuario y genera un token de autenticación.
+     *
+     * @param request La solicitud de inicio de sesión.
+     * @return La respuesta de autenticación que contiene el token.
+     * @throws AuthenticationException Si la autenticación falla.
+     */
+    public AuthTokenRes login(UserLoginReq request) {
+        authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
+                        request.getPassword()));
+        var user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 
-                var token = jwtService.getToken(user);
-                saveUserToken(user, token);
-                return AuthTokenRes.builder()
-                                .token(token)
-                                .build();
-        }
+        var token = jwtService.getToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, token);
+        return AuthTokenRes.builder()
+                .token(token)
+                .build();
+    }
 
-        /**
-         * Registra un nuevo usuario y retorna una respuesta de autenticación sin token.
-         *
-         * @param request La solicitud de registro.
-         * @return La respuesta de autenticación sin token.
-         */
-        public AuthTokenRes register(UserRegisterReq request) {
-                RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
-                UserModel user = UserModel.builder()
-                                .id(request.getUsr_id())
-                                .role(role_insert)
-                                .firstName(request.getUsr_firstname())
-                                .lastName(request.getUsr_lastname())
-                                .username(request.getUsr_name())
-                                .password(passwordEncoder.encode(request.getUsr_password()))
-                                .email(request.getUsr_email())
-                                .build();
+    /**
+     * Registra un nuevo usuario y retorna una respuesta de autenticación sin token.
+     *
+     * @param request La solicitud de registro.
+     * @return La respuesta de autenticación sin token.
+     */
+    public AuthTokenRes register(UserRegisterReq request) {
+        RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
+        UserModel user = UserModel.builder()
+                .id(request.getUsr_id())
+                .role(role_insert)
+                .firstName(request.getUsr_firstname())
+                .lastName(request.getUsr_lastname())
+                .username(request.getUsr_name())
+                .password(passwordEncoder.encode(request.getUsr_password()))
+                .email(request.getUsr_email())
+                .build();
 
-                var savedUser = userRepository.save(user);
-                var jwtToken = jwtService.getToken(user);
-                saveUserToken(savedUser, jwtToken);
+        var savedUser = userRepository.save(user);
+        var jwtToken = jwtService.getToken(user);
+        saveUserToken(savedUser, jwtToken);
 
-                return AuthTokenRes.builder()
-                                .token(jwtToken)
-                                .build();
-        }
+        return AuthTokenRes.builder()
+                .token(jwtToken)
+                .build();
+    }
 
-        private void saveUserToken(UserModel prmUser, String prmJwtToken) {
-                var token = TokenModel.builder()
-                                .user(prmUser)
-                                .token(prmJwtToken)
-                                .tokenType(TokenTypeEnum.BEARER)
-                                .expired(false)
-                                .revoked(false)
-                                .build();
-                tokenRepository.save(token);
-        }
+    private void revokeAllUserTokens(UserModel prmUser) {
+        var validUserToken = tokenRepository.findAllValidTokensByUser(prmUser.getId());
+        if (validUserToken.isEmpty())
+            return;
+        validUserToken.forEach(Token -> {
+            Token.setExpired(true);
+            Token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserToken);
+    }
+
+    private void saveUserToken(UserModel prmUser, String prmJwtToken) {
+        var token = TokenModel.builder()
+                .user(prmUser)
+                .token(prmJwtToken)
+                .tokenType(TokenTypeEnum.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
+    }
 }
