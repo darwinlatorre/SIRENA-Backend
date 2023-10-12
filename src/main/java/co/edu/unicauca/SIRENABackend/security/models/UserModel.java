@@ -21,6 +21,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,7 @@ public class UserModel implements UserDetails {
      * Nombre del usuario.
      */
     // @Column(name = "usr_name", nullable = false, length = 20)
-    @Column(name = "username", nullable = false, length = 70, unique = true)
+    @Column(name = "usr_name", nullable = false, length = 70, unique = true)
     private String username;
 
     /**
@@ -70,14 +71,14 @@ public class UserModel implements UserDetails {
     /**
      * Email del usuario.
      */
-    @Column(name = "user_email", nullable = false, length = 70, unique = true)
+    @Column(name = "usr_email", nullable = false, length = 70, unique = true)
     @Email
     private String email;
 
     /**
      * contraseña del usuario.
      */
-    @Column(name = "password", nullable = false, length = 512)
+    @Column(name = "usr_password", nullable = false, length = 512)
     private String password;
 
     /**
@@ -94,6 +95,10 @@ public class UserModel implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_classrooms", joinColumns = @JoinColumn(name = "usr_int_id"), inverseJoinColumns = @JoinColumn(name = "cls_int_id"))
     private Set<ClassroomModel> classroom_assigned = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @Column(name = "usr_tokens")
+    private List<TokenModel> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

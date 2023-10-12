@@ -3,17 +3,19 @@ package co.edu.unicauca.SIRENABackend.security.services;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.SIRENABackend.security.dto.AuthTokenRes;
 import co.edu.unicauca.SIRENABackend.security.dto.UserLoginReq;
 import co.edu.unicauca.SIRENABackend.security.dto.UserRegisterReq;
+import co.edu.unicauca.SIRENABackend.security.enums.TokenTypeEnum;
 import co.edu.unicauca.SIRENABackend.security.jwt.JwtService;
 import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
+import co.edu.unicauca.SIRENABackend.security.models.TokenModel;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
+import co.edu.unicauca.SIRENABackend.security.repositories.ITokenRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,7 @@ public class AuthService {
 
         private final IUserRepository userRepository;
         private final IRoleRepository roleRepository;
+        private final ITokenRepository tokenRepository;
         private final JwtService jwtService;
         private final PasswordEncoder passwordEncoder;
         private final AuthenticationManager authenticationManager;
@@ -38,9 +41,10 @@ public class AuthService {
                 authenticationManager
                                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
                                                 request.getPassword()));
-                UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+                var user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 
-                String token = jwtService.getToken(user);
+                var token = jwtService.getToken(user);
+                saveUserToken(user, token);
                 return AuthTokenRes.builder()
                                 .token(token)
                                 .build();
@@ -64,10 +68,23 @@ public class AuthService {
                                 .email(request.getUsr_email())
                                 .build();
 
-                userRepository.save(user);
+                var savedUser = userRepository.save(user);
+                var jwtToken = jwtService.getToken(user);
+                saveUserToken(savedUser, jwtToken);
 
                 return AuthTokenRes.builder()
-                                .token(jwtService.getToken(user))
+                                .token(jwtToken)
                                 .build();
+        }
+
+        private void saveUserToken(UserModel prmUser, String prmJwtToken) {
+                var token = TokenModel.builder()
+                                .user(prmUser)
+                                .token(prmJwtToken)
+                                .tokenType(TokenTypeEnum.BEARER)
+                                .expired(false)
+                                .revoked(false)
+                                .build();
+                tokenRepository.save(token);
         }
 }
