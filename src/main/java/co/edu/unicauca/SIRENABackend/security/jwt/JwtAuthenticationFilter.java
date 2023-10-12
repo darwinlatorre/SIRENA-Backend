@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import co.edu.unicauca.SIRENABackend.security.repositories.ITokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtProvider;
     private final UserDetailsService userDetailsService;
+    private final ITokenRepository tokenRepository;
 
     /**
      * Filtra las solicitudes para autenticar a los usuarios utilizando tokens JWT.
@@ -54,8 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-            if (jwtProvider.isTokenValid(jwt, userDetails)) {
+            var isTokenValid = tokenRepository.findByToken(jwt)
+            .map(token -> !token.isExpired() && !token.isRevoked())
+            .orElse(false);
+            if (jwtProvider.isTokenValid(jwt, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
