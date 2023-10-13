@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.security.dto;
+package co.edu.unicauca.SIRENABackend.security.dtos.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

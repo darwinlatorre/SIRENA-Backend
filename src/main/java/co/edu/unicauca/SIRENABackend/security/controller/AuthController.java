@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 
-import co.edu.unicauca.SIRENABackend.security.dto.AuthTokenRes;
-import co.edu.unicauca.SIRENABackend.security.dto.UserLoginReq;
-import co.edu.unicauca.SIRENABackend.security.dto.UserRegisterReq;
+import co.edu.unicauca.SIRENABackend.security.dtos.request.UserLoginReq;
+import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.AuthTokenRes;
 import co.edu.unicauca.SIRENABackend.security.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

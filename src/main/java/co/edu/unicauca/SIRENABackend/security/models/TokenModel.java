@@ -2,7 +2,7 @@ package co.edu.unicauca.SIRENABackend.security.models;
 
 import org.hibernate.type.NumericBooleanConverter;
 
-import co.edu.unicauca.SIRENABackend.security.enums.TokenTypeEnum;
+import co.edu.unicauca.SIRENABackend.security.common.enums.TokenTypeEnum;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

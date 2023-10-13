@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.security.Config;
+package co.edu.unicauca.SIRENABackend.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
