@@ -1,10 +1,18 @@
 package co.edu.unicauca.SIRENABackend.security.services;
 
+import java.io.IOException;
+
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import co.edu.unicauca.SIRENABackend.security.dto.AuthTokenRes;
 import co.edu.unicauca.SIRENABackend.security.dto.UserLoginReq;
@@ -17,6 +25,8 @@ import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.ITokenRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -43,11 +53,14 @@ public class AuthService {
                         request.getPassword()));
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow();
 
-        var token = jwtService.getToken(user);
+        var jwtToken = jwtService.getToken(user);
+        var refreshToken = jwtService.getRefreshToken(user);
         revokeAllUserTokens(user);
-        saveUserToken(user, token);
+        saveUserToken(user, jwtToken);
+        saveUserToken(user, refreshToken);
         return AuthTokenRes.builder()
-                .token(token)
+                .accesToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -71,10 +84,14 @@ public class AuthService {
 
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.getToken(user);
+        var refreshToken = jwtService.getRefreshToken(user);
+
         saveUserToken(savedUser, jwtToken);
+        saveUserToken(savedUser, refreshToken);
 
         return AuthTokenRes.builder()
-                .token(jwtToken)
+                .accesToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -98,5 +115,38 @@ public class AuthService {
                 .revoked(false)
                 .build();
         tokenRepository.save(token);
+    }
+
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response)
+            throws StreamWriteException, DatabindException, IOException {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String username;
+        final String refreshToken;
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return;
+        }
+
+        refreshToken = authHeader.substring(7);
+
+        username = jwtService.getUsernameFromToken(refreshToken);
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var user = this.userRepository.findByUsername(username).orElseThrow();
+            var isTokenValid = tokenRepository.findByToken(refreshToken)
+                    .map(token -> !token.isExpired() && !token.isRevoked())
+                    .orElse(false);
+            if (jwtService.isTokenValid(refreshToken, user) && isTokenValid) {
+                // if (jwtService.isTokenValid(refreshToken, user)) {
+                var accesToken = jwtService.getRefreshToken(user);
+                revokeAllUserTokens(user);
+                saveUserToken(user, accesToken);
+                var authResponse = AuthTokenRes.builder()
+                        .accesToken(accesToken)
+                        .refreshToken(refreshToken)
+                        .build();
+                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+            }
+        }
     }
 }
