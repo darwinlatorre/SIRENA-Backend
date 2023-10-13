@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.security.controller;
+package co.edu.unicauca.SIRENABackend.security.controllers;
 
 import java.util.ArrayList;
 import java.util.Optional;
