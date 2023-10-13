@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
-import co.edu.unicauca.SIRENABackend.security.services.UserService;
+import co.edu.unicauca.SIRENABackend.security.services.Impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     /**
      * Obtiene una lista de todos los usuarios registrados.
