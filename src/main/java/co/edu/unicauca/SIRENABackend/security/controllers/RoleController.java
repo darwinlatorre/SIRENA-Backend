@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
-import co.edu.unicauca.SIRENABackend.security.services.RoleService;
+import co.edu.unicauca.SIRENABackend.security.services.Impl.RoleServiceImpl;
 
 @RestController
 @RequestMapping("/api/v1/role")
 public class RoleController {
     @Autowired
-    RoleService roleService;
+    RoleServiceImpl roleService;
 
     /**
      * Obtiene una lista de todos los roles disponibles.
