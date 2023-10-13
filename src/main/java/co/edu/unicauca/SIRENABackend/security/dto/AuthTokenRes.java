@@ -1,5 +1,7 @@
 package co.edu.unicauca.SIRENABackend.security.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +15,8 @@ public class AuthTokenRes {
     /**
      * Token de autenticación generado para el usuario.
      */
-    String token; 
+    @JsonProperty("acces_token")
+    private String accesToken;
+    @JsonProperty("refresh_token")
+    private String refreshToken;
 }
