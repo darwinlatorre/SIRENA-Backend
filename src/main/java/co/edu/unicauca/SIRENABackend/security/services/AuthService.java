@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,13 +39,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    /**
-     * Realiza la autenticación del usuario y genera un token de autenticación.
-     *
-     * @param request La solicitud de inicio de sesión.
-     * @return La respuesta de autenticación que contiene el token.
-     * @throws AuthenticationException Si la autenticación falla.
-     */
     public AuthTokenRes login(UserLoginReq request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
@@ -64,12 +56,6 @@ public class AuthService {
                 .build();
     }
 
-    /**
-     * Registra un nuevo usuario y retorna una respuesta de autenticación sin token.
-     *
-     * @param request La solicitud de registro.
-     * @return La respuesta de autenticación sin token.
-     */
     public AuthTokenRes register(UserRegisterReq request) {
         RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
         UserModel user = UserModel.builder()
@@ -137,7 +123,6 @@ public class AuthService {
                     .map(token -> !token.isExpired() && !token.isRevoked())
                     .orElse(false);
             if (jwtService.isTokenValid(refreshToken, user) && isTokenValid) {
-                // if (jwtService.isTokenValid(refreshToken, user)) {
                 var accesToken = jwtService.getRefreshToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accesToken);

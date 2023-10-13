@@ -22,18 +22,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "roles")
 public class RoleModel {
 
-    /**
-     * Identificador único del rol.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rol_int_id", unique = true)
     private Integer id;
 
-    /**
-     * nombre del rol.
-     */
     @Column(name = "rol_name", nullable = false, length = 20)
     private String name;
-    
+
 }

@@ -23,13 +23,6 @@ public class SecurityConfig {
     private final AuthenticationProvider authProvider;
     private final LogoutHandler logoutHandler;
 
-    /**
-     * Configura la cadena de filtros de seguridad para las solicitudes HTTP.
-     *
-     * @param http La configuración de seguridad HTTP.
-     * @return La cadena de filtros de seguridad configurada.
-     * @throws Exception Si hay un error al configurar la seguridad.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http

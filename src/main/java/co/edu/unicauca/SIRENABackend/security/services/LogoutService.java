@@ -34,12 +34,6 @@ public class LogoutService implements LogoutHandler {
         String user = jwtService.getUsernameFromToken(jwt);
         var userFound = userRepository.findByUsername(user).orElseThrow();
         revokeAllUserTokens(userFound);
-        // var storedToken = tokenRepository.findByToken(jwt).orElse(null);
-        // if (storedToken != null) {
-        // storedToken.setExpired(true);
-        // storedToken.setRevoked(true);
-        // tokenRepository.save(storedToken);
-        // }
     }
 
     public void revokeAllUserTokens(UserModel prmUser) {

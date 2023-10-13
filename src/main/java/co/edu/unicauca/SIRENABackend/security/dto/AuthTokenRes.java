@@ -12,11 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthTokenRes {
-    /**
-     * Token de autenticación generado para el usuario.
-     */
+
     @JsonProperty("acces_token")
     private String accesToken;
+    
     @JsonProperty("refresh_token")
     private String refreshToken;
 }

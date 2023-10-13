@@ -26,12 +26,6 @@ public class JwtService {
     @Value("${jwt.refresh-token.expitation}")
     private long refreshExpiration;
 
-    /**
-     * Genera un token JWT para un usuario.
-     *
-     * @param user Detalles del usuario.
-     * @return El token JWT generado.
-     */
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
     }
@@ -55,12 +49,6 @@ public class JwtService {
                 .compact();
     }
 
-    /**
-     * Obtiene el nombre de usuario desde un token JWT.
-     *
-     * @param token El token JWT.
-     * @return El nombre de usuario obtenido del token.
-     */
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
     }
@@ -84,14 +72,6 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    /**
-     * Verifica si un token JWT es válido para un UserDetails dado.
-     *
-     * @param token       El token JWT a verificar.
-     * @param userDetails Los detalles del usuario contra los cuales verificar el
-     *                    token.
-     * @return true si el token es válido, false de lo contrario.
-     */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));

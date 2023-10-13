@@ -27,15 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final ITokenRepository tokenRepository;
 
-    /**
-     * Filtra las solicitudes para autenticar a los usuarios utilizando tokens JWT.
-     *
-     * @param request     El objeto HttpServletRequest.
-     * @param response    El objeto HttpServletResponse.
-     * @param filterChain La cadena de filtros para procesar la solicitud.
-     * @throws ServletException Si hay un error en el servlet.
-     * @throws IOException      Si hay un error de entrada/salida.
-     */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)
@@ -58,9 +49,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             var isTokenValid = tokenRepository.findByToken(jwt)
-            .map(token -> !token.isExpired() && !token.isRevoked())
-            .orElse(false);
-            
+                    .map(token -> !token.isExpired() && !token.isRevoked())
+                    .orElse(false);
+
             if (jwtProvider.isTokenValid(jwt, userDetails) && isTokenValid) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
