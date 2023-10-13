@@ -1,0 +1,15 @@
+package co.edu.unicauca.SIRENABackend.security.services;
+
+import co.edu.unicauca.SIRENABackend.security.dtos.request.UserLoginReq;
+import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.AuthTokenRes;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+public interface AuthService {
+    AuthTokenRes login(UserLoginReq request);
+
+    AuthTokenRes register(UserRegisterReq request);
+
+    void refreshToken(HttpServletRequest request, HttpServletResponse response);
+}
