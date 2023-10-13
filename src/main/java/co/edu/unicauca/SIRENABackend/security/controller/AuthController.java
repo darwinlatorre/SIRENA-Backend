@@ -1,4 +1,4 @@
-package co.edu.unicauca.SIRENABackend.security.controllers;
+package co.edu.unicauca.SIRENABackend.security.controller;
 
 import java.io.IOException;
 
