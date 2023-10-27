@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bd_reservasunicauca
+    username: root
+    password: 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+jwt:
+  secret-key: E7CC689E9AECEE00ABBC16D2E39A4A557073582D77C6B0901D9B06FE3100992
+  expitation: 43200000
+  refresh-token:
+    expitation: 302400000
