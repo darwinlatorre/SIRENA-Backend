@@ -9,14 +9,13 @@ import co.edu.unicauca.SIRENABackend.security.jwt.JwtService;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.ITokenRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
-import co.edu.unicauca.SIRENABackend.security.services.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class LogoutServiceImpl implements LogoutHandler, LogoutService {
+public class LogoutServiceImpl implements LogoutHandler{
 
     private final ITokenRepository tokenRepository;
     private final IUserRepository userRepository;

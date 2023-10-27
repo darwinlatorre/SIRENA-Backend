@@ -24,13 +24,14 @@ import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.ITokenRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
+import co.edu.unicauca.SIRENABackend.security.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl {
+public class AuthServiceImpl implements AuthService {
 
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
@@ -39,6 +40,7 @@ public class AuthServiceImpl {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+    @Override
     public AuthTokenRes login(UserLoginReq request) {
         authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
@@ -56,6 +58,7 @@ public class AuthServiceImpl {
                 .build();
     }
 
+    @Override
     public AuthTokenRes register(UserRegisterReq request) {
         RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
         UserModel user = UserModel.builder()
@@ -81,28 +84,7 @@ public class AuthServiceImpl {
                 .build();
     }
 
-    private void revokeAllUserTokens(UserModel prmUser) {
-        var validUserToken = tokenRepository.findAllValidTokensByUser(prmUser.getId());
-        if (validUserToken.isEmpty())
-            return;
-        validUserToken.forEach(Token -> {
-            Token.setExpired(true);
-            Token.setRevoked(true);
-        });
-        tokenRepository.saveAll(validUserToken);
-    }
-
-    private void saveUserToken(UserModel prmUser, String prmJwtToken) {
-        var token = TokenModel.builder()
-                .user(prmUser)
-                .token(prmJwtToken)
-                .tokenType(TokenTypeEnum.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
-        tokenRepository.save(token);
-    }
-
+    @Override
     public void refreshToken(HttpServletRequest request, HttpServletResponse response)
             throws StreamWriteException, DatabindException, IOException {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -133,5 +115,27 @@ public class AuthServiceImpl {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    private void revokeAllUserTokens(UserModel prmUser) {
+        var validUserToken = tokenRepository.findAllValidTokensByUser(prmUser.getId());
+        if (validUserToken.isEmpty())
+            return;
+        validUserToken.forEach(Token -> {
+            Token.setExpired(true);
+            Token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserToken);
+    }
+
+    private void saveUserToken(UserModel prmUser, String prmJwtToken) {
+        var token = TokenModel.builder()
+                .user(prmUser)
+                .token(prmJwtToken)
+                .tokenType(TokenTypeEnum.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
     }
 }

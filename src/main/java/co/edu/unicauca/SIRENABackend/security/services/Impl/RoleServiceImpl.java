@@ -9,32 +9,39 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
+import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 
 @Service
-public class RoleServiceImpl {
+public class RoleServiceImpl implements RoleService {
+    
     @Autowired
     IRoleRepository roleRepository;
 
+    @Override
     @Transactional(readOnly = true)
     public ArrayList<RoleModel> getRoles() {
         return (ArrayList<RoleModel>) roleRepository.findAll();
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Optional<RoleModel> getByRoleName(String prmRoleName) {
         return roleRepository.findByName(prmRoleName);
     }
 
+    @Override
     @Transactional
     public RoleModel saveRole(RoleModel prmRole) {
         return roleRepository.save(prmRole);
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Optional<RoleModel> getRoleById(Integer prmId) {
         return roleRepository.findById(prmId);
     }
 
+    @Override
     @Transactional
     public boolean deleteRoleById(Integer prmId) {
         try {

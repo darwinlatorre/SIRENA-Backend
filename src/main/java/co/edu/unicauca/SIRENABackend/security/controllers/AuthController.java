@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.DatabindException;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserLoginReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.AuthTokenRes;
-import co.edu.unicauca.SIRENABackend.security.services.Impl.AuthServiceImpl;
+import co.edu.unicauca.SIRENABackend.security.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthServiceImpl authService;
+    private final AuthService authService;
 
     /**
      * Maneja la solicitud de inicio de sesión.

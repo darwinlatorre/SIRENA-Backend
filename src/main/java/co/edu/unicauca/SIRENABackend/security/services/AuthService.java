@@ -1,5 +1,10 @@
 package co.edu.unicauca.SIRENABackend.security.services;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
+
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserLoginReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.AuthTokenRes;
@@ -11,5 +16,6 @@ public interface AuthService {
 
     AuthTokenRes register(UserRegisterReq request);
 
-    void refreshToken(HttpServletRequest request, HttpServletResponse response);
+    void refreshToken(HttpServletRequest request, HttpServletResponse response)
+            throws StreamWriteException, DatabindException, IOException;
 }
