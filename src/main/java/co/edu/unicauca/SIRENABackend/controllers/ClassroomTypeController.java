@@ -18,7 +18,7 @@ import co.edu.unicauca.SIRENABackend.models.ClassroomTypeModel;
 import co.edu.unicauca.SIRENABackend.services.ClassroomTypeService;
 
 @RestController
-@RequestMapping("/api/v1/classroomType")
+@RequestMapping("/classroomType")
 public class ClassroomTypeController {
     @Autowired
     ClassroomTypeService classroomTypeService;

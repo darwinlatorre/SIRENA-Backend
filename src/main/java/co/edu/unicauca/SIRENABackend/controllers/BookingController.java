@@ -19,7 +19,7 @@ import co.edu.unicauca.SIRENABackend.models.BookingModel;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
 
 @RestController
-@RequestMapping("/api/v1/bookings")
+@RequestMapping("/bookings")
 public class BookingController {
 
     @Autowired

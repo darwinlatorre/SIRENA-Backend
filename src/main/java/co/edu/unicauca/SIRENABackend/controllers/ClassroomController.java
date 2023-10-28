@@ -19,7 +19,7 @@ import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
 import co.edu.unicauca.SIRENABackend.services.ClassroomService;
 
 @RestController
-@RequestMapping("/api/v1/classroom")
+@RequestMapping("/classroom")
 public class ClassroomController {
     @Autowired
     private ClassroomService ClassroomService;

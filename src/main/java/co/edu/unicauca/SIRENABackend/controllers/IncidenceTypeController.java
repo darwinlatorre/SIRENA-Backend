@@ -18,7 +18,7 @@ import co.edu.unicauca.SIRENABackend.models.IncidenceTypeModel;
 import co.edu.unicauca.SIRENABackend.services.IncidenceTypeService;
 
 @RestController
-@RequestMapping("/api/v1/incidenceType")
+@RequestMapping("/incidenceType")
 public class IncidenceTypeController {
     @Autowired
     IncidenceTypeService incidenceTypeService;

@@ -18,7 +18,7 @@ import co.edu.unicauca.SIRENABackend.models.IncidenceModel;
 import co.edu.unicauca.SIRENABackend.services.IncidenceService;
 
 @RestController
-@RequestMapping("/api/v1/incidence")
+@RequestMapping("/incidence")
 public class IncidenceController {
     @Autowired
     IncidenceService incidenceService;

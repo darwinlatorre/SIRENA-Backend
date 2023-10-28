@@ -1,12 +1,10 @@
 package co.edu.unicauca.SIRENABackend.security.models;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
@@ -62,10 +60,9 @@ public class UserModel implements UserDetails {
     @JoinColumn(name = "usr_role")
     private RoleModel role;
 
-    @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_classrooms", joinColumns = @JoinColumn(name = "usr_int_id"), inverseJoinColumns = @JoinColumn(name = "cls_int_id"))
-    private Set<ClassroomModel> classroom_assigned = new HashSet<>();
+    private Set<ClassroomModel> classroom_assigned;
 
     @OneToMany(mappedBy = "user")
     @Column(name = "usr_tokens")
@@ -73,7 +70,7 @@ public class UserModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority((role.getName())));
+        return role.getAuthorities();
     }
 
     @Override

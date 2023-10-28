@@ -18,7 +18,7 @@ import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 
 @RestController
-@RequestMapping("/api/v1/role")
+@RequestMapping("/role")
 public class RoleController {
 
     @Autowired

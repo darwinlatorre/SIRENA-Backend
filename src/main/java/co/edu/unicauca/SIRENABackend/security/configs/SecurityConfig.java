@@ -28,8 +28,10 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/v1/auth/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authProvider)
@@ -38,11 +40,8 @@ public class SecurityConfig {
                         logout -> logout.logoutUrl("/api/v1/auth/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler(
-                                        (request, response,
-                                                authetication) -> SecurityContextHolder
-                                                        .clearContext()))
+                                        (request, response, authetication) -> SecurityContextHolder
+                                                .clearContext()))
                 .build();
     }
-
-    // .requestMatchers("/swagger-ui/**","/swagger-resources/*","/v3/api-docs/**").permitAll()
 }

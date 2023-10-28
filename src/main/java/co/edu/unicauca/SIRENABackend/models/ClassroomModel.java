@@ -1,7 +1,6 @@
 package co.edu.unicauca.SIRENABackend.models;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
@@ -48,7 +47,6 @@ public class ClassroomModel implements Serializable {
     @JoinColumn(name = "cls_type", nullable = false)
     private ClassroomTypeModel classroomType;
 
-    @Builder.Default
     @ManyToMany(mappedBy = "classroom_assigned")
-    private Set<UserModel> userList = new HashSet<>();
+    private Set<UserModel> userList;
 }
