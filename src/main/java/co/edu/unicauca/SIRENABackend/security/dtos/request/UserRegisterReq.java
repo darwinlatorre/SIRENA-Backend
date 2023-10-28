@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserRegisterReq {
 
-    protected Integer usr_id;
-
     protected String usr_name;
 
     protected String usr_firstname;

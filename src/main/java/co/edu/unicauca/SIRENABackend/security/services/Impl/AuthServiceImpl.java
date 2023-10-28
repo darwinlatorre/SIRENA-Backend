@@ -62,7 +62,6 @@ public class AuthServiceImpl implements AuthService {
     public AuthTokenRes register(UserRegisterReq request) {
         RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
         UserModel user = UserModel.builder()
-                .id(request.getUsr_id())
                 .role(role_insert)
                 .firstName(request.getUsr_firstname())
                 .lastName(request.getUsr_lastname())
