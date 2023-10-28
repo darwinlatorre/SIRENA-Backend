@@ -31,16 +31,16 @@ public class ClassroomModel implements Serializable {
     @Column(name = "cls_int_id", unique = true)
     private Integer id;
 
-    @Column(name = "cls_name", nullable = false, length = 20)
+    @Column(name = "cls_name", nullable = false, length = 40, unique = true)
     private String name;
 
-    @Column(name = "cls_capacity", nullable = false, length = 20)
+    @Column(name = "cls_capacity", nullable = false)
     private Integer capacity;
 
-    @Column(name = "cls_state", nullable = false, length = 20)
+    @Column(name = "cls_state", nullable = false, length = 100)
     private String state;
 
-    @Column(name = "cls_building", nullable = false, length = 20)
+    @Column(name = "cls_building", nullable = false, length = 100)
     private String building;
 
     @ManyToOne

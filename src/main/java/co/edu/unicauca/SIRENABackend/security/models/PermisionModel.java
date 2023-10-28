@@ -30,8 +30,8 @@ public class PermisionModel {
     @Column(name = "per_int_id", unique = true, nullable = false)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "per_name", nullable = false, unique = true)
+    @Enumerated(EnumType.STRING)  
+    @Column(name = "per_name", unique = true, nullable = false)
     private PermissionEnum name;
 
     @ManyToMany(mappedBy = "permissions")

@@ -24,7 +24,7 @@ public class IncidenceTypeModel {
     @Column(name = "ins_type_int_id", unique = true)
     private Integer id;
 
-    @Column(name = "ins_type_name", nullable = false, length = 20)
+    @Column(name = "ins_type_name", nullable = false, length = 20, unique = true)
     private String name;
 
 }

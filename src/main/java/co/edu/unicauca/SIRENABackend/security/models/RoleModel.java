@@ -41,7 +41,7 @@ public class RoleModel {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "rol_name", nullable = false, length = 20, unique = true)
+    @Column(name = "rol_name", unique = true, nullable = false)
     private RoleEnum name;
 
     @Enumerated(EnumType.STRING)

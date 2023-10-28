@@ -40,7 +40,7 @@ public class UserModel implements UserDetails {
     @Column(name = "usr_int_id", unique = true)
     private Integer id;
 
-    @Column(name = "usr_name", nullable = false, length = 70, unique = true)
+    @Column(name = "usr_name", nullable = false, length = 20, unique = true)
     private String username;
 
     @Column(name = "usr_firstname", nullable = false, length = 20)
@@ -49,7 +49,7 @@ public class UserModel implements UserDetails {
     @Column(name = "usr_lastname", nullable = false, length = 20)
     private String lastName;
 
-    @Column(name = "usr_email", nullable = false, length = 70, unique = true)
+    @Column(name = "usr_email", nullable = false, length = 50, unique = true)
     @Email
     private String email;
 
@@ -57,7 +57,7 @@ public class UserModel implements UserDetails {
     private String password;
 
     @ManyToOne
-    @JoinColumn(name = "usr_role")
+    @JoinColumn(name = "usr_role", nullable = false)
     private RoleModel role;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

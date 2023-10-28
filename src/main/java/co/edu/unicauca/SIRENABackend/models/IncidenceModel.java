@@ -27,11 +27,11 @@ public class IncidenceModel {
     @Column(name = "ins_int_id", unique = true)
     private Integer id;
 
-    @Column(name = "ins_name", nullable = false, length = 20)
+    @Column(name = "ins_name", nullable = false, length = 40)
     private String name;
 
     // Es la mismas que reserva == rsv_codigo_insidencias
-    @Column(name = "ins_key", nullable = false, length = 20)
+    @Column(name = "ins_key", nullable = false, length = 40)
     private String key;
 
     // Es la misma que user ID == rsv_usr_int_id
