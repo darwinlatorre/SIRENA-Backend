@@ -1,5 +1,6 @@
 package co.edu.unicauca.SIRENABackend.security.dtos.request;
 
+import co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,8 @@ public class UserRegisterReq {
     protected String usr_lastname;
 
     protected String usr_email;
-    
+
     protected String usr_password;
 
-    protected String usr_role;
+    protected RoleEnum usr_role;
 }

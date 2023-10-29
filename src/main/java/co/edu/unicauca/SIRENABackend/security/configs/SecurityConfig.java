@@ -28,7 +28,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers("/api/v1/auth/**")
+                        .requestMatchers("/auth/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authenticationProvider(authProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(
-                        logout -> logout.logoutUrl("/api/v1/auth/logout")
+                        logout -> logout.logoutUrl("/auth/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler(
                                         (request, response, authetication) -> SecurityContextHolder
