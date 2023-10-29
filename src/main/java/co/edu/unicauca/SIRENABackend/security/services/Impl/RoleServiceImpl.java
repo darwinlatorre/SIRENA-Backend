@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum;
 import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    
+
     @Autowired
     IRoleRepository roleRepository;
 
@@ -25,7 +26,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<RoleModel> getByRoleName(String prmRoleName) {
+    public Optional<RoleModel> getByRoleName(RoleEnum prmRoleName) {
         return roleRepository.findByName(prmRoleName);
     }
 
