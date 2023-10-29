@@ -11,6 +11,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un modelo del tipo de aula (classroomType) en la aplicación.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,12 +22,18 @@ import lombok.NoArgsConstructor;
 @Table(name = "classroom_types")
 public class ClassroomTypeModel {
 
+    /**
+     * Identificador único del tipo de aula.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cls_type_int_id", unique = true)
     private Integer id;
 
-    @Column(name = "cls_type_name", nullable = false, length = 40, unique = true)
+    /**
+     * Nombre del tipo de aula.
+     */
+    @Column(name = "cls_type_name", nullable = false, length = 20)
     private String name;
-
+    
 }

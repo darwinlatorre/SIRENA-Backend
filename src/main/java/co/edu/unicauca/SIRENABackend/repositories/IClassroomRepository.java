@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
 
-public interface IClassroomRepository extends JpaRepository<ClassroomModel, Integer> {
-
+/**
+ * Interfaz que define un repositorio para operaciones relacionadas Classroom.
+ */
+public interface IClassroomRepository extends JpaRepository<ClassroomModel,Integer> {
 }

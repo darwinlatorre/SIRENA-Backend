@@ -16,37 +16,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.SIRENABackend.models.BookingModel;
-import co.edu.unicauca.SIRENABackend.services.BookingService;
+import co.edu.unicauca.SIRENABackend.repositories.IBookingRepository;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/api/v1/bookings")
 public class BookingController {
 
+    private final IBookingRepository bookingRepository;
+
     @Autowired
-    private BookingService bookingService;
+    public BookingController(IBookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
 
     /**
      * Crea una nueva booking.
      *
      * @param bookingModel El objeto BookingModel que se desea crear y guardar.
-     * @return Una respuesta HTTP con el objeto BookingModel creado y el código de
-     *         estado 201 (CREATED).
+     * @return Una respuesta HTTP con el objeto BookingModel creado y el código de estado 201 (CREATED).
      */
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<BookingModel> crearBooking(@RequestBody BookingModel bookingModel) {
-        BookingModel nuevaBooking = this.bookingService.crearBooking(bookingModel);
+        BookingModel nuevaBooking = bookingRepository.save(bookingModel);
         return new ResponseEntity<>(nuevaBooking, HttpStatus.CREATED);
     }
 
     /**
      * Obtiene todas las bookings almacenadas en la base de datos.
      *
-     * @return Una respuesta HTTP con una lista de objetos BookingModel y el código
-     *         de estado 200 (OK).
+     * @return Una respuesta HTTP con una lista de objetos BookingModel y el código de estado 200 (OK).
      */
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<BookingModel>> obtenerTodasLasBookings() {
-        List<BookingModel> bookings = this.bookingService.obtenerTodasLasBookings();
+        List<BookingModel> bookings = bookingRepository.findAll();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
@@ -54,14 +56,12 @@ public class BookingController {
      * Obtiene una booking por su ID.
      *
      * @param id El identificador único de la booking que se desea obtener.
-     * @return Una respuesta HTTP con el objeto BookingModel encontrado y el código
-     *         de estado 200 (OK)
-     *         si la booking existe, o código de estado 404 (NOT FOUND) si no se
-     *         encuentra.
+     * @return Una respuesta HTTP con el objeto BookingModel encontrado y el código de estado 200 (OK)
+     *         si la booking existe, o código de estado 404 (NOT FOUND) si no se encuentra.
      */
     @GetMapping("/{id}")
     public ResponseEntity<BookingModel> obtenerBookingPorId(@PathVariable Integer id) {
-        Optional<BookingModel> booking = this.bookingService.obtenerBookingPorId(id);
+        Optional<BookingModel> booking = bookingRepository.findById(id);
         if (booking.isPresent()) {
             return new ResponseEntity<>(booking.get(), HttpStatus.OK);
         } else {
@@ -72,21 +72,17 @@ public class BookingController {
     /**
      * Actualiza una booking por su ID.
      *
-     * @param id                 El identificador único de la booking que se desea
-     *                           actualizar.
-     * @param bookingActualizada El objeto BookingModel con los datos actualizados.
-     * @return Una respuesta HTTP con el objeto BookingModel actualizado y el código
-     *         de estado 200 (OK)
-     *         si la booking existe, o código de estado 404 (NOT FOUND) si no se
-     *         encuentra.
+     * @param id                  El identificador único de la booking que se desea actualizar.
+     * @param bookingActualizada  El objeto BookingModel con los datos actualizados.
+     * @return Una respuesta HTTP con el objeto BookingModel actualizado y el código de estado 200 (OK)
+     *         si la booking existe, o código de estado 404 (NOT FOUND) si no se encuentra.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<BookingModel> actualizarBooking(@PathVariable Integer id,
-            @RequestBody BookingModel bookingActualizada) {
-        Optional<BookingModel> bookingExistente = this.bookingService.obtenerBookingPorId(id);
+    public ResponseEntity<BookingModel> actualizarBooking(@PathVariable Integer id, @RequestBody BookingModel bookingActualizada) {
+        Optional<BookingModel> bookingExistente = bookingRepository.findById(id);
         if (bookingExistente.isPresent()) {
             bookingActualizada.setId(id);
-            bookingService.crearBooking(bookingActualizada);
+            bookingRepository.save(bookingActualizada);
             return new ResponseEntity<>(bookingActualizada, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -97,15 +93,14 @@ public class BookingController {
      * Elimina una booking por su ID.
      *
      * @param id El identificador único de la booking que se desea eliminar.
-     * @return Una respuesta HTTP con el código de estado 204 (NO CONTENT) si la
-     *         booking se eliminó con éxito,
+     * @return Una respuesta HTTP con el código de estado 204 (NO CONTENT) si la booking se eliminó con éxito,
      *         o código de estado 404 (NOT FOUND) si no se encuentra.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarBooking(@PathVariable Integer id) {
-        Optional<BookingModel> bookingExistente = this.bookingService.obtenerBookingPorId(id);
+        Optional<BookingModel> bookingExistente = bookingRepository.findById(id);
         if (bookingExistente.isPresent()) {
-            bookingService.eliminarBooking(id);
+            bookingRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
