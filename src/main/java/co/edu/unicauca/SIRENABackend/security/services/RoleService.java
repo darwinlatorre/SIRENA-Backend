@@ -15,5 +15,4 @@ public interface RoleService {
 
     Optional<RoleModel> getRoleById(Integer prmId);
 
-    boolean deleteRoleById(Integer prmId);
 }

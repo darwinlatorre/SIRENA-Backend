@@ -3,10 +3,11 @@ package co.edu.unicauca.SIRENABackend.security.services;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 
 public interface UserService {
-    ArrayList<UserModel> getUsers();
+    ArrayList<UserRes> getUsers();
 
     Optional<UserModel> getByUsername(String prmUsername);
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     UserModel saveUser(UserModel prmUser);
 
-    Optional<UserModel> getUserById(Integer prmId);
+    Optional<UserRes> getUserById(Integer prmId);
 
     boolean deleteUserById(Integer prmId);
 }

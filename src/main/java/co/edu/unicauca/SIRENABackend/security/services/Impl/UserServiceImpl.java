@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
@@ -19,8 +20,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public ArrayList<UserModel> getUsers() {
-        return (ArrayList<UserModel>) userRepository.findAll();
+    public ArrayList<UserRes> getUsers() {
+
+        ArrayList<UserModel> users = (ArrayList<UserModel>) userRepository.findAll();
+        ArrayList<UserRes> usersRes = new ArrayList<>();
+
+        for (UserModel user : users) {
+            var userRes = UserRes.builder()
+                    .usr_id(user.getId())
+                    .usr_name(user.getUsername())
+                    .usr_firstname(user.getFirstName())
+                    .usr_lastname(user.getLastName())
+                    .usr_email(user.getEmail())
+                    .usr_role(user.getRole().getName())
+                    .build();
+
+            usersRes.add(userRes);
+        }
+
+        return usersRes;
     }
 
     @Override
@@ -49,8 +67,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<UserModel> getUserById(Integer prmId) {
-        return userRepository.findById(prmId);
+    public Optional<UserRes> getUserById(Integer prmId) {
+
+        var userRes = userRepository.findById(prmId).map(user -> UserRes.builder()
+                .usr_id(user.getId())
+                .usr_name(user.getUsername())
+                .usr_firstname(user.getFirstName())
+                .usr_lastname(user.getLastName())
+                .usr_email(user.getEmail())
+                .usr_role(user.getRole().getName())
+                .build());
+
+        return userRes;
     }
 
     @Override

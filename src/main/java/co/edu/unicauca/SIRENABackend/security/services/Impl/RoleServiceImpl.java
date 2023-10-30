@@ -41,15 +41,4 @@ public class RoleServiceImpl implements RoleService {
     public Optional<RoleModel> getRoleById(Integer prmId) {
         return roleRepository.findById(prmId);
     }
-
-    @Override
-    @Transactional
-    public boolean deleteRoleById(Integer prmId) {
-        try {
-            roleRepository.deleteById(prmId);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 }

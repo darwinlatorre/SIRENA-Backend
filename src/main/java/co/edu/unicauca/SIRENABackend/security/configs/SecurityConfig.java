@@ -1,5 +1,7 @@
 package co.edu.unicauca.SIRENABackend.security.configs;
 
+import static co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum.ADMIN;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,8 +30,11 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers("/auth/**")
-                        .permitAll()
+                        .requestMatchers("/auth/login", "/auth/refresh-token").permitAll()
+                        // ADMIN endpoints
+                        .requestMatchers("/auth/register").hasRole(ADMIN.name())
+                        .requestMatchers("/role/**").hasRole(ADMIN.name())
+                        .requestMatchers("/user/**").hasRole(ADMIN.name())
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(sessionManager -> sessionManager
@@ -40,8 +45,9 @@ public class SecurityConfig {
                         logout -> logout.logoutUrl("/auth/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler(
-                                        (request, response, authetication) -> SecurityContextHolder
-                                                .clearContext()))
+                                        (request, response,
+                                                authetication) -> SecurityContextHolder
+                                                        .clearContext()))
                 .build();
     }
 }

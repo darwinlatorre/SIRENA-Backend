@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
 
@@ -29,8 +30,8 @@ public class UserController {
      * @return Una lista de objetos UserModel que representan a todos los usuarios.
      */
     @GetMapping()
-    public ResponseEntity<ArrayList<UserModel>> getUsers() {
-        ArrayList<UserModel> users = userService.getUsers();
+    public ResponseEntity<ArrayList<UserRes>> getUsers() {
+        ArrayList<UserRes> users = this.userService.getUsers();
 
         if (!users.isEmpty()) {
             return new ResponseEntity<>(users, HttpStatus.OK);
@@ -64,8 +65,8 @@ public class UserController {
      *         si no se encuentra.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserModel>> getUserById(@PathVariable("id") Integer userID) {
-        Optional<UserModel> user = this.userService.getUserById(userID);
+    public ResponseEntity<Optional<UserRes>> getUserById(@PathVariable("id") Integer userID) {
+        Optional<UserRes> user = this.userService.getUserById(userID);
 
         if (user.isPresent()) {
             return new ResponseEntity<>(user, HttpStatus.OK);
