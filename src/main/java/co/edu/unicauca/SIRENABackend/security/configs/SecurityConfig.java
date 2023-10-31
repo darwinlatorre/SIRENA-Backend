@@ -31,10 +31,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers("/auth/login", "/auth/refresh-token").permitAll()
-                        // ADMIN endpoints
+
+                        // Auth endpoints
                         .requestMatchers("/auth/register").hasRole(ADMIN.name())
                         .requestMatchers("/role/**").hasRole(ADMIN.name())
                         .requestMatchers("/user/**").hasRole(ADMIN.name())
+
+                        // Sevicios de la aplicación
+                        .requestMatchers("/api/v1/bookings").permitAll()
+                        .requestMatchers("/api/v1/classroom").permitAll()
+                        .requestMatchers("/api/v1/classroomType").permitAll()
+                        .requestMatchers("/api/v1/incidence").permitAll()
+                        .requestMatchers("/api/v1/incidenceType").permitAll()
+
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(sessionManager -> sessionManager
