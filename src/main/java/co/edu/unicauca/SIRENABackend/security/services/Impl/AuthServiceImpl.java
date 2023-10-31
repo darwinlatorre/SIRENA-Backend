@@ -59,7 +59,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthTokenRes register(UserRegisterReq request) {
+    public AuthTokenRes register(UserRegisterReq request) throws RuntimeException {
+        if (userRepository.existsByUsername(request.getUsr_name())) {
+            throw new RuntimeException("Username already exists");
+        }
         RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
         UserModel user = UserModel.builder()
                 .role(role_insert)
