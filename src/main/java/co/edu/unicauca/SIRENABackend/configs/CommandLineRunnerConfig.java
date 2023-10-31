@@ -46,8 +46,7 @@ public class CommandLineRunnerConfig {
                     .usr_password("admin")
                     .usr_role(ADMIN)
                     .build();
-            authService.register(adminUser);
-            System.out.println("El usuario admin ha sido registrado");
+            System.out.println("Admin Token: " + authService.register(adminUser).getAccesToken());
         } catch (Exception e) {
             System.out.println("El usuario admin ya exsite");
         }
@@ -61,8 +60,7 @@ public class CommandLineRunnerConfig {
                     .usr_password("coordinadorTest")
                     .usr_role(COORDINADOR)
                     .build();
-            authService.register(coordinadorTestUser);
-            System.out.println("El usuario coordinadorTest ha sido registrado");
+            System.out.println("Coordinador Token: " + authService.register(coordinadorTestUser).getAccesToken());
         } catch (Exception e) {
             System.out.println("El usuario coordinadorTest ya existe");
         }
@@ -76,9 +74,7 @@ public class CommandLineRunnerConfig {
                     .usr_password("docenteTest")
                     .usr_role(DOCENTE)
                     .build();
-
-            authService.register(docenteTestUser);
-            System.out.println("El usuario docenteTest ha sido registrado");
+            System.out.println("Docente Token: " + authService.register(docenteTestUser).getAccesToken());
         } catch (Exception e) {
             System.out.println("El usuario docenteTest ya existe");
         }

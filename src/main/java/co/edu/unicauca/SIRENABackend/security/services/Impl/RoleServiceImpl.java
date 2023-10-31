@@ -33,9 +33,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public RoleModel saveRole(RoleModel prmRole) {
-        if (roleRepository.existsByName(prmRole.getName().name())) {
-            throw new RuntimeException("El rol ya existe");
-        }
+        // if (roleRepository.existsByName(prmRole.getName().name())) {
+        // throw new RuntimeException("El rol ya existe");
+        // }
         return roleRepository.save(prmRole);
     }
 

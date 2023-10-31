@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/user")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     @Autowired
     UserService userService;

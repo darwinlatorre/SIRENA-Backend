@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/role")
+@SecurityRequirement(name = "bearerAuth")
 public class RoleController {
 
     @Autowired
