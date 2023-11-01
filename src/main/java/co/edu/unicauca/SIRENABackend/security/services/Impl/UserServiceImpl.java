@@ -3,20 +3,26 @@ package co.edu.unicauca.SIRENABackend.security.services.Impl;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
+import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
+import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
+    private final IRoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -61,8 +67,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserModel saveUser(UserModel prmUser) {
-        return userRepository.save(prmUser);
+    public UserRes saveUser(UserRegisterReq request) throws RuntimeException {
+
+        RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
+        UserModel user = UserModel.builder()
+                .role(role_insert)
+                .firstName(request.getUsr_firstname())
+                .lastName(request.getUsr_lastname())
+                .username(request.getUsr_name())
+                .password(passwordEncoder.encode(request.getUsr_password()))
+                .email(request.getUsr_email())
+                .build();
+
+        var savedUser = userRepository.save(user);
+
+        return UserRes.builder()
+                .usr_id(savedUser.getId())
+                .usr_name(savedUser.getUsername())
+                .usr_firstname(savedUser.getFirstName())
+                .usr_lastname(savedUser.getLastName())
+                .usr_email(savedUser.getEmail())
+                .usr_role(savedUser.getRole().getName())
+                .build();
     }
 
     @Override

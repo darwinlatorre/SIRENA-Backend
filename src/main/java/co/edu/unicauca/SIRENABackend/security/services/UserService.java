@@ -3,6 +3,7 @@ package co.edu.unicauca.SIRENABackend.security.services;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 
@@ -15,7 +16,7 @@ public interface UserService {
 
     boolean existsByEmail(String prmEmail);
 
-    UserModel saveUser(UserModel prmUser);
+    UserRes saveUser(UserRegisterReq prmUser);
 
     Optional<UserRes> getUserById(Integer prmId);
 

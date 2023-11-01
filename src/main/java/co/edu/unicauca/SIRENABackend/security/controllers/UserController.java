@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
-import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -49,8 +49,8 @@ public class UserController {
      * @return El objeto UserModel guardado en la base de datos.
      */
     @PostMapping()
-    public ResponseEntity<UserModel> saveUser(@RequestBody UserModel prmUser) {
-        UserModel savedUser = this.userService.saveUser(prmUser);
+    public ResponseEntity<UserRes> saveUser(@RequestBody UserRegisterReq prmUser) {
+        UserRes savedUser = this.userService.saveUser(prmUser);
 
         if (savedUser != null) {
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
