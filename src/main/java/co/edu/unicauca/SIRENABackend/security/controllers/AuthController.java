@@ -43,7 +43,7 @@ public class AuthController {
     })
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/login")
-    public ResponseEntity<AuthTokenRes> login(@RequestBody UserLoginReq request) {
+    public ResponseEntity<AuthTokenRes> login(@Valid @RequestBody UserLoginReq request) {
         AuthTokenRes authToken = authService.login(request);
         if (authToken != null) {
             return ResponseEntity.ok(authToken);
