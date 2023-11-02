@@ -31,7 +31,7 @@ public class RoleController {
             @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado")
     })
-    @GetMapping("/{id}")
+    @GetMapping()
     public ResponseEntity<ArrayList<RoleRes>> getRoles() {
         ArrayList<RoleRes> roles = this.roleService.getRoles();
 
