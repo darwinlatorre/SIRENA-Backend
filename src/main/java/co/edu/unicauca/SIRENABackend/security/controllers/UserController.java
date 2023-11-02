@@ -17,6 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
@@ -26,11 +31,10 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    /**
-     * Obtiene una lista de todos los usuarios registrados.
-     *
-     * @return Una lista de objetos UserModel que representan a todos los usuarios.
-     */
+    @Operation(summary = "Obtener todos los usuarios", description = "Obtiene una lista de todos los usuarios registrados en el sistema.", responses = {
+            @ApiResponse(responseCode = "200", description = "Usuarios obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se encontraron usuarios")
+    })
     @GetMapping()
     public ResponseEntity<ArrayList<UserRes>> getUsers() {
         ArrayList<UserRes> users = this.userService.getUsers();
@@ -42,12 +46,10 @@ public class UserController {
         }
     }
 
-    /**
-     * Guarda un nuevo usuario.
-     *
-     * @param prmUser El objeto UserModel que se desea guardar.
-     * @return El objeto UserModel guardado en la base de datos.
-     */
+    @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
+            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @PostMapping()
     public ResponseEntity<UserRes> saveUser(@RequestBody UserRegisterReq prmUser) {
         UserRes savedUser = this.userService.saveUser(prmUser);
@@ -59,13 +61,10 @@ public class UserController {
         }
     }
 
-    /**
-     * Obtiene un usuario por su ID.
-     *
-     * @param userID El identificador único del usuario que se desea obtener.
-     * @return Un objeto Optional que contiene el usuario si se encuentra, o vacío
-     *         si no se encuentra.
-     */
+    @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
+            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserRes>> getUserById(@PathVariable("id") Integer userID) {
         Optional<UserRes> user = this.userService.getUserById(userID);
@@ -77,13 +76,10 @@ public class UserController {
         }
     }
 
-    /**
-     * Elimina un usuario por su ID.
-     *
-     * @param userID El identificador único del usuario que se desea eliminar.
-     * @return Un mensaje que indica si se eliminó o no el usuario con el ID
-     *         proporcionado.
-     */
+    @Operation(summary = "Eliminar un usuario por ID", description = "Elimina un usuario específico por su ID.", responses = {
+            @ApiResponse(responseCode = "200", description = "Usuario eliminado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteById(@PathVariable("id") Integer userID) {
         boolean confirmation = this.userService.deleteUserById(userID);
