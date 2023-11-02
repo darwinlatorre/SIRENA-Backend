@@ -60,10 +60,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthTokenRes register(UserRegisterReq request) throws RuntimeException {
-        // if (userRepository.existsByUsername(request.getUsr_name())) {
-        // throw new RuntimeException("Username already exists");
-        // }
+        if (userRepository.existsByUsername(request.getUsr_name())) {
+            throw new RuntimeException("Username already exists");
+        }
+        if (userRepository.existsByEmail(request.getUsr_email())) {
+            throw new RuntimeException("Email already exists");
+        }
+        
         RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
+        System.out.println(role_insert);
         UserModel user = UserModel.builder()
                 .role(role_insert)
                 .firstName(request.getUsr_firstname())
@@ -72,6 +77,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getUsr_password()))
                 .email(request.getUsr_email())
                 .build();
+        System.out.println(user);
 
         var savedUser = userRepository.save(user);
         var jwtToken = jwtService.getToken(user);
