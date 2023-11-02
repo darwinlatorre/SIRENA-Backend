@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum;
+import co.edu.unicauca.SIRENABackend.security.dtos.request.RoleReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
-import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.services.AuthService;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 
@@ -28,7 +28,7 @@ public class CommandLineRunnerConfig {
     private void registroRoles(RoleService roleService) {
         for (RoleEnum Role : RoleEnum.values()) {
             try {
-                roleService.saveRole(RoleModel.builder().name(Role).build());
+                roleService.saveRole(RoleReq.builder().name(Role).build());
             } catch (Exception e) {
                 System.out.println("Error al ingresar el rol");
             }
