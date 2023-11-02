@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
-import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRegisterRes;
 import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
@@ -26,13 +26,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public ArrayList<UserRes> getUsers() {
+    public ArrayList<UserRegisterRes> getUsers() {
 
         ArrayList<UserModel> users = (ArrayList<UserModel>) userRepository.findAll();
-        ArrayList<UserRes> usersRes = new ArrayList<>();
+        ArrayList<UserRegisterRes> usersRes = new ArrayList<>();
 
         for (UserModel user : users) {
-            var userRes = UserRes.builder()
+            var userRes = UserRegisterRes.builder()
                     .usr_id(user.getId())
                     .usr_name(user.getUsername())
                     .usr_firstname(user.getFirstName())
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserRes saveUser(UserRegisterReq request) throws RuntimeException {
+    public UserRegisterRes saveUser(UserRegisterReq request) throws RuntimeException {
 
         RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
         UserModel user = UserModel.builder()
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
         var savedUser = userRepository.save(user);
 
-        return UserRes.builder()
+        return UserRegisterRes.builder()
                 .usr_id(savedUser.getId())
                 .usr_name(savedUser.getUsername())
                 .usr_firstname(savedUser.getFirstName())
@@ -93,9 +93,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<UserRes> getUserById(Integer prmId) {
+    public Optional<UserRegisterRes> getUserById(Integer prmId) {
 
-        var userRes = userRepository.findById(prmId).map(user -> UserRes.builder()
+        var userRes = userRepository.findById(prmId).map(user -> UserRegisterRes.builder()
                 .usr_id(user.getId())
                 .usr_name(user.getUsername())
                 .usr_firstname(user.getFirstName())

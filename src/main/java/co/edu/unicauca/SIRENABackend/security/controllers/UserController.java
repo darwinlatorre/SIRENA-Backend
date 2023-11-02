@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
-import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRes;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRegisterRes;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -32,12 +32,12 @@ public class UserController {
     UserService userService;
 
     @Operation(summary = "Obtener todos los usuarios", description = "Obtiene una lista de todos los usuarios registrados en el sistema.", responses = {
-            @ApiResponse(responseCode = "200", description = "Usuarios obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Usuarios obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontraron usuarios")
     })
     @GetMapping()
-    public ResponseEntity<ArrayList<UserRes>> getUsers() {
-        ArrayList<UserRes> users = this.userService.getUsers();
+    public ResponseEntity<ArrayList<UserRegisterRes>> getUsers() {
+        ArrayList<UserRegisterRes> users = this.userService.getUsers();
 
         if (!users.isEmpty()) {
             return new ResponseEntity<>(users, HttpStatus.OK);
@@ -47,12 +47,12 @@ public class UserController {
     }
 
     @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
-            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @PostMapping()
-    public ResponseEntity<UserRes> saveUser(@RequestBody UserRegisterReq prmUser) {
-        UserRes savedUser = this.userService.saveUser(prmUser);
+    public ResponseEntity<UserRegisterRes> saveUser(@RequestBody UserRegisterReq prmUser) {
+        UserRegisterRes savedUser = this.userService.saveUser(prmUser);
 
         if (savedUser != null) {
             return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
@@ -62,12 +62,12 @@ public class UserController {
     }
 
     @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
-            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserRes>> getUserById(@PathVariable("id") Integer userID) {
-        Optional<UserRes> user = this.userService.getUserById(userID);
+    public ResponseEntity<Optional<UserRegisterRes>> getUserById(@PathVariable("id") Integer userID) {
+        Optional<UserRegisterRes> user = this.userService.getUserById(userID);
 
         if (user.isPresent()) {
             return new ResponseEntity<>(user, HttpStatus.OK);

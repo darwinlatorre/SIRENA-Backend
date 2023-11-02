@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRes {
+public class UserRegisterRes {
     protected Integer usr_id;
 
     protected String usr_name;
