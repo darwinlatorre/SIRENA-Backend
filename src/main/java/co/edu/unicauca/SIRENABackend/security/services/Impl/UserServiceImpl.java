@@ -49,8 +49,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<UserModel> getByUsername(String prmUsername) {
-        return userRepository.findByUsername(prmUsername);
+    public Optional<UserRegisterRes> getByUsername(String prmUsername) {
+        var userRes = userRepository.findByUsername(prmUsername).map(user -> UserRegisterRes.builder()
+                .usr_id(user.getId())
+                .usr_name(user.getUsername())
+                .usr_firstname(user.getFirstName())
+                .usr_lastname(user.getLastName())
+                .usr_email(user.getEmail())
+                .usr_role(user.getRole().getName())
+                .build());
+
+        return userRes;
     }
 
     @Override
