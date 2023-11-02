@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum;
-import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
+import co.edu.unicauca.SIRENABackend.security.dtos.request.RoleReq;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.RoleRes;
 
 public interface RoleService {
-    ArrayList<RoleModel> getRoles();
+    ArrayList<RoleRes> getRoles();
 
-    Optional<RoleModel> getByRoleName(RoleEnum prmRoleName);
+    Optional<RoleRes> getByRoleName(RoleEnum prmRoleName);
 
-    RoleModel saveRole(RoleModel prmRole);
+    RoleRes saveRole(RoleReq prmRole);
 
-    Optional<RoleModel> getRoleById(Integer prmId);
+    Optional<RoleRes> getRoleById(Integer prmId);
 
 }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.RoleRes;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,12 +28,12 @@ public class RoleController {
     RoleService roleService;
 
     @Operation(summary = "Obtener un rol por ID", description = "Obtiene un rol específico por su ID.", responses = {
-            @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleModel.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ArrayList<RoleModel>> getRoles() {
-        ArrayList<RoleModel> roles = this.roleService.getRoles();
+    public ResponseEntity<ArrayList<RoleRes>> getRoles() {
+        ArrayList<RoleRes> roles = this.roleService.getRoles();
 
         if (!roles.isEmpty()) {
             return new ResponseEntity<>(roles, HttpStatus.OK);
@@ -43,12 +43,12 @@ public class RoleController {
     }
 
     @Operation(summary = "Obtener un rol por ID", description = "Obtiene un rol específico por su ID.", responses = {
-            @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleModel.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<RoleModel>> getRoleById(@PathVariable("id") Integer roleID) {
-        Optional<RoleModel> role = this.roleService.getRoleById(roleID);
+    public ResponseEntity<Optional<RoleRes>> getRoleById(@PathVariable("id") Integer roleID) {
+        Optional<RoleRes> role = this.roleService.getRoleById(roleID);
 
         if (role.isPresent()) {
             return new ResponseEntity<>(role, HttpStatus.OK);
