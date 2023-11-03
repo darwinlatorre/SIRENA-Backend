@@ -8,21 +8,36 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import co.edu.unicauca.SIRENABackend.common.enums.ClassroomTypeEnum;
+import co.edu.unicauca.SIRENABackend.dtos.request.ClassroomTypeReq;
 import co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.RoleReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.services.AuthService;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
+import co.edu.unicauca.SIRENABackend.services.ClassroomTypeService;
 
 @Configuration
 public class CommandLineRunnerConfig {
 
     @Bean
-    public CommandLineRunner commandLineRunner(AuthService authService, RoleService roleService) {
+    public CommandLineRunner commandLineRunner(AuthService authService, RoleService roleService,
+            ClassroomTypeService classroomTypeService) {
         return args -> {
             registroRoles(roleService);
             registroUsuarios(authService);
+            registroSalones(classroomTypeService);
         };
+    }
+
+    private void registroSalones(ClassroomTypeService classroomTypeService) {
+        for (ClassroomTypeEnum classroom : ClassroomTypeEnum.values()) {
+            try {
+                classroomTypeService.saveClassroomType(ClassroomTypeReq.builder().name(classroom).build());
+            } catch (Exception e) {
+                System.out.println("Error al ingresar el salon");
+            }
+        }
     }
 
     private void registroRoles(RoleService roleService) {
