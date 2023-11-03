@@ -46,8 +46,8 @@ public class AuthServiceImpl implements AuthService {
             throw new RuntimeException("User is inactive");
         }
 
-        var jwtToken = jwtService.getToken(user);
-        var refreshToken = jwtService.getRefreshToken(user);
+        var jwtToken = jwtService.getToken(user, user.getId());
+        var refreshToken = jwtService.getRefreshToken(user, user.getId());
         jwtService.revokeAllUserTokens(user);
         jwtService.saveUserToken(user, jwtToken);
         jwtService.saveUserToken(user, refreshToken);
@@ -77,8 +77,8 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.getToken(user);
-        var refreshToken = jwtService.getRefreshToken(user);
+        var jwtToken = jwtService.getToken(user, savedUser.getId());
+        var refreshToken = jwtService.getRefreshToken(user, savedUser.getId());
 
         jwtService.saveUserToken(savedUser, jwtToken);
         jwtService.saveUserToken(savedUser, refreshToken);
@@ -110,7 +110,7 @@ public class AuthServiceImpl implements AuthService {
                     .map(token -> !token.isExpired() && !token.isRevoked())
                     .orElse(false);
             if (jwtService.isTokenValid(refreshToken, user) && isTokenValid) {
-                var accesToken = jwtService.getRefreshToken(user);
+                var accesToken = jwtService.getRefreshToken(user, user.getId());
                 jwtService.revokeAllUserTokens(user);
                 jwtService.saveUserToken(user, accesToken);
                 var authResponse = AuthTokenRes.builder()

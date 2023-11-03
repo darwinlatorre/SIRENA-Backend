@@ -35,23 +35,25 @@ public class JwtService {
     @Value("${jwt.refresh-token.expitation}")
     private long refreshExpiration;
 
-    public String getToken(UserDetails user) {
-        return getToken(new HashMap<>(), user);
+    public String getToken(UserDetails user, Integer prmUserID) {
+        return getToken(new HashMap<>(), user, prmUserID);
     }
 
-    private String getToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+    private String getToken(Map<String, Object> extraClaims, UserDetails userDetails, Integer prmUserID) {
+        return buildToken(extraClaims, userDetails, prmUserID, jwtExpiration);
     }
 
-    public String getRefreshToken(UserDetails user) {
-        return buildToken(new HashMap<>(), user, refreshExpiration);
+    public String getRefreshToken(UserDetails user, Integer prmUserID) {
+        return buildToken(new HashMap<>(), user, prmUserID, refreshExpiration);
     }
 
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long prmExpiration) {
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, Integer prmUserID,
+            long prmExpiration) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
+                .claim("subId", prmUserID)
                 .claim("role", userDetails.getAuthorities().stream().findFirst().get().getAuthority())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + prmExpiration))
