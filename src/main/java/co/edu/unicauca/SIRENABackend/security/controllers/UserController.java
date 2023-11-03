@@ -33,7 +33,7 @@ public class UserController {
 
     @Operation(summary = "Obtener todos los usuarios", description = "Obtiene una lista de todos los usuarios registrados en el sistema.", responses = {
             @ApiResponse(responseCode = "200", description = "Usuarios obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "No se encontraron usuarios")
+            @ApiResponse(responseCode = "404", description = "No se encontraron usuarios", content = @Content(mediaType = "application/json"))
     })
     @GetMapping()
     public ResponseEntity<ArrayList<UserRegisterRes>> getUsers() {
@@ -48,7 +48,7 @@ public class UserController {
 
     @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
             @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "No se encontro el usuario")
+            @ApiResponse(responseCode = "404", description = "No se encontro el usuario", content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserRegisterRes>> getUserById(@PathVariable("id") Integer userID) {
@@ -63,7 +63,7 @@ public class UserController {
 
     @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
             @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
-            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta")
+            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(mediaType = "application/json"))
     })
     @PostMapping()
     public ResponseEntity<UserRegisterRes> saveUser(@RequestBody UserRegisterReq prmUser) {
@@ -77,8 +77,8 @@ public class UserController {
     }
 
     @Operation(summary = "Desactivar usuario", description = "Desactiva un usuario por su ID.", responses = {
-            @ApiResponse(responseCode = "200", description = "Usuario desactivado exitosamente", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "200", description = "Usuario desactivado exitosamente", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json"))
     })
     @PutMapping("/{id}/deactivate")
     public ResponseEntity<String> deactivateUser(@PathVariable("id") Integer userID) {
@@ -90,8 +90,8 @@ public class UserController {
     }
 
     @Operation(summary = "Activar usuario", description = "Activa un usuario por su ID.", responses = {
-            @ApiResponse(responseCode = "200", description = "Usuario activado exitosamente", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "200", description = "Usuario activado exitosamente", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json"))
     })
     @PutMapping("/{id}/activate")
     public ResponseEntity<String> activateUser(@PathVariable("id") Integer userID) {
