@@ -25,8 +25,8 @@ public class IncidenceTypeController {
     IncidenceTypeService incidenceTypeService;
 
     @Operation(summary = "Obtener tipos de incidencia", description = "Obtiene una lista de tipos de incidencia.", responses = {
-            @ApiResponse(responseCode = "200", description = "Tipos de incidencia encontrados exitosamente", content = @Content(schema = @Schema(implementation = IncidenceTypeRes.class))),
-            @ApiResponse(responseCode = "404", description = "No se encontraron tipos de incidencia")
+            @ApiResponse(responseCode = "200", description = "Tipos de incidencia encontrados exitosamente", content = @Content(schema = @Schema(implementation = IncidenceTypeRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se encontraron tipos de incidencia", content = @Content(mediaType = "application/json"))
     })
     @GetMapping()
     public ResponseEntity<ArrayList<IncidenceTypeRes>> getIncidenceTypes() {
@@ -40,8 +40,8 @@ public class IncidenceTypeController {
     }
 
     @Operation(summary = "Obtener tipo de incidencia por ID", description = "Obtiene un tipo de incidencia por su ID.", responses = {
-            @ApiResponse(responseCode = "200", description = "Tipo de incidencia encontrado exitosamente", content = @Content(schema = @Schema(implementation = IncidenceTypeRes.class))),
-            @ApiResponse(responseCode = "404", description = "Tipo de incidencia no encontrado")
+            @ApiResponse(responseCode = "200", description = "Tipo de incidencia encontrado exitosamente", content = @Content(schema = @Schema(implementation = IncidenceTypeRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "Tipo de incidencia no encontrado", content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<IncidenceTypeRes>> getIncidenceTypeById(
