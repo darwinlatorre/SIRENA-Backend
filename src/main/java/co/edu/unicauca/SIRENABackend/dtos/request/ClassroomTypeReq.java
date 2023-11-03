@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ClassroomTypeReq {
-    @JsonProperty("clas_type_name")
+    @JsonProperty("cls_type_name")
     private ClassroomTypeEnum name;
 }
