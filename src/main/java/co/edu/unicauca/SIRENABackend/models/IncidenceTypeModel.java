@@ -1,7 +1,10 @@
 package co.edu.unicauca.SIRENABackend.models;
 
+import co.edu.unicauca.SIRENABackend.common.enums.IncidenceTypeEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +27,8 @@ public class IncidenceTypeModel {
     @Column(name = "ins_type_int_id", unique = true)
     private Integer id;
 
-    @Column(name = "ins_type_name", nullable = false, length = 20, unique = true)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ins_type_name", nullable = false, unique = true)
+    private IncidenceTypeEnum name;
 
 }

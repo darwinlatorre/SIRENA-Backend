@@ -3,14 +3,15 @@ package co.edu.unicauca.SIRENABackend.services;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import co.edu.unicauca.SIRENABackend.models.IncidenceTypeModel;
+import co.edu.unicauca.SIRENABackend.dtos.request.IncidenceTypeReq;
+import co.edu.unicauca.SIRENABackend.dtos.response.IncidenceTypeRes;
 
 public interface IncidenceTypeService {
-    ArrayList<IncidenceTypeModel> getIncidenceTypes();
+    ArrayList<IncidenceTypeRes> getIncidenceTypes();
 
-    IncidenceTypeModel saveIncidenceTypes(IncidenceTypeModel prmIncidence);
+    IncidenceTypeRes saveIncidenceTypes(IncidenceTypeReq prmIncidence);
 
-    Optional<IncidenceTypeModel> getIncidenceTypeById(Integer prmId);
+    Optional<IncidenceTypeRes> getIncidenceTypeById(Integer prmId);
 
     boolean deleteIncidenceTypeById(Integer prmId);
 }

@@ -9,25 +9,39 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import co.edu.unicauca.SIRENABackend.common.enums.ClassroomTypeEnum;
+import co.edu.unicauca.SIRENABackend.common.enums.IncidenceTypeEnum;
 import co.edu.unicauca.SIRENABackend.dtos.request.ClassroomTypeReq;
+import co.edu.unicauca.SIRENABackend.dtos.request.IncidenceTypeReq;
 import co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.RoleReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.services.AuthService;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 import co.edu.unicauca.SIRENABackend.services.ClassroomTypeService;
+import co.edu.unicauca.SIRENABackend.services.IncidenceTypeService;
 
 @Configuration
 public class CommandLineRunnerConfig {
 
     @Bean
     public CommandLineRunner commandLineRunner(AuthService authService, RoleService roleService,
-            ClassroomTypeService classroomTypeService) {
+            ClassroomTypeService classroomTypeService, IncidenceTypeService incidenceTypeService) {
         return args -> {
             registroRoles(roleService);
             registroUsuarios(authService);
             registroSalones(classroomTypeService);
+            registroTiposIncidencia(incidenceTypeService);
         };
+    }
+
+    private void registroTiposIncidencia(IncidenceTypeService incidenceTypeService) {
+        for (IncidenceTypeEnum IncidenceType : IncidenceTypeEnum.values()) {
+            try {
+                incidenceTypeService.saveIncidenceTypes(IncidenceTypeReq.builder().name(IncidenceType).build());
+            } catch (Exception e) {
+                System.out.println("Error al ingresar el tipo de incidencia");
+            }
+        }
     }
 
     private void registroSalones(ClassroomTypeService classroomTypeService) {
