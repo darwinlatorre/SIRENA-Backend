@@ -4,12 +4,18 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import co.edu.unicauca.SIRENABackend.security.common.enums.TokenTypeEnum;
+import co.edu.unicauca.SIRENABackend.security.models.TokenModel;
+import co.edu.unicauca.SIRENABackend.security.models.UserModel;
+import co.edu.unicauca.SIRENABackend.security.repositories.ITokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,6 +24,9 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
+
+    @Autowired
+    private ITokenRepository tokenRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -84,5 +93,31 @@ public class JwtService {
 
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
+    }
+
+    public void saveUserToken(UserModel prmUser, String prmJwtToken) {
+        var token = TokenModel.builder()
+                .user(prmUser)
+                .token(prmJwtToken)
+                .tokenType(TokenTypeEnum.BEARER)
+                .expired(false)
+                .revoked(false)
+                .build();
+        tokenRepository.save(token);
+    }
+
+    public void revokeAllUserTokens(UserModel prmUser) {
+        var validUserToken = tokenRepository.findAllValidTokensByUser(prmUser.getId());
+        if (validUserToken.isEmpty())
+            return;
+        validUserToken.forEach(Token -> {
+            Token.setExpired(true);
+            Token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserToken);
+    }
+
+    public Optional<TokenModel> findByToken(String refreshToken) {
+        return tokenRepository.findByToken(refreshToken);
     }
 }

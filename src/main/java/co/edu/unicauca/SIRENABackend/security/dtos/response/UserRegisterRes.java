@@ -21,5 +21,7 @@ public class UserRegisterRes {
 
     protected String usr_email;
 
+    protected Boolean usr_status;
+
     protected RoleEnum usr_role;
 }

@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,22 +48,7 @@ public class UserController {
 
     @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
             @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
-    })
-    @PostMapping()
-    public ResponseEntity<UserRegisterRes> saveUser(@RequestBody UserRegisterReq prmUser) {
-        UserRegisterRes savedUser = this.userService.saveUser(prmUser);
-
-        if (savedUser != null) {
-            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
-            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+            @ApiResponse(responseCode = "404", description = "No se encontro el usuario")
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserRegisterRes>> getUserById(@PathVariable("id") Integer userID) {
@@ -76,18 +61,44 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "Eliminar un usuario por ID", description = "Elimina un usuario específico por su ID.", responses = {
-            @ApiResponse(responseCode = "200", description = "Usuario eliminado exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
+            @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta")
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable("id") Integer userID) {
-        boolean confirmation = this.userService.deleteUserById(userID);
+    @PostMapping()
+    public ResponseEntity<UserRegisterRes> saveUser(@RequestBody UserRegisterReq prmUser) {
+        UserRegisterRes savedUser = this.userService.saveUser(prmUser);
 
-        if (confirmation) {
-            return new ResponseEntity<>("Se ha eliminado el usuario con id = " + userID, HttpStatus.OK);
+        if (savedUser != null) {
+            return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
         } else {
-            return new ResponseEntity<>("No se eliminó el usuario con id = " + userID, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "Desactivar usuario", description = "Desactiva un usuario por su ID.", responses = {
+            @ApiResponse(responseCode = "200", description = "Usuario desactivado exitosamente", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateUser(@PathVariable("id") Integer userID) {
+        if (this.userService.deactivateUser(userID)) {
+            return new ResponseEntity<>("Usuario desactivado exitosamente", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Error al desactivar el usuario", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "Activar usuario", description = "Activa un usuario por su ID.", responses = {
+            @ApiResponse(responseCode = "200", description = "Usuario activado exitosamente", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @PutMapping("/{id}/activate")
+    public ResponseEntity<String> activateUser(@PathVariable("id") Integer userID) {
+        if (this.userService.activateUser(userID)) {
+            return new ResponseEntity<>("Usuario activado exitosamente", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Error al activar el usuario", HttpStatus.BAD_REQUEST);
         }
     }
 

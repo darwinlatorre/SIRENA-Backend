@@ -19,5 +19,7 @@ public interface UserService {
 
     Optional<UserRegisterRes> getUserById(Integer prmId);
 
-    boolean deleteUserById(Integer prmId);
+    boolean deactivateUser(Integer prmId);
+
+    boolean activateUser(Integer prmId);
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.type.NumericBooleanConverter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +27,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -57,6 +60,11 @@ public class UserModel implements UserDetails {
     @Column(name = "usr_password", nullable = false, length = 512)
     private String password;
 
+    @Default
+    @Convert(converter = NumericBooleanConverter.class)
+    @Column(name = "usr_status", nullable = false)
+    protected Boolean status = true;
+
     @ManyToOne
     @JoinColumn(name = "usr_role", nullable = false)
     private RoleModel role;
@@ -68,6 +76,10 @@ public class UserModel implements UserDetails {
     @OneToMany(mappedBy = "user")
     @Column(name = "usr_tokens")
     private List<TokenModel> tokens;
+
+    public void setStatus(Boolean prmStatus) {
+        this.status = prmStatus;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
