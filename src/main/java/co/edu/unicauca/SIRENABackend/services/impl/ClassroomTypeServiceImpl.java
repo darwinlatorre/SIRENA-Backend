@@ -38,13 +38,13 @@ public class ClassroomTypeServiceImpl implements ClassroomTypeService {
 
     @Override
     @Transactional
-    public ClassroomTypeRes saveClassroomType(ClassroomTypeReq classroomTypeModel) {
-        if (classroomTypeRepository.existsByName(classroomTypeModel.getName())) {
+    public ClassroomTypeRes saveClassroomType(ClassroomTypeReq classroomTypeReq) {
+        if (classroomTypeRepository.existsByName(classroomTypeReq.getName())) {
             return null;
         }
 
         ClassroomTypeModel classroomType = ClassroomTypeModel.builder()
-                .name(classroomTypeModel.getName())
+                .name(classroomTypeReq.getName())
                 .build();
 
         ClassroomTypeModel classroomTypeSave = classroomTypeRepository.save(classroomType);
