@@ -39,7 +39,7 @@ public class BookingModel {
     private Date horaFin;
 
     @Column(name = "rsv_num_estudiantes", nullable = true)
-    private int numEstudiantes;
+    private Integer numEstudiantes;
 
     @Column(name = "rsv_estado", nullable = false, length = 20)
     private String estado;
