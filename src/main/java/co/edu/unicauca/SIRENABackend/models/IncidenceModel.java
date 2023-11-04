@@ -40,10 +40,6 @@ public class IncidenceModel {
     private UserModel teacherName;
 
     @ManyToOne
-    @JoinColumn(name = "ins_insidencias", nullable = false)
-    private BookingModel insidencias;
-
-    @ManyToOne
     @JoinColumn(name = "ins_type", nullable = false)
     private IncidenceTypeModel insidenciaType;
 }

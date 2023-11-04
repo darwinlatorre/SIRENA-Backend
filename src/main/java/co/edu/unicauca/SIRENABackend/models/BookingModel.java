@@ -10,9 +10,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,14 +43,19 @@ public class BookingModel {
     @Column(name = "rsv_num_estudiantes", nullable = true)
     private Integer numEstudiantes;
 
+    @Default
     @Column(name = "rsv_estado", nullable = false, length = 20)
-    private String estado;
+    private String estado = "Pendiente";
 
     @Column(name = "rsv_detalles", nullable = true)
     private String detalles;
 
     @Column(name = "rsv_codigo_insidencias", nullable = false, unique = true)
     private String codigoInsidencias;
+
+    @OneToMany(mappedBy = "booking")
+    @JoinColumn(name = "rsv_int_id", nullable = false)
+    private IncidenceModel incidencias;
 
     @ManyToOne
     @JoinColumn(name = "rsv_cls_int_id", nullable = false)
