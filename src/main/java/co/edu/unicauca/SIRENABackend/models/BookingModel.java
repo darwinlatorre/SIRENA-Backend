@@ -50,9 +50,6 @@ public class BookingModel {
     @Column(name = "rsv_detalles", nullable = true)
     private String detalles;
 
-    @Column(name = "rsv_codigo_insidencias", nullable = false, unique = true)
-    private String codigoInsidencias;
-
     @OneToMany(mappedBy = "booking")
     @JoinColumn(name = "rsv_int_id", nullable = false)
     private IncidenceModel incidencias;
