@@ -40,7 +40,6 @@ public class BookingController {
                 "\n rsv_num_estudiantes " + bookingModel.getNumEstudiantes() +
                 "\n rsv_estado " + bookingModel.getEstado() +
                 "\n rsv_detalles " + bookingModel.getDetalles() +
-                "\n rsv_codigo_insidencias " + bookingModel.getCodigoInsidencias() +
                 "\n rsv_cls_int_id " + bookingModel.getClassroomID() +
                 "\n rsv_usr_int_id " + bookingModel.getUserID() + "\n}");
 
