@@ -3,11 +3,6 @@ package co.edu.unicauca.SIRENABackend.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import co.edu.unicauca.SIRENABackend.repositories.IClassroomRepository;
-import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
-import co.edu.unicauca.SIRENABackend.security.models.UserModel;
-import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
-import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +22,6 @@ import co.edu.unicauca.SIRENABackend.services.BookingService;
 @RequestMapping("/bookings")
 public class BookingController {
 
-
     @Autowired
     private BookingService bookingService;
 
@@ -40,18 +34,18 @@ public class BookingController {
      */
     @PostMapping()
     public ResponseEntity<BookingModel> crearBooking(@RequestBody BookingModel bookingModel) {
-        System.out.println(	"{\nrsv_fecha_solicitud "+ bookingModel.getFechaSolicitud()+
-                "\n rsv_fecha_reserva_inicio "+bookingModel.getFechaReservaInicio()+
-                "\n rsv_hora_fin "+bookingModel.getHoraFin()+
-                "\n rsv_num_estudiantes "+bookingModel.getNumEstudiantes()+
-                "\n rsv_estado "+ bookingModel.getEstado()+
-                "\n rsv_detalles "+bookingModel.getDetalles()+
-                "\n rsv_codigo_insidencias "+bookingModel.getCodigoInsidencias()+
-                "\n rsv_cls_int_id "+bookingModel.getClassroomID()+
-                "\n rsv_usr_int_id "+bookingModel.getUserID()+"\n}");
+        System.out.println("{\nrsv_fecha_solicitud " + bookingModel.getFechaSolicitud() +
+                "\n rsv_fecha_reserva_inicio " + bookingModel.getFechaReservaInicio() +
+                "\n rsv_hora_fin " + bookingModel.getHoraFin() +
+                "\n rsv_num_estudiantes " + bookingModel.getNumEstudiantes() +
+                "\n rsv_estado " + bookingModel.getEstado() +
+                "\n rsv_detalles " + bookingModel.getDetalles() +
+                "\n rsv_codigo_insidencias " + bookingModel.getCodigoInsidencias() +
+                "\n rsv_cls_int_id " + bookingModel.getClassroomID() +
+                "\n rsv_usr_int_id " + bookingModel.getUserID() + "\n}");
 
         BookingModel nuevaBooking = this.bookingService.crearBooking(bookingModel);
-        if(nuevaBooking==null){
+        if (nuevaBooking == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(nuevaBooking, HttpStatus.CREATED);

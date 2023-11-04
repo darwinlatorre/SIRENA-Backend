@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
-import co.edu.unicauca.SIRENABackend.services.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,6 @@ import co.edu.unicauca.SIRENABackend.services.BookingService;
 @Service
 public class BookingServiceImpl implements BookingService {
 
-
     @Autowired
     private IBookingRepository bookingRepository;
 
@@ -27,26 +24,23 @@ public class BookingServiceImpl implements BookingService {
             System.out.println("El salon y el usuario no pueden ser nulos");
             return null;
         }
-        //Verificar que la fecha de solicitud es anterior a la de inicio
-        if(!bookingModel.getFechaSolicitud().before(bookingModel.getFechaReservaInicio()))
-        {
+        // Verificar que la fecha de solicitud es anterior a la de inicio
+        if (!bookingModel.getFechaSolicitud().before(bookingModel.getFechaReservaInicio())) {
             System.out.println("La fecha de solicitud debe ser anterior a la de inicio");
             return null;
         }
-        //Verificar que la fecha fin es posterior a la de inicio
-        if(!bookingModel.getFechaReservaInicio().before(bookingModel.getHoraFin()))
-        {
+        // Verificar que la fecha fin es posterior a la de inicio
+        if (!bookingModel.getFechaReservaInicio().before(bookingModel.getHoraFin())) {
             System.out.println("La fecha de fin debe ser posterior a la de inicio");
             return null;
         }
-        //Verificar que la reserva esta en el rango
-        if(!isTimeInRange(bookingModel.getFechaReservaInicio()) || !isTimeInRange(bookingModel.getHoraFin()))
-        {
+        // Verificar que la reserva esta en el rango
+        if (!isTimeInRange(bookingModel.getFechaReservaInicio()) || !isTimeInRange(bookingModel.getHoraFin())) {
             System.out.println("La reserva debe estar entre las 6am y las 11pm");
             return null;
         }
-        //Verificar que ese salon no tiene una reserva activa en ese horario
-        List<BookingModel> bookings=bookingRepository.findAll();
+        // Verificar que ese salon no tiene una reserva activa en ese horario
+        List<BookingModel> bookings = bookingRepository.findAll();
         for (BookingModel booking : bookings) {
             if (booking.getClassroomID().getId() == bookingModel.getClassroomID().getId()) {
                 boolean bandera1 = booking.getFechaReservaInicio().before(bookingModel.getHoraFin());
@@ -55,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
                 boolean bandera4 = booking.getFechaReservaInicio().equals(bookingModel.getHoraFin());
 
                 if (bandera1 && bandera2) {
-                    if(!bandera3 && !bandera4) {
+                    if (!bandera3 && !bandera4) {
                         System.out.println("Ya hay una reserva para el salón en ese horario");
                         return null;
                     }
