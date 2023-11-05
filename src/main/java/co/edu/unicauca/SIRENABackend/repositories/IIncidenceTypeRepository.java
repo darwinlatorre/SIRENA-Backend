@@ -12,4 +12,6 @@ public interface IIncidenceTypeRepository extends JpaRepository<IncidenceTypeMod
 
     public boolean existsByName(IncidenceTypeEnum name);
 
+    public IncidenceTypeModel findByName(IncidenceTypeEnum name);
+
 }

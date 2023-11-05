@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicauca.SIRENABackend.models.IncidenceModel;
+import co.edu.unicauca.SIRENABackend.dtos.request.IncidenceReq;
+import co.edu.unicauca.SIRENABackend.dtos.response.IncidenceRes;
 import co.edu.unicauca.SIRENABackend.services.IncidenceService;
 
 @RestController
@@ -24,8 +25,8 @@ public class IncidenceController {
     IncidenceService incidenceService;
 
     @GetMapping()
-    public ResponseEntity<ArrayList<IncidenceModel>> getIncidences() {
-        ArrayList<IncidenceModel> incidences = incidenceService.getIncidences();
+    public ResponseEntity<ArrayList<IncidenceRes>> getIncidences() {
+        ArrayList<IncidenceRes> incidences = incidenceService.getIncidences();
 
         if (!incidences.isEmpty()) {
             return new ResponseEntity<>(incidences, HttpStatus.OK);
@@ -35,8 +36,8 @@ public class IncidenceController {
     }
 
     @PostMapping()
-    public ResponseEntity<IncidenceModel> saveIncidence(@RequestBody IncidenceModel prmIncidence) {
-        IncidenceModel savedIncidence = this.incidenceService.saveIncidence(prmIncidence);
+    public ResponseEntity<IncidenceRes> saveIncidence(@RequestBody IncidenceReq prmIncidence) {
+        IncidenceRes savedIncidence = this.incidenceService.saveIncidence(prmIncidence);
 
         if (savedIncidence != null) {
             return new ResponseEntity<>(savedIncidence, HttpStatus.CREATED);
@@ -46,8 +47,8 @@ public class IncidenceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<IncidenceModel>> getIncidenceById(@PathVariable("id") Integer incidenceID) {
-        Optional<IncidenceModel> incidence = this.incidenceService.getIncidenceById(incidenceID);
+    public ResponseEntity<Optional<IncidenceRes>> getIncidenceById(@PathVariable("id") Integer incidenceID) {
+        Optional<IncidenceRes> incidence = this.incidenceService.getIncidenceById(incidenceID);
 
         if (incidence.isPresent()) {
             return new ResponseEntity<>(incidence, HttpStatus.OK);
