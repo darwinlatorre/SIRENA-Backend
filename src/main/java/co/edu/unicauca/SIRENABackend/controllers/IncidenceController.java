@@ -23,11 +23,6 @@ public class IncidenceController {
     @Autowired
     IncidenceService incidenceService;
 
-    /**
-     * Obtiene una lista de incidencias.
-     *
-     * @return ArrayList de IncidenceModel que representa las incidencias.
-     */
     @GetMapping()
     public ResponseEntity<ArrayList<IncidenceModel>> getIncidences() {
         ArrayList<IncidenceModel> incidences = incidenceService.getIncidences();
@@ -39,12 +34,6 @@ public class IncidenceController {
         }
     }
 
-    /**
-     * Guarda una nueva incidencia.
-     *
-     * @param prmIncidence La incidencia a guardar.
-     * @return El IncidenceModel que ha sido guardado.
-     */
     @PostMapping()
     public ResponseEntity<IncidenceModel> saveIncidence(@RequestBody IncidenceModel prmIncidence) {
         IncidenceModel savedIncidence = this.incidenceService.saveIncidence(prmIncidence);
@@ -56,13 +45,6 @@ public class IncidenceController {
         }
     }
 
-    /**
-     * Obtiene una incidencia por su ID.
-     *
-     * @param incidenceID El ID de la incidencia a obtener.
-     * @return Un Optional que puede contener un IncidenceModel si se encuentra, de
-     *         lo contrario, es vacío.
-     */
     @GetMapping("/{id}")
     public ResponseEntity<Optional<IncidenceModel>> getIncidenceById(@PathVariable("id") Integer incidenceID) {
         Optional<IncidenceModel> incidence = this.incidenceService.getIncidenceById(incidenceID);
@@ -74,13 +56,6 @@ public class IncidenceController {
         }
     }
 
-    /**
-     * Elimina una incidencia por su ID.
-     *
-     * @param incidenceID El ID de la incidencia a eliminar.
-     * @return Un mensaje que indica si se ha eliminado correctamente la incidencia
-     *         o no.
-     */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteIncidenceById(@PathVariable("id") Integer incidenceID) {
         boolean confirmation = this.incidenceService.deleteIncidenceById(incidenceID);

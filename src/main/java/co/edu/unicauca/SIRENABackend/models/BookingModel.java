@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,8 +50,8 @@ public class BookingModel {
     @Column(name = "rsv_detalles", nullable = true)
     private String detalles;
 
-    @OneToMany(mappedBy = "booking")
-    @JoinColumn(name = "rsv_int_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "rsv_incidencia", nullable = true)
     private IncidenceModel incidencias;
 
     @ManyToOne

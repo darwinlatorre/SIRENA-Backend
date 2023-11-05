@@ -30,11 +30,6 @@ public class IncidenceModel {
     @Column(name = "ins_name", nullable = false, length = 40)
     private String name;
 
-    // Es la mismas que reserva == rsv_codigo_insidencias
-    @Column(name = "ins_key", nullable = false, length = 40)
-    private String key;
-
-    // Es la misma que user ID == rsv_usr_int_id
     @ManyToOne
     @JoinColumn(name = "ins_teacher_name", nullable = false)
     private UserModel teacherName;
