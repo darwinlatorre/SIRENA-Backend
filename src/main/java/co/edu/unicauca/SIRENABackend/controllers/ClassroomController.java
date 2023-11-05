@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
 import co.edu.unicauca.SIRENABackend.services.ClassroomService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/classroom")
@@ -24,36 +28,31 @@ public class ClassroomController {
     @Autowired
     private ClassroomService ClassroomService;
 
-    /**
-     * Crea una nueva instancia de aula (classroom) y la guarda en la base de datos.
-     *
-     * @param classroom El objeto ClassroomModel que se desea crear y guardar.
-     * @return La instancia de ClassroomModel creada y almacenada en la base de
-     *         datos.
-     */
+    @Operation(summary = "Create a new classroom", description = "Creates a new classroom.", responses = {
+            @ApiResponse(responseCode = "201", description = "Classroom created successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping()
     public ResponseEntity<ClassroomModel> save(@RequestBody ClassroomModel classroom) {
         ClassroomModel savedClassroom = this.ClassroomService.save(classroom);
         return new ResponseEntity<>(savedClassroom, HttpStatus.CREATED);
     }
 
-    /**
-     * Obtiene una lista de todas las aulas registradas.
-     *
-     * @return Una lista de objetos ClassroomModel que representan todas las aulas.
-     */
+    @Operation(summary = "Get a list of classrooms", description = "Retrieves a list of all classrooms.", responses = {
+            @ApiResponse(responseCode = "200", description = "Classrooms retrieved successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
+            @ApiResponse(responseCode = "404", description = "Classrooms not found")
+    })
     @GetMapping
     public ResponseEntity<List<ClassroomModel>> classrooms() {
         List<ClassroomModel> classroomList = this.ClassroomService.findAll();
         return new ResponseEntity<>(classroomList, HttpStatus.OK);
     }
 
-    /**
-     * Obtiene una aula por su identificador único.
-     *
-     * @param id El identificador único del aula que se desea obtener.
-     * @return El objeto ClassroomModel encontrado, o null si no se encuentra.
-     */
+    @Operation(summary = "Get a classroom by ID", description = "Retrieves a classroom by its ID.", responses = {
+            @ApiResponse(responseCode = "200", description = "Classroom retrieved successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
+            @ApiResponse(responseCode = "404", description = "Classroom not found")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ClassroomModel> show(@PathVariable Integer id) {
         Optional<ClassroomModel> classroomOptional = this.ClassroomService.findById(id);
@@ -66,14 +65,10 @@ public class ClassroomController {
         }
     }
 
-    /**
-     * Actualiza una aula existente por su identificador único.
-     *
-     * @param classroom El objeto ClassroomModel con los datos actualizados.
-     * @param id        El identificador único del aula que se desea actualizar.
-     * @return La instancia de ClassroomModel actualizada y almacenada en la base de
-     *         datos.
-     */
+    @Operation(summary = "Update a classroom by ID", description = "Updates a classroom by its ID.", responses = {
+            @ApiResponse(responseCode = "200", description = "Classroom updated successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
+            @ApiResponse(responseCode = "404", description = "Classroom not found")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<ClassroomModel> update(@RequestBody ClassroomModel classroom, @PathVariable Integer id) {
         Optional<ClassroomModel> classroomCurrentOptional = this.ClassroomService.findById(id);
@@ -93,11 +88,10 @@ public class ClassroomController {
         }
     }
 
-    /**
-     * Elimina un aula por su identificador único.
-     *
-     * @param id El identificador único del aula que se desea eliminar.
-     */
+    @Operation(summary = "Delete a classroom by ID", description = "Deletes a classroom by its ID.", responses = {
+            @ApiResponse(responseCode = "204", description = "Classroom deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Classroom not found")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         Optional<ClassroomModel> classroomOptional = this.ClassroomService.findById(id);
@@ -109,5 +103,4 @@ public class ClassroomController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }
