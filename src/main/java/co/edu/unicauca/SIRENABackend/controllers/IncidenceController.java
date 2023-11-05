@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.unicauca.SIRENABackend.dtos.request.IncidenceReq;
 import co.edu.unicauca.SIRENABackend.dtos.response.IncidenceRes;
 import co.edu.unicauca.SIRENABackend.services.IncidenceService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/incidence")
@@ -24,6 +28,10 @@ public class IncidenceController {
     @Autowired
     IncidenceService incidenceService;
 
+    @Operation(summary = "Obtener incidencias", description = "Obtiene una lista de incidencias.", responses = {
+            @ApiResponse(responseCode = "200", description = "Incidencias encontradas exitosamente", content = @Content(schema = @Schema(implementation = IncidenceRes.class))),
+            @ApiResponse(responseCode = "404", description = "No se encontraron incidencias")
+    })
     @GetMapping()
     public ResponseEntity<ArrayList<IncidenceRes>> getIncidences() {
         ArrayList<IncidenceRes> incidences = incidenceService.getIncidences();
@@ -35,6 +43,10 @@ public class IncidenceController {
         }
     }
 
+    @Operation(summary = "Guardar incidencia", description = "Guarda una nueva incidencia.", responses = {
+            @ApiResponse(responseCode = "201", description = "Incidencia guardada exitosamente", content = @Content(schema = @Schema(implementation = IncidenceRes.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     @PostMapping()
     public ResponseEntity<IncidenceRes> saveIncidence(@RequestBody IncidenceReq prmIncidence) {
         IncidenceRes savedIncidence = this.incidenceService.saveIncidence(prmIncidence);
@@ -46,6 +58,10 @@ public class IncidenceController {
         }
     }
 
+    @Operation(summary = "Obtener incidencia por ID", description = "Obtiene una incidencia por su ID.", responses = {
+            @ApiResponse(responseCode = "200", description = "Incidencia encontrada exitosamente", content = @Content(schema = @Schema(implementation = IncidenceRes.class))),
+            @ApiResponse(responseCode = "404", description = "Incidencia no encontrada")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<IncidenceRes>> getIncidenceById(@PathVariable("id") Integer incidenceID) {
         Optional<IncidenceRes> incidence = this.incidenceService.getIncidenceById(incidenceID);
@@ -57,6 +73,10 @@ public class IncidenceController {
         }
     }
 
+    @Operation(summary = "Eliminar incidencia por ID", description = "Elimina una incidencia por su ID.", responses = {
+            @ApiResponse(responseCode = "200", description = "Incidencia eliminada exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Incidencia no encontrada")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteIncidenceById(@PathVariable("id") Integer incidenceID) {
         boolean confirmation = this.incidenceService.deleteIncidenceById(incidenceID);
