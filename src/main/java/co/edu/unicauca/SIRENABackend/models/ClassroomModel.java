@@ -40,8 +40,9 @@ public class ClassroomModel implements Serializable {
     @Column(name = "cls_state", nullable = false, length = 100)
     private String state;
 
-    @Column(name = "cls_building", nullable = false, length = 100)
-    private String building;
+    @ManyToOne
+    @JoinColumn(name = "cls_building", nullable = false)
+    private BuildingModel building;
 
     @ManyToOne
     @JoinColumn(name = "cls_type", nullable = false)

@@ -20,6 +20,7 @@ public class IncidenceServiceImpl implements IncidenceService {
 
     @Autowired
     private IIncidenceRepository incidenceRepository;
+    @Autowired
     private IIncidenceTypeRepository incidenceTypeRepository;
 
     @Override
