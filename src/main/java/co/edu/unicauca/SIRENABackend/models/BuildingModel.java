@@ -22,7 +22,4 @@ public class BuildingModel {
 
     @Column(name = "bld_name", nullable = false, length = 40)
     private String name;
-
-    @OneToMany(mappedBy = "building")
-    private List<FacultyModel> facultades;
 }
