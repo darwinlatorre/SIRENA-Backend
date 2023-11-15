@@ -1,11 +1,9 @@
 package co.edu.unicauca.SIRENABackend.services;
 
-import co.edu.unicauca.SIRENABackend.models.BuildingModel;
-import co.edu.unicauca.SIRENABackend.models.FacultyModel;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import co.edu.unicauca.SIRENABackend.models.FacultyModel;
 
 public interface FacultyService {
     List<FacultyModel> getFaculties();
