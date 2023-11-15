@@ -49,7 +49,6 @@ public class IncidenceController {
     })
     @PostMapping()
     public ResponseEntity<IncidenceRes> saveIncidence(@RequestBody IncidenceReq prmIncidence) {
-        System.out.println(prmIncidence.toString());
         IncidenceRes savedIncidence = this.incidenceService.saveIncidence(prmIncidence);
 
         if (savedIncidence != null) {

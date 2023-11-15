@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class IncidenceRes {
+    @JsonProperty("ins_id")
+    private Integer id;
     @JsonProperty("ins_name")
     private String name;
     @JsonProperty("ins_teacher_name")

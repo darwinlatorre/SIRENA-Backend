@@ -2,6 +2,7 @@ package co.edu.unicauca.SIRENABackend.services.impl;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +40,14 @@ public class BookingServiceImpl implements BookingService {
             System.out.println("La reserva debe estar entre las 6am y las 11pm");
             return null;
         }
-        //Verificar que el numero de estudiante no supera la capcidad
-        if (bookingModel.getNumEstudiantes()>bookingModel.getClassroomID().getCapacity()) {
+        // Verificar que el numero de estudiante no supera la capcidad
+        if (bookingModel.getNumEstudiantes() > bookingModel.getClassroomID().getCapacity()) {
             System.out.println("El numero de estudiante debe ser menor o igual a la capacidad del salon");
             return null;
         }
-        //Verificar que el estado es valido
-        if(!bookingModel.getEstado().equals("PENDIENTE") && !bookingModel.getEstado().equals("ACEPTADA") && !bookingModel.getEstado().equals("RECHAZADA"))
-        {
+        // Verificar que el estado es valido
+        if (!bookingModel.getEstado().equals("PENDIENTE") && !bookingModel.getEstado().equals("ACEPTADA")
+                && !bookingModel.getEstado().equals("RECHAZADA")) {
             System.out.println("El estado debe ser (PENDIENTE,ACEPTADA,RECHAZADA)");
             return null;
         }
@@ -107,6 +108,11 @@ public class BookingServiceImpl implements BookingService {
 
         // Comprueba si la hora está en el rango
         return !localTime.isBefore(startTime) && !localTime.isAfter(endTime);
+    }
+
+    @Override
+    public ArrayList<Object[]> obtenerEstadisticasReservas() {
+        return bookingRepository.obtenerEstadisticasReservas();
     }
 
 }

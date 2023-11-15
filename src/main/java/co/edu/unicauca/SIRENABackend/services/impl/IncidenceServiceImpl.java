@@ -13,6 +13,8 @@ import co.edu.unicauca.SIRENABackend.models.IncidenceModel;
 import co.edu.unicauca.SIRENABackend.models.IncidenceTypeModel;
 import co.edu.unicauca.SIRENABackend.repositories.IIncidenceRepository;
 import co.edu.unicauca.SIRENABackend.repositories.IIncidenceTypeRepository;
+import co.edu.unicauca.SIRENABackend.security.models.UserModel;
+import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.services.IncidenceService;
 
 @Service
@@ -20,6 +22,8 @@ public class IncidenceServiceImpl implements IncidenceService {
 
     @Autowired
     private IIncidenceRepository incidenceRepository;
+    @Autowired
+    private IUserRepository userRepository;
     @Autowired
     private IIncidenceTypeRepository incidenceTypeRepository;
 
@@ -32,6 +36,7 @@ public class IncidenceServiceImpl implements IncidenceService {
 
         for (IncidenceModel incidence : incidencesFound) {
             incidencesRes.add(IncidenceRes.builder()
+                    .id(incidence.getId())
                     .name(incidence.getName())
                     .teacherName(incidence.getTeacherName().getUsername())
                     .incidenceType(incidence.getInsidenciaType())
@@ -50,15 +55,20 @@ public class IncidenceServiceImpl implements IncidenceService {
             return null;
         }
 
+        Optional<UserModel> teacherFound = userRepository.findByUsername(prmIncidence.getTeacherName());
+        if (!teacherFound.isPresent()) {
+            return null;
+        }
+
         IncidenceModel incidence = IncidenceModel.builder()
-                .id(prmIncidence.getId())
                 .name(prmIncidence.getName())
-                .teacherName(prmIncidence.getTeacher())
+                .teacherName(teacherFound.get())
                 .insidenciaType(incidenceFound)
                 .build();
         IncidenceModel incidenceSave = incidenceRepository.save(incidence);
 
         IncidenceRes incidenceRes = IncidenceRes.builder()
+                .id(incidenceSave.getId())
                 .name(incidenceSave.getName())
                 .teacherName(incidenceSave.getTeacherName().getUsername())
                 .incidenceType(incidenceSave.getInsidenciaType())
@@ -73,6 +83,7 @@ public class IncidenceServiceImpl implements IncidenceService {
         Optional<IncidenceModel> incidenceFound = incidenceRepository.findById(prmId);
 
         IncidenceRes incidenceRes = incidenceFound.map(incidence -> IncidenceRes.builder()
+                .id(incidence.getId())
                 .name(incidence.getName())
                 .teacherName(incidence.getTeacherName().getUsername())
                 .incidenceType(incidence.getInsidenciaType())

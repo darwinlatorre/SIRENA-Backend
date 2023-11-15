@@ -23,7 +23,6 @@ public class BuildingController {
 
     @PostMapping
     public BuildingModel saveBuilding(@RequestBody BuildingModel building) {
-        System.out.println(building.toString());
         return buildingService.saveBuilding(building);
     }
 

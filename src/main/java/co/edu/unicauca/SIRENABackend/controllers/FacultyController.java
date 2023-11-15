@@ -31,7 +31,6 @@ public class FacultyController {
 
     @PostMapping
     public ResponseEntity<FacultyModel> saveFaculty(@RequestBody FacultyRequest facultyRequest) {
-        System.out.println(facultyRequest.toString());
         // Busca el edificio por su id
         Optional<BuildingModel> buildingOptional = buildingService.getBuildingById(facultyRequest.getBuildingId());
 

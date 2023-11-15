@@ -1,5 +1,6 @@
 package co.edu.unicauca.SIRENABackend.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,6 +80,12 @@ public class BookingController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/reservation-statistics")
+    public ResponseEntity<ArrayList<Object[]>> obtenerEstadisticasReservas() {
+        ArrayList<Object[]> reservationStatistics = this.bookingService.obtenerEstadisticasReservas();
+        return new ResponseEntity<>(reservationStatistics, HttpStatus.OK);
     }
 
     /**
