@@ -210,19 +210,57 @@ public class BookingServiceImpl implements BookingService {
         Optional<BookingModel> bookingExistente = bookingRepository.findById(id);
         if (bookingExistente.isPresent()) {
 
-            ClassroomModel classroomFound = classroomRepository.findById(bookingActualizada.getClassroomID())
-                    .orElse(null);
+            if (bookingActualizada.getUserID() == null || bookingActualizada.getClassroomID() == null) {
+                System.out.println("El salon y el usuario no pueden ser nulos");
+                return null;
+            }
+            // Verificar que la fecha de solicitud es anterior a la de inicio
+            if (!bookingActualizada.getFechaSolicitud().isBefore(bookingActualizada.getFechaReservaInicio())) {
+                System.out.println("La fecha de solicitud debe ser anterior a la de inicio");
+                return null;
+            }
+
+            // Verificar que la fecha fin es posterior a la de inicio
+            if (!bookingActualizada.getFechaReservaInicio().isBefore(bookingActualizada.getHoraFin())) {
+                System.out.println("La fecha de inicio debe ser anterior a la de fin");
+                return null;
+            }
+
+            // Verificar que la reserva esta en el rango
+            if (!isTimeInRange(bookingActualizada.getFechaReservaInicio()) || !isTimeInRange(bookingActualizada.getHoraFin())) {
+                System.out.println("La reserva debe estar entre las 6am y las 11pm");
+                return null;
+            }
+
+            // Verificar que el estado es valido
+            boolean bandera = false;
+            for (BookingStateTypeEnum BookingState : BookingStateTypeEnum.values()) {
+                if (BookingState.equals(bookingActualizada.getEstado())) {
+                    bandera = true;
+                    break;
+                }
+            }
+            if (!bandera) {
+                System.out.println("El estado no" + bookingActualizada.getEstado().name() + " es valido");
+                return null;
+            }
+
+            ClassroomModel classroomFound = classroomRepository.findById(bookingActualizada.getClassroomID()).orElse(null);
+            if(classroomFound==null)
+            {
+                System.out.println("Id del salon no encontrada");
+                return null;
+            }
+            System.out.println(classroomFound.toString());
             // Verificar que el numero de estudiante no supera la capcidad
             if (bookingActualizada.getNumEstudiantes() > classroomFound.getCapacity()) {
                 System.out.println("El numero de estudiante debe ser menor o igual a la capacidad del salon");
                 return null;
             }
 
-            IncidenceModel incidenceFound = incidenceRepository.findById(bookingActualizada.getIncidenciasID())
-                    .orElse(null);
+            IncidenceModel incidenceFound = incidenceRepository.findById(bookingActualizada.getIncidenciasID()).orElse(null);
             if (incidenceFound == null) {
                 System.out.println("No existe una incidencia con ese ID");
-                return null;
             }
 
             UserModel userFound = userRepository.findById(bookingActualizada.getUserID()).orElse(null);
@@ -242,24 +280,28 @@ public class BookingServiceImpl implements BookingService {
                     .classroom(classroomFound)
                     .user(userFound)
                     .build();
-
             BookingModel BookingSaved = bookingRepository.save(bookingBuild);
 
-            BookingRes bookingRes = BookingRes.builder().id(BookingSaved.getId())
+
+            String usenameRes = BookingSaved.getUser().getUsername();
+            IncidenceRes incidenceResponse = IncidenceRes.builder()
+                    .id(BookingSaved.getIncidencias().getId())
+                    .name(BookingSaved.getIncidencias().getName())
+                    .teacherName(BookingSaved.getIncidencias().getTeacherName().getUsername())
+                    .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
+                    .build();
+
+            BookingRes bookingRes = BookingRes.builder()
+                    .id(BookingSaved.getId())
                     .fechaSolicitud(BookingSaved.getFechaSolicitud())
                     .fechaReservaInicio(BookingSaved.getFechaReservaInicio())
                     .horaFin(BookingSaved.getHoraFin())
                     .numEstudiantes(BookingSaved.getNumEstudiantes())
                     .estado(BookingSaved.getEstado())
                     .detalles(BookingSaved.getDetalles())
-                    .incidencias(IncidenceRes.builder()
-                            .id(BookingSaved.getIncidencias().getId())
-                            .name(BookingSaved.getIncidencias().getName())
-                            .teacherName(BookingSaved.getIncidencias().getTeacherName().getUsername())
-                            .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
-                            .build())
+                    .incidencias(incidenceResponse)
                     .classroom(BookingSaved.getClassroom().getId())
-                    .user(BookingSaved.getUser().getUsername())
+                    .user(usenameRes)
                     .build();
 
             return bookingRes;

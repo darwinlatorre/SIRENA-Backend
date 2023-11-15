@@ -98,7 +98,7 @@ public class BookingController {
         Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
             bookingActualizada.setId(id);
-            var booking = bookingService.crearBooking(bookingActualizada);
+            var booking = bookingService.actualizarBooking(bookingActualizada.getId(), bookingActualizada);
             return new ResponseEntity<>(booking, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
