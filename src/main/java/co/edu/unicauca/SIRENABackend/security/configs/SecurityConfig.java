@@ -56,6 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/classroomType").permitAll()
                         .requestMatchers("/api/v1/incidence").permitAll()
                         .requestMatchers("/api/v1/incidenceType").permitAll()
+                        .requestMatchers("/api/v1/faculty").permitAll()
 
                         .anyRequest()
                         .authenticated())

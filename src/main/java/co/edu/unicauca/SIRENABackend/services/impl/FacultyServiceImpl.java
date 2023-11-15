@@ -1,27 +1,21 @@
 package co.edu.unicauca.SIRENABackend.services.impl;
 
-import co.edu.unicauca.SIRENABackend.models.BuildingModel;
-import co.edu.unicauca.SIRENABackend.models.FacultyModel;
-import co.edu.unicauca.SIRENABackend.repositories.IBuildingRespository;
-import co.edu.unicauca.SIRENABackend.repositories.IFacultyRepository;
-import co.edu.unicauca.SIRENABackend.services.BuildingService;
-import co.edu.unicauca.SIRENABackend.services.FacultyService;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import co.edu.unicauca.SIRENABackend.models.FacultyModel;
+import co.edu.unicauca.SIRENABackend.repositories.IFacultyRepository;
+import co.edu.unicauca.SIRENABackend.services.FacultyService;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
 
     @Autowired
     private IFacultyRepository facultyReposirtory;
-    @Autowired
-    private IBuildingRespository buildingReposirtory;
 
     @Transactional(readOnly = false)
     public FacultyModel saveFaculties(FacultyModel faculty) {
