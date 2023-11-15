@@ -13,7 +13,7 @@ public interface IBookingRepository extends JpaRepository<BookingModel, Integer>
 
     @Query("SELECT b.id AS bookingID, c.name AS classroomName " +
             "FROM BookingModel b " +
-            "JOIN b.classroomID c")
+            "JOIN b.classroom c")
     ArrayList<Object[]> obtenerEstadisticasReservas();
 
     // @Query("SELECT b.building.name AS buildingName, f.name AS facultyName, c.name

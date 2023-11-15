@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicauca.SIRENABackend.models.BookingModel;
+import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
+import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
 
 @RestController
@@ -34,17 +35,9 @@ public class BookingController {
      *         estado 201 (CREATED).
      */
     @PostMapping()
-    public ResponseEntity<BookingModel> crearBooking(@RequestBody BookingModel bookingModel) {
-        System.out.println("{\nrsv_fecha_solicitud " + bookingModel.getFechaSolicitud() +
-                "\n rsv_fecha_reserva_inicio " + bookingModel.getFechaReservaInicio() +
-                "\n rsv_hora_fin " + bookingModel.getHoraFin() +
-                "\n rsv_num_estudiantes " + bookingModel.getNumEstudiantes() +
-                "\n rsv_estado " + bookingModel.getEstado() +
-                "\n rsv_detalles " + bookingModel.getDetalles() +
-                "\n rsv_cls_int_id " + bookingModel.getClassroomID() +
-                "\n rsv_usr_int_id " + bookingModel.getUserID() + "\n}");
+    public ResponseEntity<BookingRes> crearBooking(@RequestBody BookingReq bookingModel) {
 
-        BookingModel nuevaBooking = this.bookingService.crearBooking(bookingModel);
+        BookingRes nuevaBooking = this.bookingService.crearBooking(bookingModel);
         if (nuevaBooking == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -58,8 +51,8 @@ public class BookingController {
      *         de estado 200 (OK).
      */
     @GetMapping()
-    public ResponseEntity<List<BookingModel>> obtenerTodasLasBookings() {
-        List<BookingModel> bookings = this.bookingService.obtenerTodasLasBookings();
+    public ResponseEntity<List<BookingRes>> obtenerTodasLasBookings() {
+        List<BookingRes> bookings = this.bookingService.obtenerTodasLasBookings();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
@@ -73,8 +66,8 @@ public class BookingController {
      *         encuentra.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<BookingModel> obtenerBookingPorId(@PathVariable Integer id) {
-        Optional<BookingModel> booking = this.bookingService.obtenerBookingPorId(id);
+    public ResponseEntity<BookingRes> obtenerBookingPorId(@PathVariable Integer id) {
+        Optional<BookingRes> booking = this.bookingService.obtenerBookingPorId(id);
         if (booking.isPresent()) {
             return new ResponseEntity<>(booking.get(), HttpStatus.OK);
         } else {
@@ -100,13 +93,13 @@ public class BookingController {
      *         encuentra.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<BookingModel> actualizarBooking(@PathVariable Integer id,
-            @RequestBody BookingModel bookingActualizada) {
-        Optional<BookingModel> bookingExistente = this.bookingService.obtenerBookingPorId(id);
+    public ResponseEntity<BookingRes> actualizarBooking(@PathVariable Integer id,
+            @RequestBody BookingReq bookingActualizada) {
+        Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
             bookingActualizada.setId(id);
-            bookingService.crearBooking(bookingActualizada);
-            return new ResponseEntity<>(bookingActualizada, HttpStatus.OK);
+            var booking = bookingService.crearBooking(bookingActualizada);
+            return new ResponseEntity<>(booking, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -122,7 +115,7 @@ public class BookingController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarBooking(@PathVariable Integer id) {
-        Optional<BookingModel> bookingExistente = this.bookingService.obtenerBookingPorId(id);
+        Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
             bookingService.eliminarBooking(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

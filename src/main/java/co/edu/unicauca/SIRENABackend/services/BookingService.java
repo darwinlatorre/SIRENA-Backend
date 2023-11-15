@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import co.edu.unicauca.SIRENABackend.models.BookingModel;
+import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
+import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
 
 public interface BookingService {
-    BookingModel crearBooking(BookingModel bookingModel);
+    BookingRes crearBooking(BookingReq bookingModel);
 
-    List<BookingModel> obtenerTodasLasBookings();
+    List<BookingRes> obtenerTodasLasBookings();
 
-    Optional<BookingModel> obtenerBookingPorId(Integer id);
+    Optional<BookingRes> obtenerBookingPorId(Integer id);
 
     ArrayList<Object[]> obtenerEstadisticasReservas();
 
-    BookingModel actualizarBooking(Integer id, BookingModel bookingActualizada);
+    BookingRes actualizarBooking(Integer id, BookingReq bookingActualizada);
 
     void eliminarBooking(Integer id);
 }
