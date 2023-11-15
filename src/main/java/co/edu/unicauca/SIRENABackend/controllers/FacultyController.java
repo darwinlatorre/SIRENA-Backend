@@ -43,9 +43,6 @@ public class FacultyController {
             faculty.setName(facultyRequest.getName());
             faculty.setBuilding(building);
 
-            System.out.println(building.toString());
-            System.out.println(faculty.toString());
-
             // Guarda la facultad
             FacultyModel savedFaculty = facultyService.saveFaculties(faculty);
 
