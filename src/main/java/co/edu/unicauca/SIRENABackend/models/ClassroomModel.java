@@ -50,4 +50,5 @@ public class ClassroomModel implements Serializable {
 
     @ManyToMany(mappedBy = "classroom_assigned")
     private Set<UserModel> userList;
+
 }

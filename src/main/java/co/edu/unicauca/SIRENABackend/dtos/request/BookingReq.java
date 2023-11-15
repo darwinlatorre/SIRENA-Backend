@@ -2,6 +2,7 @@ package co.edu.unicauca.SIRENABackend.dtos.request;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
@@ -31,6 +32,7 @@ public class BookingReq {
     @JsonProperty("rsv_detalles")
     private String detalles;
     @JsonProperty("rsv_incidencia_id")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer incidenciasID;
     @JsonProperty("rsv_cls_id")
     private Integer classroomID;

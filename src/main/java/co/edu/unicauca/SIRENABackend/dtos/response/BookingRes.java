@@ -34,7 +34,7 @@ public class BookingRes {
     @JsonProperty("rsv_incidencia_id")
     private IncidenceRes incidencias;
     @JsonProperty("rsv_cls_id")
-    private ClassroomModel classroom;
+    private Integer classroom;
     @JsonProperty("rsv_usr_id")
     private String user;
 

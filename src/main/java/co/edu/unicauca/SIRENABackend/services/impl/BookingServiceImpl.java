@@ -73,7 +73,14 @@ public class BookingServiceImpl implements BookingService {
             System.out.println("Ya existe una reserva con ese ID");
             return null;
         }
+
         ClassroomModel classroomFound = classroomRepository.findById(bookingModel.getClassroomID()).orElse(null);
+        if(classroomFound==null)
+        {
+            System.out.println("Id del salon no encontrada");
+            return null;
+        }
+        System.out.println(classroomFound.toString());
         // Verificar que el numero de estudiante no supera la capcidad
         if (bookingModel.getNumEstudiantes() > classroomFound.getCapacity()) {
             System.out.println("El numero de estudiante debe ser menor o igual a la capacidad del salon");
@@ -101,7 +108,6 @@ public class BookingServiceImpl implements BookingService {
         IncidenceModel incidenceFound = incidenceRepository.findById(bookingModel.getIncidenciasID()).orElse(null);
         if (incidenceFound == null) {
             System.out.println("No existe una incidencia con ese ID");
-            return null;
         }
 
         UserModel userFound = userRepository.findById(bookingModel.getUserID()).orElse(null);
@@ -121,8 +127,8 @@ public class BookingServiceImpl implements BookingService {
                 .classroom(classroomFound)
                 .user(userFound)
                 .build();
-
         BookingModel BookingSaved = bookingRepository.save(bookingBuild);
+
 
         String usenameRes = BookingSaved.getUser().getUsername();
         IncidenceRes incidenceResponse = IncidenceRes.builder()
@@ -141,7 +147,7 @@ public class BookingServiceImpl implements BookingService {
                 .estado(BookingSaved.getEstado())
                 .detalles(BookingSaved.getDetalles())
                 .incidencias(incidenceResponse)
-                .classroom(null)
+                .classroom(BookingSaved.getClassroom().getId())
                 .user(usenameRes)
                 .build();
 
@@ -165,7 +171,7 @@ public class BookingServiceImpl implements BookingService {
                             .teacherName(booking.getIncidencias().getTeacherName().getUsername())
                             .incidenceType(booking.getIncidencias().getInsidenciaType())
                             .build())
-                    .classroom(booking.getClassroom())
+                    .classroom(booking.getClassroom().getId())
                     .user(booking.getUser().getUsername())
                     .build();
             bookingsRes.add(bookingRes);
@@ -190,7 +196,7 @@ public class BookingServiceImpl implements BookingService {
                             .teacherName(booking.getIncidencias().getTeacherName().getUsername())
                             .incidenceType(booking.getIncidencias().getInsidenciaType())
                             .build())
-                    .classroom(booking.getClassroom())
+                    .classroom(booking.getClassroom().getId())
                     .user(booking.getUser().getUsername())
                     .build();
             return Optional.of(bookingRes);
@@ -252,7 +258,7 @@ public class BookingServiceImpl implements BookingService {
                             .teacherName(BookingSaved.getIncidencias().getTeacherName().getUsername())
                             .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
                             .build())
-                    .classroom(BookingSaved.getClassroom())
+                    .classroom(BookingSaved.getClassroom().getId())
                     .user(BookingSaved.getUser().getUsername())
                     .build();
 

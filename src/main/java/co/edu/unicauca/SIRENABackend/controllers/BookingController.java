@@ -36,7 +36,7 @@ public class BookingController {
      */
     @PostMapping()
     public ResponseEntity<BookingRes> crearBooking(@RequestBody BookingReq bookingModel) {
-
+        System.out.println(bookingModel.toString());
         BookingRes nuevaBooking = this.bookingService.crearBooking(bookingModel);
         if (nuevaBooking == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
