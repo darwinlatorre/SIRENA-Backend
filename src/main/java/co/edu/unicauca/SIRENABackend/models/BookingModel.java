@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

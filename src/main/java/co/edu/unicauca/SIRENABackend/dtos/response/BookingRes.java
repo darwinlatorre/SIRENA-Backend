@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
-import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
