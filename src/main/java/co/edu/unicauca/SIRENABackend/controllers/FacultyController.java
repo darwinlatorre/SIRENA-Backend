@@ -20,6 +20,10 @@ import co.edu.unicauca.SIRENABackend.models.FacultyModel;
 import co.edu.unicauca.SIRENABackend.services.BuildingService;
 import co.edu.unicauca.SIRENABackend.services.FacultyService;
 
+/**
+ * Controlador REST que maneja las operaciones relacionadas con las facultades (faculties).
+ * Proporciona endpoints para la creación, recuperación y eliminación de facultades.
+ */
 @RestController
 @RequestMapping("/faculty")
 public class FacultyController {
@@ -29,6 +33,13 @@ public class FacultyController {
     @Autowired
     private BuildingService buildingService;
 
+    /**
+     * Crea una nueva facultad.
+     *
+     * @param facultyRequest El objeto FacultyRequest que contiene la información de la nueva facultad.
+     * @return Una respuesta HTTP con el objeto FacultyModel creado y el código de estado 201 (CREATED).
+     *         Si no se encuentra el edificio asociado, devuelve un código de estado 404 (NOT FOUND).
+     */
     @PostMapping
     public ResponseEntity<FacultyModel> saveFaculty(@RequestBody FacultyRequest facultyRequest) {
         // Busca el edificio por su id
@@ -51,16 +62,33 @@ public class FacultyController {
         }
     }
 
+    /**
+     * Obtiene una lista de todas las facultades.
+     *
+     * @return Una lista de objetos FacultyModel y el código de estado 200 (OK).
+     */
     @GetMapping
     public List<FacultyModel> getFaculties() {
         return facultyService.getFaculties();
     }
 
+    /**
+     * Obtiene una facultad por su ID.
+     *
+     * @param id El identificador único de la facultad que se desea obtener.
+     * @return Un objeto Optional que contiene el FacultyModel encontrado (si existe).
+     */
     @GetMapping("/{id}")
     public Optional<FacultyModel> getFacultyById(@PathVariable Integer id) {
         return facultyService.getFacultyById(id);
     }
 
+    /**
+     * Elimina una facultad por su ID.
+     *
+     * @param id El identificador único de la facultad que se desea eliminar.
+     * @return `true` si la facultad se eliminó con éxito, `false` si no se encuentra.
+     */
     @DeleteMapping("/{id}")
     public boolean deleteFacultyById(@PathVariable Integer id) {
         return facultyService.deleteFacultyById(id);

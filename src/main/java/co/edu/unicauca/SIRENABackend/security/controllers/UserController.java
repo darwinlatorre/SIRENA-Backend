@@ -24,6 +24,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+/**
+ * Controlador que maneja los endpoints relacionados con los usuarios.
+ * Proporciona funcionalidades para obtener todos los usuarios, obtener un usuario por su ID, registrar un nuevo usuario,
+ * desactivar y activar usuarios.
+ */
 @RestController
 @RequestMapping("/user")
 @SecurityRequirement(name = "bearerAuth")
@@ -31,6 +36,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    /**
+     * Obtiene una lista de todos los usuarios registrados en el sistema.
+     *
+     * @return ResponseEntity con la lista de usuarios en caso de éxito, o un ResponseEntity con código 404 si no se encuentran usuarios.
+     */
     @Operation(summary = "Obtener todos los usuarios", description = "Obtiene una lista de todos los usuarios registrados en el sistema.", responses = {
             @ApiResponse(responseCode = "200", description = "Usuarios obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontraron usuarios", content = @Content(mediaType = "application/json"))
@@ -46,6 +56,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Obtiene un usuario específico por su ID.
+     *
+     * @param userID ID del usuario a obtener.
+     * @return ResponseEntity con el usuario en caso de éxito, o un ResponseEntity con código 404 si el usuario no se encuentra.
+     */
     @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
             @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontro el usuario", content = @Content(mediaType = "application/json"))
@@ -61,6 +77,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     *
+     * @param prmUser Datos del nuevo usuario.
+     * @return ResponseEntity con el usuario registrado en caso de éxito, o un ResponseEntity con código 400 si la solicitud es incorrecta.
+     */
     @Operation(summary = "Registrar un nuevo usuario", description = "Registra un nuevo usuario en el sistema.", responses = {
             @ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(schema = @Schema(implementation = UserRegisterRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(mediaType = "application/json"))
@@ -76,6 +98,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Desactiva un usuario por su ID.
+     *
+     * @param userID ID del usuario a desactivar.
+     * @return ResponseEntity con mensaje de éxito o error.
+     */
     @Operation(summary = "Desactivar usuario", description = "Desactiva un usuario por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Usuario desactivado exitosamente", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json"))
@@ -89,6 +117,12 @@ public class UserController {
         }
     }
 
+    /**
+     * Activa un usuario por su ID.
+     *
+     * @param userID ID del usuario a activar.
+     * @return ResponseEntity con mensaje de éxito o error.
+     */
     @Operation(summary = "Activar usuario", description = "Activa un usuario por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Usuario activado exitosamente", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "La solicitud es incorrecta", content = @Content(schema = @Schema(implementation = String.class), mediaType = "application/json"))

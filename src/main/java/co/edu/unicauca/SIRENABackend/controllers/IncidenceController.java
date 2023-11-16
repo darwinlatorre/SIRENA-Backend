@@ -22,12 +22,23 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+/**
+ * Controlador REST que maneja las operaciones relacionadas con las incidencias.
+ * Proporciona endpoints para obtener una lista de incidencias, guardar una nueva incidencia,
+ * obtener una incidencia por su ID y eliminar una incidencia por su ID.
+ */
 @RestController
 @RequestMapping("/incidence")
 public class IncidenceController {
     @Autowired
     IncidenceService incidenceService;
 
+    /**
+     * Obtiene una lista de todas las incidencias.
+     *
+     * @return Una respuesta HTTP con una lista de objetos IncidenceRes y el código de estado 200 (OK).
+     *         Si no se encuentran incidencias, devuelve un código de estado 404 (NOT FOUND).
+     */
     @Operation(summary = "Obtener incidencias", description = "Obtiene una lista de incidencias.", responses = {
             @ApiResponse(responseCode = "200", description = "Incidencias encontradas exitosamente", content = @Content(schema = @Schema(implementation = IncidenceRes.class))),
             @ApiResponse(responseCode = "404", description = "No se encontraron incidencias")
@@ -43,6 +54,13 @@ public class IncidenceController {
         }
     }
 
+    /**
+     * Guarda una nueva incidencia.
+     *
+     * @param prmIncidence El objeto IncidenceReq que contiene la información de la nueva incidencia.
+     * @return Una respuesta HTTP con el objeto IncidenceRes creado y el código de estado 201 (CREATED).
+     *         Si hay un error interno del servidor, devuelve un código de estado 500 (INTERNAL SERVER ERROR).
+     */
     @Operation(summary = "Guardar incidencia", description = "Guarda una nueva incidencia.", responses = {
             @ApiResponse(responseCode = "201", description = "Incidencia guardada exitosamente", content = @Content(schema = @Schema(implementation = IncidenceRes.class))),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor")
@@ -58,6 +76,13 @@ public class IncidenceController {
         }
     }
 
+    /**
+     * Obtiene una incidencia por su ID.
+     *
+     * @param incidenceID El identificador único de la incidencia que se desea obtener.
+     * @return Una respuesta HTTP con el objeto IncidenceRes encontrado y el código de estado 200 (OK)
+     *         si la incidencia existe, o código de estado 404 (NOT FOUND) si no se encuentra.
+     */
     @Operation(summary = "Obtener incidencia por ID", description = "Obtiene una incidencia por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Incidencia encontrada exitosamente", content = @Content(schema = @Schema(implementation = IncidenceRes.class))),
             @ApiResponse(responseCode = "404", description = "Incidencia no encontrada")
@@ -73,6 +98,14 @@ public class IncidenceController {
         }
     }
 
+    /**
+     * Elimina una incidencia por su ID.
+     *
+     * @param incidenceID El identificador único de la incidencia que se desea eliminar.
+     * @return Una respuesta HTTP con un mensaje indicando el resultado de la eliminación y el código de estado correspondiente.
+     *         Si la incidencia se eliminó con éxito, devuelve un código de estado 200 (OK).
+     *         Si no se encuentra la incidencia, devuelve un código de estado 404 (NOT FOUND).
+     */
     @Operation(summary = "Eliminar incidencia por ID", description = "Elimina una incidencia por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Incidencia eliminada exitosamente"),
             @ApiResponse(responseCode = "404", description = "Incidencia no encontrada")

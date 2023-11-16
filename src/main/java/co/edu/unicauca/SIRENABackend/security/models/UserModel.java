@@ -31,6 +31,9 @@ import lombok.Builder.Default;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un modelo de usuario en la aplicación.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -39,43 +42,79 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class UserModel implements UserDetails {
 
+    /**
+     * Identificador único del usuario.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usr_int_id", unique = true)
     private Integer id;
 
+    /**
+     * Nombre de usuario del usuario.
+     */
     @Column(name = "usr_name", nullable = false, length = 20, unique = true)
     private String username;
 
+    /**
+     * Primer nombre del usuario.
+     */
     @Column(name = "usr_firstname", nullable = false, length = 20)
     private String firstName;
 
+    /**
+     * Apellido del usuario.
+     */
     @Column(name = "usr_lastname", nullable = false, length = 20)
     private String lastName;
 
+    /**
+     * Correo electrónico del usuario.
+     */
     @Column(name = "usr_email", nullable = false, length = 50, unique = true)
     @Email
     private String email;
 
+    /**
+     * Contraseña del usuario.
+     */
     @Column(name = "usr_password", nullable = false, length = 512)
     private String password;
 
+    /**
+     * Estado del usuario (activo o inactivo).
+     */
     @Default
     @Convert(converter = NumericBooleanConverter.class)
     @Column(name = "usr_status", nullable = false)
     protected Boolean status = true;
 
+    /**
+     * Rol del usuario representado por la clase `RoleModel`.
+     */
     @ManyToOne
     @JoinColumn(name = "usr_role", nullable = false)
     private RoleModel role;
 
+    /**
+     * Conjunto de salones asignados al usuario.
+     */
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_classrooms", joinColumns = @JoinColumn(name = "usr_int_id"), inverseJoinColumns = @JoinColumn(name = "cls_int_id"))
     private Set<ClassroomModel> classroom_assigned;
 
+    /**
+     * Lista de tokens asociados al usuario.
+     */
     @OneToMany(mappedBy = "user")
     @Column(name = "usr_tokens")
     private List<TokenModel> tokens;
+
+    /**
+     * Establece el estado del usuario.
+     *
+     * @param prmStatus Estado del usuario.
+     */
 
     public void setStatus(Boolean prmStatus) {
         this.status = prmStatus;

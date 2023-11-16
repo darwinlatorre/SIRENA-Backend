@@ -18,12 +18,22 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+/**
+ * Controlador REST que maneja las operaciones relacionadas con los tipos de aulas (classroom types).
+ * Proporciona endpoints para obtener una lista de tipos de aulas y detalles específicos de un tipo de aula por su ID.
+ */
 @RestController
 @RequestMapping("/classroomType")
 public class ClassroomTypeController {
     @Autowired
     ClassroomTypeService classroomTypeService;
 
+    /**
+     * Obtiene una lista de todos los tipos de aulas.
+     *
+     * @return Una respuesta HTTP con una lista de objetos ClassroomTypeRes y el código de estado 200 (OK).
+     *         Si no se encuentran tipos de aulas, devuelve un código de estado 404 (NOT FOUND).
+     */
     @Operation(summary = "Obtener tipos de aulas", description = "Obtiene una lista de tipos de aulas.", responses = {
             @ApiResponse(responseCode = "200", description = "Tipos de aulas encontrados exitosamente", content = @Content(schema = @Schema(implementation = ClassroomTypeRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontraron tipos de aulas", content = @Content(mediaType = "application/json"))
@@ -39,6 +49,13 @@ public class ClassroomTypeController {
         }
     }
 
+    /**
+     * Obtiene un tipo de aula por su ID.
+     *
+     * @param prmClassroomID El identificador único del tipo de aula que se desea obtener.
+     * @return Una respuesta HTTP con el objeto ClassroomTypeRes encontrado y el código de estado 200 (OK)
+     *         si el tipo de aula existe, o código de estado 404 (NOT FOUND) si no se encuentra.
+     */
     @Operation(summary = "Obtener tipo de aula por ID", description = "Obtiene un tipo de aula por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Tipo de aula encontrado exitosamente", content = @Content(schema = @Schema(implementation = ClassroomTypeRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Tipo de aula no encontrado", content = @Content(mediaType = "application/json"))

@@ -17,6 +17,9 @@ import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.security.services.UserService;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Propociona la funcionalidades relacionadas con la gestion de UserService
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {

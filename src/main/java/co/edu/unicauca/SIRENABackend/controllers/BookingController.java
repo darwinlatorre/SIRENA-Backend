@@ -20,6 +20,10 @@ import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
 import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
 
+
+/**
+ * Controlador REST que maneja las operaciones relacionadas con las reservas (bookings).
+ */
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {

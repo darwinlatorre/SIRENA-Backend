@@ -15,6 +15,9 @@ import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
 import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 
+/**
+ * proporciona funcionalidades relacionadas con la gestión de roles.
+ */
 @Service
 public class RoleServiceImpl implements RoleService {
 

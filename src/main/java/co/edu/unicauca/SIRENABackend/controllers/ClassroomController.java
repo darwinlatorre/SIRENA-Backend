@@ -22,12 +22,24 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+/**
+ * Controlador REST que maneja las operaciones relacionadas con las aulas (classrooms).
+ * Proporciona endpoints para la creación, recuperación, actualización y eliminación de aulas.
+ * Además, incluye operaciones para obtener listas de aulas y detalles específicos de una aula por su ID.
+ */
 @RestController
 @RequestMapping("/classroom")
 public class ClassroomController {
     @Autowired
     private ClassroomService ClassroomService;
 
+    /**
+     * Crea una nueva aula.
+     *
+     * @param classroom El objeto ClassroomModel que se desea crear y guardar.
+     * @return Una respuesta HTTP con el objeto ClassroomModel creado y el código de
+     *         estado 201 (CREATED).
+     */
     @Operation(summary = "Create a new classroom", description = "Creates a new classroom.", responses = {
             @ApiResponse(responseCode = "201", description = "Classroom created successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
             @ApiResponse(responseCode = "400", description = "Bad request"),
@@ -39,6 +51,12 @@ public class ClassroomController {
         return new ResponseEntity<>(savedClassroom, HttpStatus.CREATED);
     }
 
+    /**
+     * Obtiene una lista de todas las aulas almacenadas en la base de datos.
+     *
+     * @return Una respuesta HTTP con una lista de objetos ClassroomModel y el
+     *         código de estado 200 (OK).
+     */
     @Operation(summary = "Get a list of classrooms", description = "Retrieves a list of all classrooms.", responses = {
             @ApiResponse(responseCode = "200", description = "Classrooms retrieved successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
             @ApiResponse(responseCode = "404", description = "Classrooms not found")
@@ -49,6 +67,14 @@ public class ClassroomController {
         return new ResponseEntity<>(classroomList, HttpStatus.OK);
     }
 
+    /**
+     * Obtiene un aula por su ID.
+     *
+     * @param id El identificador único del aula que se desea obtener.
+     * @return Una respuesta HTTP con el objeto ClassroomModel encontrado y el
+     *         código de estado 200 (OK) si el aula existe, o código de estado 404
+     *         (NOT FOUND) si no se encuentra.
+     */
     @Operation(summary = "Get a classroom by ID", description = "Retrieves a classroom by its ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Classroom retrieved successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
             @ApiResponse(responseCode = "404", description = "Classroom not found")
@@ -65,6 +91,15 @@ public class ClassroomController {
         }
     }
 
+    /**
+     * Actualiza un aula por su ID.
+     *
+     * @param classroom El objeto ClassroomModel con los datos actualizados.
+     * @param id        El identificador único del aula que se desea actualizar.
+     * @return Una respuesta HTTP con el objeto ClassroomModel actualizado y el
+     *         código de estado 200 (OK) si el aula existe, o código de estado 404
+     *         (NOT FOUND) si no se encuentra.
+     */
     @Operation(summary = "Update a classroom by ID", description = "Updates a classroom by its ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Classroom updated successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
             @ApiResponse(responseCode = "404", description = "Classroom not found")
@@ -88,6 +123,14 @@ public class ClassroomController {
         }
     }
 
+    /**
+     * Elimina un aula por su ID.
+     *
+     * @param id El identificador único del aula que se desea eliminar.
+     * @return Una respuesta HTTP con el código de estado 204 (NO CONTENT) si el
+     *         aula se eliminó con éxito, o código de estado 404 (NOT FOUND) si no se
+     *         encuentra.
+     */
     @Operation(summary = "Delete a classroom by ID", description = "Deletes a classroom by its ID.", responses = {
             @ApiResponse(responseCode = "204", description = "Classroom deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Classroom not found")

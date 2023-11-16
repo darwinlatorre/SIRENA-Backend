@@ -19,6 +19,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Clase que representa un modelo de token en la aplicación.
+ */
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,26 +30,44 @@ import lombok.NoArgsConstructor;
 @Table(name = "tokens")
 public class TokenModel {
 
+    /**
+     * Identificador único del token.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tok_int_id", unique = true)
     private Integer id;
 
+    /**
+     * Valor del token.
+     */
     @Column(name = "tok_token", nullable = false)
     private String token;
 
+    /**
+     * Tipo de token representado por la enumeración `TokenTypeEnum`.
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "tok_type", nullable = false)
     private TokenTypeEnum tokenType;
 
+    /**
+     * Indica si el token ha caducado.
+     */
     @Convert(converter = NumericBooleanConverter.class)
     @Column(name = "tok_expired", nullable = false)
     private boolean expired;
 
+    /**
+     * Indica si el token ha sido revocado.
+     */
     @Convert(converter = NumericBooleanConverter.class)
     @Column(name = "tok_revoked", nullable = false)
     private boolean revoked;
 
+    /**
+     * Usuario asociado al token.
+     */
     @ManyToOne
     @JoinColumn(name = "usr_int_id")
     private UserModel user;

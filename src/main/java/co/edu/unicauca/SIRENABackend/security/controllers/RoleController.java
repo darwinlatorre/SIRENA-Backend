@@ -19,6 +19,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+/**
+ * Controlador que maneja los endpoints relacionados con los roles de usuario.
+ * Proporciona funcionalidades para obtener una lista de roles y obtener un rol por su ID.
+ */
 @RestController
 @RequestMapping("/role")
 @SecurityRequirement(name = "bearerAuth")
@@ -27,6 +31,11 @@ public class RoleController {
     @Autowired
     RoleService roleService;
 
+    /**
+     * Obtiene una lista de roles.
+     *
+     * @return ResponseEntity con la lista de roles en caso de éxito, o un ResponseEntity con código 404 si no se encuentran roles.
+     */
     @Operation(summary = "Obtener un rol por ID", description = "Obtiene un rol específico por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado")
@@ -42,6 +51,12 @@ public class RoleController {
         }
     }
 
+    /**
+     * Obtiene un rol específico por su ID.
+     *
+     * @param roleID ID del rol a obtener.
+     * @return ResponseEntity con el rol en caso de éxito, o un ResponseEntity con código 404 si el rol no se encuentra.
+     */
     @Operation(summary = "Obtener un rol por ID", description = "Obtiene un rol específico por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado")

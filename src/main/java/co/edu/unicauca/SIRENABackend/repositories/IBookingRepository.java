@@ -8,9 +8,17 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.unicauca.SIRENABackend.models.BookingModel;
 
+/**
+ * Repositorio para acceder a la persistencia de las entidades BookingModel.
+ */
 @Repository
 public interface IBookingRepository extends JpaRepository<BookingModel, Integer> {
 
+    /**
+     * Obtiene estadísticas personalizadas de reservas, incluyendo el ID de la reserva y el nombre del aula.
+     *
+     * @return Lista de arreglos de objetos que contienen el ID de la reserva y el nombre del aula.
+     */
     @Query("SELECT b.id AS bookingID, c.name AS classroomName " +
             "FROM BookingModel b " +
             "JOIN b.classroom c")

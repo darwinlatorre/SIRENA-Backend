@@ -29,6 +29,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
+/**
+ * Controlador que maneja los endpoints relacionados con la autenticación y autorización de usuarios.
+ * Proporciona funcionalidades para iniciar sesión, refrescar tokens y registrar nuevos usuarios.
+ */
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Authenticacion", description = "Endpoints para autenticación")
@@ -37,6 +41,12 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+    /**
+     * Inicia sesión para un usuario existente y devuelve un token de acceso.
+     *
+     * @param request Objeto de solicitud que contiene las credenciales del usuario.
+     * @return ResponseEntity con el token de acceso en caso de autenticación exitosa, o un ResponseEntity con código 400 si las credenciales son inválidas.
+     */
     @Operation(summary = "Iniciar sesión", description = "Autenticar a los usuarios y obtener un token de acceso.", responses = {
             @ApiResponse(responseCode = "200", description = "Autenticación exitosa", content = @Content(schema = @Schema(implementation = AuthTokenRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Credenciales inválidas", content = @Content(mediaType = "application/json"))
@@ -52,6 +62,16 @@ public class AuthController {
         }
     }
 
+    /**
+     * Refresca el token de acceso existente.
+     *
+     * @param request  Objeto de solicitud HTTP.
+     * @param response Objeto de respuesta HTTP.
+     * @return ResponseEntity con código 200 si el token se refresca con éxito, o un ResponseEntity con código 401 si la solicitud no está autorizada, o con código 500 si hay un error interno del servidor.
+     * @throws StreamWriteException Excepción de escritura de flujo.
+     * @throws DatabindException     Excepción de enlace de datos.
+     * @throws IOException           Excepción de E/S.
+     */
     @Operation(summary = "Refrescar token de acceso", description = "Refrescar el token de acceso existente.", responses = {
             @ApiResponse(responseCode = "200", description = "Token refrescado exitosamente"),
             @ApiResponse(responseCode = "401", description = "No autorizado"),
@@ -71,6 +91,12 @@ public class AuthController {
         }
     }
 
+    /**
+     * Registra un nuevo usuario y devuelve un token de acceso.
+     *
+     * @param request Objeto de solicitud que contiene la información del nuevo usuario.
+     * @return ResponseEntity con el token de acceso en caso de registro exitoso, o un ResponseEntity con código 400 si la solicitud es incorrecta.
+     */
     @Operation(summary = "Registrar un nuevo usuario", description = "Registrar un nuevo usuario y obtener un token de acceso.", responses = {
             @ApiResponse(responseCode = "200", description = "Registro exitoso", content = @Content(schema = @Schema(implementation = AuthTokenRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Solicitud incorrecta", content = @Content(mediaType = "application/json"))

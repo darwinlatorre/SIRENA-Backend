@@ -18,12 +18,22 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+/**
+ * Controlador REST que maneja las operaciones relacionadas con los tipos de incidencia.
+ * Proporciona endpoints para obtener una lista de tipos de incidencia y obtener un tipo de incidencia por su ID.
+ */
 @RestController
 @RequestMapping("/incidenceType")
 public class IncidenceTypeController {
     @Autowired
     IncidenceTypeService incidenceTypeService;
 
+    /**
+     * Obtiene una lista de todos los tipos de incidencia.
+     *
+     * @return Una respuesta HTTP con una lista de objetos IncidenceTypeRes y el código de estado 200 (OK).
+     *         Si no se encuentran tipos de incidencia, devuelve un código de estado 404 (NOT FOUND).
+     */
     @Operation(summary = "Obtener tipos de incidencia", description = "Obtiene una lista de tipos de incidencia.", responses = {
             @ApiResponse(responseCode = "200", description = "Tipos de incidencia encontrados exitosamente", content = @Content(schema = @Schema(implementation = IncidenceTypeRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontraron tipos de incidencia", content = @Content(mediaType = "application/json"))
@@ -39,6 +49,13 @@ public class IncidenceTypeController {
         }
     }
 
+    /**
+     * Obtiene un tipo de incidencia por su ID.
+     *
+     * @param incidenceTypeID El identificador único del tipo de incidencia que se desea obtener.
+     * @return Una respuesta HTTP con el objeto IncidenceTypeRes encontrado y el código de estado 200 (OK)
+     *         si el tipo de incidencia existe, o código de estado 404 (NOT FOUND) si no se encuentra.
+     */
     @Operation(summary = "Obtener tipo de incidencia por ID", description = "Obtiene un tipo de incidencia por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Tipo de incidencia encontrado exitosamente", content = @Content(schema = @Schema(implementation = IncidenceTypeRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Tipo de incidencia no encontrado", content = @Content(mediaType = "application/json"))

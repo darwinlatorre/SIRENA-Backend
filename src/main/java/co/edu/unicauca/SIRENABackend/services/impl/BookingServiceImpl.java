@@ -23,6 +23,9 @@ import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Implementación del servicio de reservas (bookings) en la aplicación.
+ */
 @Service
 @RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
@@ -32,6 +35,12 @@ public class BookingServiceImpl implements BookingService {
     private final IIncidenceRepository incidenceRepository;
     private final IUserRepository userRepository;
 
+    /**
+     * Crea una nueva reserva en la aplicación.
+     *
+     * @param bookingModel Objeto de solicitud que contiene la información de la reserva.
+     * @return Objeto {@code BookingRes} que representa la reserva creada.
+     */
     public BookingRes crearBooking(BookingReq bookingModel) {
 
         if (bookingModel.getUserID() == null || bookingModel.getClassroomID() == null) {
@@ -154,6 +163,11 @@ public class BookingServiceImpl implements BookingService {
         return bookingRes;
     }
 
+    /**
+     * Obtiene todas las reservas existentes en la aplicación.
+     *
+     * @return Lista de objetos {@code BookingRes} que representan las reservas.
+     */
     public List<BookingRes> obtenerTodasLasBookings() {
         List<BookingModel> bookings = bookingRepository.findAll();
         List<BookingRes> bookingsRes = new ArrayList<>();
@@ -179,6 +193,13 @@ public class BookingServiceImpl implements BookingService {
         return bookingsRes;
     }
 
+
+    /**
+     * Obtiene una reserva por su identificador.
+     *
+     * @param id Identificador de la reserva.
+     * @return Un objeto {@code Optional<BookingRes>} que representa la reserva si existe.
+     */
     public Optional<BookingRes> obtenerBookingPorId(Integer id) {
         Optional<BookingModel> bookingExistente = bookingRepository.findById(id);
         if (bookingExistente.isPresent()) {
@@ -205,6 +226,14 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+
+    /**
+     * Actualiza una reserva por su identificador.
+     *
+     * @param id                 Identificador de la reserva a actualizar.
+     * @param bookingActualizada Objeto que contiene los datos actualizados de la reserva.
+     * @return Un objeto {@code BookingRes} que representa la reserva actualizada.
+     */
     public BookingRes actualizarBooking(Integer id, BookingReq bookingActualizada) {
 
         Optional<BookingModel> bookingExistente = bookingRepository.findById(id);
@@ -310,6 +339,12 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    /**
+     * Elimina una reserva por su identificador.
+     *
+     * @param id Identificador de la reserva a eliminar.
+     * @throws RuntimeException Si la reserva no se encuentra con el ID proporcionado.
+     */
     public void eliminarBooking(Integer id) {
         Optional<BookingModel> bookingExistente = bookingRepository.findById(id);
         if (bookingExistente.isPresent()) {
@@ -319,6 +354,13 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+
+    /**
+     * Verifica si el tiempo de una fecha está en un rango específico (de 6:00 AM a 11:00 PM).
+     *
+     * @param localDate Fecha y hora para verificar.
+     * @return {@code true} si la hora está en el rango, {@code false} en caso contrario.
+     */
     public static boolean isTimeInRange(LocalDateTime localDate) {
 
         LocalTime localTime = localDate.toLocalTime();
@@ -329,6 +371,11 @@ public class BookingServiceImpl implements BookingService {
         return !localTime.isBefore(startTime) && !localTime.isAfter(endTime);
     }
 
+    /**
+     * Obtiene estadísticas de reservas.
+     *
+     * @return Una lista de arreglos de objetos que representan estadísticas de reservas.
+     */
     @Override
     public ArrayList<Object[]> obtenerEstadisticasReservas() {
         return bookingRepository.obtenerEstadisticasReservas();

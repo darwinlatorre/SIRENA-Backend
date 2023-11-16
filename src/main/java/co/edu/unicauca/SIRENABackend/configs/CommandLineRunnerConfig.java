@@ -20,9 +20,22 @@ import co.edu.unicauca.SIRENABackend.security.services.RoleService;
 import co.edu.unicauca.SIRENABackend.services.ClassroomTypeService;
 import co.edu.unicauca.SIRENABackend.services.IncidenceTypeService;
 
+/**
+ * Configuración de la aplicación que utiliza un {@link CommandLineRunner} para realizar acciones
+ * de inicialización al arrancar la aplicación.
+ */
 @Configuration
 public class CommandLineRunnerConfig {
 
+    /**
+     * Crea un bean {@link CommandLineRunner} que ejecuta acciones de inicialización al iniciar la aplicación.
+     *
+     * @param authService           Servicio de autenticación.
+     * @param roleService           Servicio de roles.
+     * @param classroomTypeService  Servicio de tipos de aulas.
+     * @param incidenceTypeService  Servicio de tipos de incidencia.
+     * @return Un objeto {@link CommandLineRunner}.
+     */
     @Bean
     public CommandLineRunner commandLineRunner(AuthService authService, RoleService roleService,
             ClassroomTypeService classroomTypeService, IncidenceTypeService incidenceTypeService) {
@@ -33,7 +46,11 @@ public class CommandLineRunnerConfig {
             registroTiposIncidencia(incidenceTypeService);
         };
     }
-
+    /**
+     * Registra los diferentes tipos de incidencia en el sistema.
+     *
+     * @param incidenceTypeService Servicio de tipos de incidencia.
+     */
     private void registroTiposIncidencia(IncidenceTypeService incidenceTypeService) {
         for (IncidenceTypeEnum IncidenceType : IncidenceTypeEnum.values()) {
             try {
@@ -44,6 +61,11 @@ public class CommandLineRunnerConfig {
         }
     }
 
+    /**
+     * Registra los diferentes tipos de aulas en el sistema.
+     *
+     * @param classroomTypeService Servicio de tipos de aulas.
+     */
     private void registroSalones(ClassroomTypeService classroomTypeService) {
         for (ClassroomTypeEnum classroom : ClassroomTypeEnum.values()) {
             try {
@@ -54,6 +76,11 @@ public class CommandLineRunnerConfig {
         }
     }
 
+    /**
+     * Registra los diferentes roles en el sistema.
+     *
+     * @param roleService Servicio de roles.
+     */
     private void registroRoles(RoleService roleService) {
         for (RoleEnum Role : RoleEnum.values()) {
             try {
@@ -64,6 +91,11 @@ public class CommandLineRunnerConfig {
         }
     }
 
+    /**
+     * Registra usuarios de ejemplo en el sistema, incluyendo un administrador, un coordinador y un docente.
+     *
+     * @param authService Servicio de autenticación.
+     */
     private void registroUsuarios(AuthService authService) {
 
         try {
