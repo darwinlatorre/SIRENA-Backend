@@ -3,6 +3,10 @@ package co.edu.unicauca.SIRENABackend.controllers;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
  */
 @RestController
 @RequestMapping("/classroomType")
+@Tag(name = "Classroom Type", description = "Endpoints para los tipos de salones de clase")
 public class ClassroomTypeController {
     @Autowired
     ClassroomTypeService classroomTypeService;
@@ -59,6 +64,9 @@ public class ClassroomTypeController {
     @Operation(summary = "Obtener tipo de aula por ID", description = "Obtiene un tipo de aula por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Tipo de aula encontrado exitosamente", content = @Content(schema = @Schema(implementation = ClassroomTypeRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Tipo de aula no encontrado", content = @Content(mediaType = "application/json"))
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del tipo de aula a obtener", required = true, in = ParameterIn.PATH)
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<ClassroomTypeRes>> getClassroomTypeById(

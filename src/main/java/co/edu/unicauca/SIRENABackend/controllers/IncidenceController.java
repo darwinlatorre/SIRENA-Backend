@@ -3,6 +3,10 @@ package co.edu.unicauca.SIRENABackend.controllers;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +33,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
  */
 @RestController
 @RequestMapping("/incidence")
+@Tag(name = "Incidence controller", description = "Endpoints para Incidencias")
 public class IncidenceController {
     @Autowired
     IncidenceService incidenceService;
@@ -87,6 +92,9 @@ public class IncidenceController {
             @ApiResponse(responseCode = "200", description = "Incidencia encontrada exitosamente", content = @Content(schema = @Schema(implementation = IncidenceRes.class))),
             @ApiResponse(responseCode = "404", description = "Incidencia no encontrada")
     })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de la incidencia a obtener", required = true, in = ParameterIn.PATH)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<IncidenceRes>> getIncidenceById(@PathVariable("id") Integer incidenceID) {
         Optional<IncidenceRes> incidence = this.incidenceService.getIncidenceById(incidenceID);
@@ -109,6 +117,9 @@ public class IncidenceController {
     @Operation(summary = "Eliminar incidencia por ID", description = "Elimina una incidencia por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Incidencia eliminada exitosamente"),
             @ApiResponse(responseCode = "404", description = "Incidencia no encontrada")
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de la reserva a eliminar", required = true, in = ParameterIn.PATH)
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteIncidenceById(@PathVariable("id") Integer incidenceID) {

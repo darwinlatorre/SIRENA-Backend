@@ -3,6 +3,10 @@ package co.edu.unicauca.SIRENABackend.controllers;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
  */
 @RestController
 @RequestMapping("/incidenceType")
+@Tag(name = "Incidence Type", description = "Endpoints para los tipos de incidencias")
 public class IncidenceTypeController {
     @Autowired
     IncidenceTypeService incidenceTypeService;
@@ -59,6 +64,9 @@ public class IncidenceTypeController {
     @Operation(summary = "Obtener tipo de incidencia por ID", description = "Obtiene un tipo de incidencia por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Tipo de incidencia encontrado exitosamente", content = @Content(schema = @Schema(implementation = IncidenceTypeRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Tipo de incidencia no encontrado", content = @Content(mediaType = "application/json"))
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del tipo de incidencia a obtener", required = true, in = ParameterIn.PATH)
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<IncidenceTypeRes>> getIncidenceTypeById(

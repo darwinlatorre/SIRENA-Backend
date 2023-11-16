@@ -3,6 +3,10 @@ package co.edu.unicauca.SIRENABackend.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +33,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
  */
 @RestController
 @RequestMapping("/classroom")
+@Tag(name = "Classroom controller", description = "Endpoints para los salones de clase")
 public class ClassroomController {
     @Autowired
     private ClassroomService ClassroomService;
@@ -79,6 +84,9 @@ public class ClassroomController {
             @ApiResponse(responseCode = "200", description = "Classroom retrieved successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
             @ApiResponse(responseCode = "404", description = "Classroom not found")
     })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del classroom", required = true, in = ParameterIn.PATH)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ClassroomModel> show(@PathVariable Integer id) {
         Optional<ClassroomModel> classroomOptional = this.ClassroomService.findById(id);
@@ -103,6 +111,9 @@ public class ClassroomController {
     @Operation(summary = "Update a classroom by ID", description = "Updates a classroom by its ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Classroom updated successfully", content = @Content(schema = @Schema(implementation = ClassroomModel.class))),
             @ApiResponse(responseCode = "404", description = "Classroom not found")
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del classroom", required = true, in = ParameterIn.PATH)
     })
     @PutMapping("/{id}")
     public ResponseEntity<ClassroomModel> update(@RequestBody ClassroomModel classroom, @PathVariable Integer id) {
@@ -134,6 +145,9 @@ public class ClassroomController {
     @Operation(summary = "Delete a classroom by ID", description = "Deletes a classroom by its ID.", responses = {
             @ApiResponse(responseCode = "204", description = "Classroom deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Classroom not found")
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del classroom", required = true, in = ParameterIn.PATH)
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {

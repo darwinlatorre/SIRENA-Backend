@@ -3,6 +3,10 @@ package co.edu.unicauca.SIRENABackend.security.controllers;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
 @RequestMapping("/role")
 @SecurityRequirement(name = "bearerAuth")
+@Tag(name = "Role controller", description = "Endpoints para los diferentes Rol")
 public class RoleController {
 
     @Autowired
@@ -60,6 +65,9 @@ public class RoleController {
     @Operation(summary = "Obtener un rol por ID", description = "Obtiene un rol específico por su ID.", responses = {
             @ApiResponse(responseCode = "200", description = "Rol obtenido exitosamente", content = @Content(schema = @Schema(implementation = RoleRes.class), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "Rol no encontrado")
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del rol a obtener", required = true, in = ParameterIn.PATH)
     })
     @GetMapping("/{id}")
     public ResponseEntity<Optional<RoleRes>> getRoleById(@PathVariable("id") Integer roleID) {
