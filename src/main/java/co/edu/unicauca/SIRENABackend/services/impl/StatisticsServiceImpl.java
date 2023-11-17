@@ -1,17 +1,16 @@
 package co.edu.unicauca.SIRENABackend.services.impl;
 
-import co.edu.unicauca.SIRENABackend.models.BookingModel;
-import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
-import co.edu.unicauca.SIRENABackend.models.StatisticsModel;
-import co.edu.unicauca.SIRENABackend.repositories.*;
-import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
-import co.edu.unicauca.SIRENABackend.services.StatisticsService;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import co.edu.unicauca.SIRENABackend.models.BookingModel;
+import co.edu.unicauca.SIRENABackend.models.StatisticsModel;
+import co.edu.unicauca.SIRENABackend.repositories.IBookingRepository;
+import co.edu.unicauca.SIRENABackend.services.StatisticsService;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -35,14 +34,14 @@ public class StatisticsServiceImpl implements StatisticsService {
         return getStatisticsBase(3);
     }
 
-    private List<StatisticsModel> getStatisticsBase(int type){
-        //1 para salon, 2 para facultad, 3 para edificio
-        List<StatisticsModel> statisticsResult=new ArrayList<>();
-        List<BookingModel> bookingList=bookingRepository.findAll();
-        for (BookingModel booking:bookingList) {
-            //Verificar si ya fue guardado
-            Integer indexFinded=-1;
-            switch (type){
+    private List<StatisticsModel> getStatisticsBase(int type) {
+        // 1 para salon, 2 para facultad, 3 para edificio
+        List<StatisticsModel> statisticsResult = new ArrayList<>();
+        List<BookingModel> bookingList = bookingRepository.findAll();
+        for (BookingModel booking : bookingList) {
+            // Verificar si ya fue guardado
+            Integer indexFinded = -1;
+            switch (type) {
                 case 1:
                     indexFinded = findIndex(statisticsResult, booking.getClassroom().getId());
                     break;
@@ -53,12 +52,10 @@ public class StatisticsServiceImpl implements StatisticsService {
                     indexFinded = findIndex(statisticsResult, booking.getClassroom().getBuilding().getId());
                     break;
             }
-            if(indexFinded>=0){
+            if (indexFinded >= 0) {
                 statisticsResult.get(indexFinded).getBokings_ids().add(booking.getId());
-            }
-            else
-            {
-                StatisticsModel newStatistic=new StatisticsModel();
+            } else {
+                StatisticsModel newStatistic = new StatisticsModel();
                 newStatistic.setEntity_id(booking.getClassroom().getId());
                 newStatistic.setBokings_ids(new ArrayList<>());
                 statisticsResult.add(newStatistic);
@@ -66,9 +63,10 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
         return statisticsResult;
     }
-    private Integer findIndex(List<StatisticsModel> statistics, int id){
-        for(StatisticsModel statistic:statistics){
-            if(statistic.getEntity_id()==id)
+
+    private Integer findIndex(List<StatisticsModel> statistics, int id) {
+        for (StatisticsModel statistic : statistics) {
+            if (statistic.getEntity_id() == id)
                 return statistics.indexOf(statistic);
         }
         return -1;

@@ -91,9 +91,10 @@ public class BookingModel {
      * Incidencia asociada a la reserva, si la hay.
      */
     @OneToOne
+    @Default
     @JoinColumn(name = "rsv_incidencia", nullable = true)
     @Schema(description = "Incidencia asociada a la reserva, si la hay")
-    private IncidenceModel incidencias;
+    private IncidenceModel incidencias = null;
 
     /**
      * Aula de clases asociada a la reserva.
