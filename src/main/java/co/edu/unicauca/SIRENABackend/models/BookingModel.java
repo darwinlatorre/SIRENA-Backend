@@ -98,4 +98,11 @@ public class BookingModel {
     @ManyToOne
     @JoinColumn(name = "rsv_usr_int_id", nullable = false)
     private UserModel user;
+
+    /**
+     * Facultad que realizó la reserva.
+     */
+    @ManyToOne
+    @JoinColumn(name = "rsv_faculty", nullable = false)
+    private FacultyModel faculty;
 }

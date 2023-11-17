@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import co.edu.unicauca.SIRENABackend.models.FacultyModel;
+import co.edu.unicauca.SIRENABackend.repositories.IFacultyRepository;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
@@ -34,6 +36,7 @@ public class BookingServiceImpl implements BookingService {
     private final IClassroomRepository classroomRepository;
     private final IIncidenceRepository incidenceRepository;
     private final IUserRepository userRepository;
+    private final IFacultyRepository facultyRepository;
 
     /**
      * Crea una nueva reserva en la aplicación.
@@ -125,6 +128,12 @@ public class BookingServiceImpl implements BookingService {
             return null;
         }
 
+        Optional<FacultyModel> facultyFound=facultyRepository.findById(bookingModel.getFacultyId());
+        if(!facultyFound.isPresent()){
+            System.out.println("No existe una facultad con ese ID");
+            return null;
+        }
+
         BookingModel bookingBuild = BookingModel.builder().id(bookingModel.getId())
                 .fechaSolicitud(bookingModel.getFechaSolicitud())
                 .fechaReservaInicio(bookingModel.getFechaReservaInicio())
@@ -135,6 +144,7 @@ public class BookingServiceImpl implements BookingService {
                 .incidencias(incidenceFound)
                 .classroom(classroomFound)
                 .user(userFound)
+                .faculty(facultyFound.get())
                 .build();
         BookingModel BookingSaved = bookingRepository.save(bookingBuild);
 
@@ -158,6 +168,7 @@ public class BookingServiceImpl implements BookingService {
                 .incidencias(incidenceResponse)
                 .classroom(BookingSaved.getClassroom().getId())
                 .user(usenameRes)
+                .facultyId(facultyFound.get().getId())
                 .build();
 
         return bookingRes;

@@ -79,4 +79,10 @@ public class BookingReq {
      */
     @JsonProperty("rsv_usr_id")
     private Integer userID;
+
+    /**
+     * Identificador único de la facultad que realiza la reserva.
+     */
+    @JsonProperty("rsv_faculty_id")
+    private Integer facultyId;
 }
