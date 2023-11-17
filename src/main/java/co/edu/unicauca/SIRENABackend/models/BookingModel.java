@@ -92,7 +92,7 @@ public class BookingModel {
      */
     @OneToOne
     @Default
-    @JoinColumn(name = "rsv_incidencia", nullable = true)
+    @JoinColumn(name = "rsv_incidencia")
     @Schema(description = "Incidencia asociada a la reserva, si la hay")
     private IncidenceModel incidencias = null;
 
