@@ -1,5 +1,6 @@
 package co.edu.unicauca.SIRENABackend.security.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.type.NumericBooleanConverter;
 
 import co.edu.unicauca.SIRENABackend.security.common.enums.TokenTypeEnum;
@@ -28,6 +29,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "tokens")
+@Schema(description = "Entidad que representa el token en la aplicación")
 public class TokenModel {
 
     /**
@@ -36,12 +38,14 @@ public class TokenModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tok_int_id", unique = true)
+    @Schema(description = "Identificador único del token", example = "1")
     private Integer id;
 
     /**
      * Valor del token.
      */
     @Column(name = "tok_token", nullable = false)
+    @Schema(description = "Valor del token")
     private String token;
 
     /**
@@ -49,6 +53,7 @@ public class TokenModel {
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "tok_type", nullable = false)
+    @Schema(description = "Tipo de token representado por la enumeración `TokenTypeEnum`", example = "BEARER")
     private TokenTypeEnum tokenType;
 
     /**
@@ -56,6 +61,7 @@ public class TokenModel {
      */
     @Convert(converter = NumericBooleanConverter.class)
     @Column(name = "tok_expired", nullable = false)
+    @Schema(description = "Indica si el token ha caducado.")
     private boolean expired;
 
     /**
@@ -63,6 +69,7 @@ public class TokenModel {
      */
     @Convert(converter = NumericBooleanConverter.class)
     @Column(name = "tok_revoked", nullable = false)
+    @Schema(description = "Indica si el token ha sido revocado.")
     private boolean revoked;
 
     /**
@@ -70,5 +77,6 @@ public class TokenModel {
      */
     @ManyToOne
     @JoinColumn(name = "usr_int_id")
+    @Schema(description = "Id de usuario asociado al token", example = "1")
     private UserModel user;
 }

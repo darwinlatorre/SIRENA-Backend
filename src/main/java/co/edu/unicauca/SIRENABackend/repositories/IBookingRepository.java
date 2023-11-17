@@ -24,6 +24,9 @@ public interface IBookingRepository extends JpaRepository<BookingModel, Integer>
             "JOIN b.classroom c")
     ArrayList<Object[]> obtenerEstadisticasReservas();
 
+
+
+
     // @Query("SELECT b.building.name AS buildingName, f.name AS facultyName, c.name
     // AS classroomName, COUNT(b.id) AS reservationCount "
     // +

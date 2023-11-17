@@ -1,5 +1,6 @@
 package co.edu.unicauca.SIRENABackend.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "buildings")
+@Schema(description = "Entidad que representa un edificio en el sistema")
 public class BuildingModel {
 
     /**
@@ -28,12 +30,13 @@ public class BuildingModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bld_int_id", unique = true)
+    @Schema(description = "Identificador único del edificio", example = "1")
     private Integer id;
 
     /**
      * Nombre del edificio.
      */
-
     @Column(name = "bld_name", nullable = false, length = 40)
+    @Schema(description = "Nombre del edificio")
     private String name;
 }

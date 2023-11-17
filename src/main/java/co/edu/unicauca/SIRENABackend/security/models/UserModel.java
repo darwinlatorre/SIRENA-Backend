@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.type.NumericBooleanConverter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,6 +41,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@Schema(description = "Entidad que representa el usuario en la aplicación")
 public class UserModel implements UserDetails {
 
     /**
@@ -48,24 +50,28 @@ public class UserModel implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usr_int_id", unique = true)
+    @Schema(description = "Identificador único del usuario", example = "1")
     private Integer id;
 
     /**
      * Nombre de usuario del usuario.
      */
     @Column(name = "usr_name", nullable = false, length = 20, unique = true)
+    @Schema(description = "Nombre de usuario del usuario", example = "john_doe")
     private String username;
 
     /**
      * Primer nombre del usuario.
      */
     @Column(name = "usr_firstname", nullable = false, length = 20)
+    @Schema(description = "Primer nombre del usuario", example = "John")
     private String firstName;
 
     /**
      * Apellido del usuario.
      */
     @Column(name = "usr_lastname", nullable = false, length = 20)
+    @Schema(description = "Apellido del usuario", example = "Doe")
     private String lastName;
 
     /**
@@ -73,12 +79,14 @@ public class UserModel implements UserDetails {
      */
     @Column(name = "usr_email", nullable = false, length = 50, unique = true)
     @Email
+    @Schema(description = "Correo electrónico del usuario", example = "john.doe@example.com")
     private String email;
 
     /**
      * Contraseña del usuario.
      */
     @Column(name = "usr_password", nullable = false, length = 512)
+    @Schema(description = "Contraseña del usuario (hash)", example = "hashedPassword")
     private String password;
 
     /**
@@ -87,6 +95,7 @@ public class UserModel implements UserDetails {
     @Default
     @Convert(converter = NumericBooleanConverter.class)
     @Column(name = "usr_status", nullable = false)
+    @Schema(description = "Estado del usuario (activo o inactivo)", defaultValue = "true")
     protected Boolean status = true;
 
     /**
@@ -94,6 +103,7 @@ public class UserModel implements UserDetails {
      */
     @ManyToOne
     @JoinColumn(name = "usr_role", nullable = false)
+    @Schema(description = "Rol del usuario", implementation = RoleModel.class)
     private RoleModel role;
 
     /**
@@ -101,6 +111,7 @@ public class UserModel implements UserDetails {
      */
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "users_classrooms", joinColumns = @JoinColumn(name = "usr_int_id"), inverseJoinColumns = @JoinColumn(name = "cls_int_id"))
+    @Schema(description = "Conjunto de salones asignados al usuario", implementation = ClassroomModel.class)
     private Set<ClassroomModel> classroom_assigned;
 
     /**
@@ -108,6 +119,7 @@ public class UserModel implements UserDetails {
      */
     @OneToMany(mappedBy = "user")
     @Column(name = "usr_tokens")
+    @Schema(description = "Lista de tokens asociados al usuario", implementation = TokenModel.class)
     private List<TokenModel> tokens;
 
     /**

@@ -20,7 +20,7 @@ public interface BuildingService {
     /**
      * Guarda un nuevo edificio en el sistema.
      *
-     * @param prmBuilding El edificio que se va a guardar.
+     * @param prmIncidence El edificio que se va a guardar.
      * @return El edificio guardado.
      */
     BuildingModel saveBuilding(BuildingModel prmIncidence);

@@ -1,6 +1,7 @@
 package co.edu.unicauca.SIRENABackend.models;
 
 import co.edu.unicauca.SIRENABackend.common.enums.IncidenceTypeEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "incidences_types")
+@Schema(description = " Modelo de entidad que representa un tipo de incidencia en el sistema.")
 public class IncidenceTypeModel {
 
     /**
@@ -31,6 +33,7 @@ public class IncidenceTypeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ins_type_int_id", unique = true)
+    @Schema(description = "Identificador único del tipo de incidencia.", example = "1")
     private Integer id;
 
     /**
@@ -38,6 +41,7 @@ public class IncidenceTypeModel {
      */
     @Enumerated(EnumType.STRING)
     @Column(name = "ins_type_name", nullable = false, unique = true)
+    @Schema(description = "Tipo de incidencia asociado", example = "Defecto")
     private IncidenceTypeEnum name;
 
 }
