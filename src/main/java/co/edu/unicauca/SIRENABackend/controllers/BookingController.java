@@ -1,20 +1,9 @@
 package co.edu.unicauca.SIRENABackend.controllers;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRegisterRes;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,21 +15,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.unicauca.SIRENABackend.common.utils.BookingValidation;
 import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
 import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRegisterRes;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Controlador REST que maneja las operaciones relacionadas con las reservas (bookings).
+ * Controlador REST que maneja las operaciones relacionadas con las reservas
+ * (bookings).
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/bookings")
 @Tag(name = "Booking controller", description = "Endpoints para las reservas")
-public class BookingController {
+public class BookingController extends BookingValidation {
 
-    @Autowired
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
     /**
      * Crea una nueva booking.
@@ -55,7 +56,15 @@ public class BookingController {
     })
     @PostMapping()
     public ResponseEntity<BookingRes> crearBooking(@RequestBody BookingReq bookingModel) {
-        System.out.println(bookingModel.toString());
+
+        bookingModel.setFechaSolicitud(LocalDateTime.now());
+        if (!validationObj(bookingModel)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (bookingService.obtenerBookingPorId(bookingModel.getId()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
         BookingRes nuevaBooking = this.bookingService.crearBooking(bookingModel);
         if (nuevaBooking == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -106,21 +115,6 @@ public class BookingController {
     }
 
     /**
-     * Obtiene estadísticas relacionadas con las reservas.
-     *
-     * @return ResponseEntity con las estadísticas de reservas (código 200) o un error interno del servidor (código 500).
-     */
-    @Operation(summary = "Obtener estadísticas de reservas", description = "Obtiene estadísticas relacionadas con las reservas.", responses = {
-            @ApiResponse(responseCode = "200", description = "Estadísticas de reservas obtenidas exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
-    })
-    @GetMapping("/reservation-statistics")
-    public ResponseEntity<ArrayList<Object[]>> obtenerEstadisticasReservas() {
-        ArrayList<Object[]> reservationStatistics = this.bookingService.obtenerEstadisticasReservas();
-        return new ResponseEntity<>(reservationStatistics, HttpStatus.OK);
-    }
-
-    /**
      * Actualiza una booking por su ID.
      *
      * @param id                 El identificador único de la booking que se desea
@@ -141,6 +135,14 @@ public class BookingController {
     @PutMapping("/{id}")
     public ResponseEntity<BookingRes> actualizarBooking(@PathVariable Integer id,
             @RequestBody BookingReq bookingActualizada) {
+
+        if (!validationObj(bookingActualizada)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (bookingService.obtenerBookingPorId(bookingActualizada.getId()).isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
         Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
             bookingActualizada.setId(id);

@@ -2,7 +2,7 @@ package co.edu.unicauca.SIRENABackend.dtos.request;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
@@ -10,8 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 /**
- * Data Transfer Object (DTO) que representa la solicitud para crear o actualizar una reserva.
+ * Data Transfer Object (DTO) que representa la solicitud para crear o
+ * actualizar una reserva.
  */
 @Data
 @Builder
@@ -29,6 +31,7 @@ public class BookingReq {
      * Fecha y hora en que se realizó la solicitud de reserva.
      */
     @JsonProperty("rsv_fecha_solicitud")
+    @JsonIgnore
     private LocalDateTime fechaSolicitud;
 
     /**
@@ -65,7 +68,6 @@ public class BookingReq {
      * Identificador único de la incidencia asociada a la reserva (opcional).
      */
     @JsonProperty("rsv_incidencia_id")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer incidenciasID;
 
     /**
