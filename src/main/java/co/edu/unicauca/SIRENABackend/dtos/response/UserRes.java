@@ -2,6 +2,7 @@ package co.edu.unicauca.SIRENABackend.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+import co.edu.unicauca.SIRENABackend.security.common.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,4 +28,10 @@ public class UserRes {
      */
     @JsonAlias("usr_username")
     private String username;
+
+    /**
+     * Role del usuario.
+     */
+    @JsonAlias("usr_role")
+    private RoleEnum role;
 }

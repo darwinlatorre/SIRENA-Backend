@@ -114,6 +114,7 @@ public class BookingServiceImpl implements BookingService {
         UserRes usenameRes = UserRes.builder()
                 .id(BookingSaved.getUser().getId())
                 .username(BookingSaved.getUser().getUsername())
+                .role(BookingSaved.getUser().getRole().getName())
                 .build();
 
         IncidenceRes incidenceResponse = null;
@@ -165,6 +166,7 @@ public class BookingServiceImpl implements BookingService {
             UserRes usenameRes = UserRes.builder()
                     .id(booking.getUser().getId())
                     .username(booking.getUser().getUsername())
+                    .role(booking.getUser().getRole().getName())
                     .build();
 
             BookingRes bookingRes = BookingRes.builder().id(booking.getId())
@@ -209,6 +211,7 @@ public class BookingServiceImpl implements BookingService {
             UserRes usenameRes = UserRes.builder()
                     .id(booking.getUser().getId())
                     .username(booking.getUser().getUsername())
+                    .role(booking.getUser().getRole().getName())
                     .build();
 
             BookingRes bookingRes = BookingRes.builder().id(booking.getId())
@@ -311,6 +314,7 @@ public class BookingServiceImpl implements BookingService {
             UserRes usenameRes = UserRes.builder()
                     .id(BookingSaved.getUser().getId())
                     .username(BookingSaved.getUser().getUsername())
+                    .role(BookingSaved.getUser().getRole().getName())
                     .build();
 
             IncidenceRes incidenceResponse = null;
