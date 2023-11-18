@@ -64,19 +64,19 @@ public class BookingRes {
     /**
      * Incidencias asociadas a la reserva.
      */
-    @JsonProperty("rsv_incidencia_id")
+    @JsonProperty("rsv_incidencia")
     private IncidenceRes incidencias;
 
     /**
      * Identificador único del salón de clases reservado.
      */
     @JsonProperty("rsv_cls_id")
-    private Integer classroom;
+    private Integer classroomID;
 
     /**
      * Identificador único del usuario que realizó la reserva.
      */
-    @JsonProperty("rsv_usr_id")
+    @JsonProperty("rsv_usr")
     private UserRes user;
 
     /**

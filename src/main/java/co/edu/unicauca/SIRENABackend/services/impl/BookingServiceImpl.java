@@ -136,7 +136,7 @@ public class BookingServiceImpl implements BookingService {
                 .estado(BookingSaved.getEstado())
                 .detalles(BookingSaved.getDetalles())
                 .incidencias(incidenceResponse)
-                .classroom(BookingSaved.getClassroom().getId())
+                .classroomID(BookingSaved.getClassroom().getId())
                 .user(usenameRes)
                 .facultyId(facultyFound.get().getId())
                 .build();
@@ -177,7 +177,7 @@ public class BookingServiceImpl implements BookingService {
                     .estado(booking.getEstado())
                     .detalles(booking.getDetalles())
                     .incidencias(incidenceResponse)
-                    .classroom(booking.getClassroom().getId())
+                    .classroomID(booking.getClassroom().getId())
                     .user(usenameRes)
                     .facultyId(booking.getFaculty().getId())
                     .build();
@@ -222,7 +222,7 @@ public class BookingServiceImpl implements BookingService {
                     .estado(booking.getEstado())
                     .detalles(booking.getDetalles())
                     .incidencias(incidenceResponse)
-                    .classroom(booking.getClassroom().getId())
+                    .classroomID(booking.getClassroom().getId())
                     .user(usenameRes)
                     .facultyId(booking.getFaculty().getId())
                     .build();
@@ -336,7 +336,7 @@ public class BookingServiceImpl implements BookingService {
                     .estado(BookingSaved.getEstado())
                     .detalles(BookingSaved.getDetalles())
                     .incidencias(incidenceResponse)
-                    .classroom(BookingSaved.getClassroom().getId())
+                    .classroomID(BookingSaved.getClassroom().getId())
                     .user(usenameRes)
                     .facultyId(facultyFound.get().getId())
                     .build();
