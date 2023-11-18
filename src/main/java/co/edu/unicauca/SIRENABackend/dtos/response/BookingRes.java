@@ -77,7 +77,7 @@ public class BookingRes {
      * Identificador único del usuario que realizó la reserva.
      */
     @JsonProperty("rsv_usr_id")
-    private String user;
+    private UserRes user;
 
     /**
      * Identificador único de la facultad que realiza la reserva.

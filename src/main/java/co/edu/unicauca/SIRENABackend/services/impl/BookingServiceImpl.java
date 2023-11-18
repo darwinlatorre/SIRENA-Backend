@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
 import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
 import co.edu.unicauca.SIRENABackend.dtos.response.IncidenceRes;
+import co.edu.unicauca.SIRENABackend.dtos.response.UserRes;
 import co.edu.unicauca.SIRENABackend.models.BookingModel;
 import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
 import co.edu.unicauca.SIRENABackend.models.FacultyModel;
@@ -110,7 +111,10 @@ public class BookingServiceImpl implements BookingService {
 
         BookingModel BookingSaved = bookingRepository.save(bookingBuild);
 
-        String usenameRes = BookingSaved.getUser().getUsername();
+        UserRes usenameRes = UserRes.builder()
+                .id(BookingSaved.getUser().getId())
+                .username(BookingSaved.getUser().getUsername())
+                .build();
 
         IncidenceRes incidenceResponse = null;
         if (BookingSaved.getIncidencias() != null) {
@@ -157,6 +161,12 @@ public class BookingServiceImpl implements BookingService {
                         .incidenceType(booking.getIncidencias().getInsidenciaType())
                         .build();
             }
+
+            UserRes usenameRes = UserRes.builder()
+                    .id(booking.getUser().getId())
+                    .username(booking.getUser().getUsername())
+                    .build();
+
             BookingRes bookingRes = BookingRes.builder().id(booking.getId())
                     .fechaSolicitud(booking.getFechaSolicitud())
                     .fechaReservaInicio(booking.getFechaReservaInicio())
@@ -166,7 +176,7 @@ public class BookingServiceImpl implements BookingService {
                     .detalles(booking.getDetalles())
                     .incidencias(incidenceResponse)
                     .classroom(booking.getClassroom().getId())
-                    .user(booking.getUser().getUsername())
+                    .user(usenameRes)
                     .facultyId(booking.getFaculty().getId())
                     .build();
             bookingsRes.add(bookingRes);
@@ -196,6 +206,11 @@ public class BookingServiceImpl implements BookingService {
                         .build();
             }
 
+            UserRes usenameRes = UserRes.builder()
+                    .id(booking.getUser().getId())
+                    .username(booking.getUser().getUsername())
+                    .build();
+
             BookingRes bookingRes = BookingRes.builder().id(booking.getId())
                     .fechaSolicitud(booking.getFechaSolicitud())
                     .fechaReservaInicio(booking.getFechaReservaInicio())
@@ -205,7 +220,7 @@ public class BookingServiceImpl implements BookingService {
                     .detalles(booking.getDetalles())
                     .incidencias(incidenceResponse)
                     .classroom(booking.getClassroom().getId())
-                    .user(booking.getUser().getUsername())
+                    .user(usenameRes)
                     .facultyId(booking.getFaculty().getId())
                     .build();
             return Optional.of(bookingRes);
@@ -293,7 +308,10 @@ public class BookingServiceImpl implements BookingService {
 
             BookingModel BookingSaved = bookingRepository.save(bookingBuild);
 
-            String usenameRes = BookingSaved.getUser().getUsername();
+            UserRes usenameRes = UserRes.builder()
+                    .id(BookingSaved.getUser().getId())
+                    .username(BookingSaved.getUser().getUsername())
+                    .build();
 
             IncidenceRes incidenceResponse = null;
             if (BookingSaved.getIncidencias() != null) {
