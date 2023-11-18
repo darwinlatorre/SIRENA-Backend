@@ -42,7 +42,7 @@ public class BuildingController {
      * @return El objeto BuildingModel guardado.
      */
     @Operation(summary = "Registra un edificio", description = "Crea un edificio en el sistema.", responses = {
-            @ApiResponse(responseCode = "200", description = "Edificio creado exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Edificio creado exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = BuildingModel.class)), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se creo el edificio", content = @Content(mediaType = "application/json"))
     })
     @PostMapping
@@ -56,7 +56,7 @@ public class BuildingController {
      * @return Una lista de objetos BuildingModel.
      */
     @Operation(summary = "Obtener todas lo edificios", description = "Obtiene una lista de todos los edificios registrados en el sistema.", responses = {
-            @ApiResponse(responseCode = "200", description = "Edificios obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Edificios obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = BuildingModel.class)), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontraron edificios", content = @Content(mediaType = "application/json"))
     })
     @GetMapping
@@ -71,7 +71,7 @@ public class BuildingController {
      * @return Un objeto Optional que contiene el BuildingModel encontrado (si existe).
      */
     @Operation(summary = "Obtener un edificio", description = "Obtiene un edificio registrado por su id en el sistema.", responses = {
-            @ApiResponse(responseCode = "200", description = "Edificio obtenido exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Edificio obtenido exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = BuildingModel.class)), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontro el edificio", content = @Content(mediaType = "application/json"))
     })
     @Parameters({
@@ -89,7 +89,7 @@ public class BuildingController {
      * @return `true` si el edificio se eliminó con éxito, `false` si no se encuentra.
      */
     @Operation(summary = "Elimina un edificio", description = "Elimina un edificio por su id en el sistema.", responses = {
-            @ApiResponse(responseCode = "200", description = "Edificio eliminado exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "200", description = "Edificio eliminado exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = BuildingModel.class)), mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "No se encontro el edificio", content = @Content(mediaType = "application/json"))
     })
     @Parameters({
