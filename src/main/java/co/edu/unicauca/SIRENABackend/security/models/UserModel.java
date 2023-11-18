@@ -2,26 +2,20 @@ package co.edu.unicauca.SIRENABackend.security.models;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.type.NumericBooleanConverter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
-import jakarta.persistence.CascadeType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -105,14 +99,6 @@ public class UserModel implements UserDetails {
     @JoinColumn(name = "usr_role", nullable = false)
     @Schema(description = "Rol del usuario", implementation = RoleModel.class)
     private RoleModel role;
-
-    /**
-     * Conjunto de salones asignados al usuario.
-     */
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "users_classrooms", joinColumns = @JoinColumn(name = "usr_int_id"), inverseJoinColumns = @JoinColumn(name = "cls_int_id"))
-    @Schema(description = "Conjunto de salones asignados al usuario", implementation = ClassroomModel.class)
-    private Set<ClassroomModel> classroom_assigned;
 
     /**
      * Lista de tokens asociados al usuario.

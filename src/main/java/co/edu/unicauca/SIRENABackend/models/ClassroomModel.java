@@ -1,9 +1,7 @@
 package co.edu.unicauca.SIRENABackend.models;
 
 import java.io.Serializable;
-import java.util.Set;
 
-import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -76,12 +73,5 @@ public class ClassroomModel implements Serializable {
     @JoinColumn(name = "cls_type", nullable = false)
     @Schema(description = "Tipo de salón de clases")
     private ClassroomTypeModel classroomType;
-
-    /**
-     * Lista de usuarios asignados al salón de clases.
-     */
-    @ManyToMany(mappedBy = "classroom_assigned")
-    @Schema(description = " Lista de usuarios asignados al salón de clases.")
-    private Set<UserModel> userList;
 
 }
