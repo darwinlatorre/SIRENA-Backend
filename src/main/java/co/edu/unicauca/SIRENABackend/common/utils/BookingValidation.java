@@ -9,8 +9,8 @@ import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
 public class BookingValidation {
 
     public boolean validationObj(BookingReq bookingToValidate) {
-        if (bookingToValidate.getUserID() == null || bookingToValidate.getClassroomID() == null) {
-            System.out.println("El salon y el usuario no pueden ser nulos");
+        if (bookingToValidate.getClassroomID() == null) {
+            System.out.println("El salon no pueden ser nulos");
             return false;
         }
         if (bookingToValidate.getFacultyId() == null) {
