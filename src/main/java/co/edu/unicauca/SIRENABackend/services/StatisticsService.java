@@ -8,4 +8,5 @@ public interface StatisticsService {
     public List<StatisticsModel> getClassroomsStatistics();
     public List<StatisticsModel> getBuildingsStatistics();
     public List<StatisticsModel> getFacultiesStatistics();
+    public List<StatisticsModel> getProgramsStatistics();
 }

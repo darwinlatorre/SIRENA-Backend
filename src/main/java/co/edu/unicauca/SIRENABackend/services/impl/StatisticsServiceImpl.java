@@ -34,6 +34,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         return getStatisticsBase(3);
     }
 
+    @Override
+    public List<StatisticsModel> getProgramsStatistics() {
+        return getStatisticsBase(4);
+    }
+
     private List<StatisticsModel> getStatisticsBase(int type) {
         // 1 para salon, 2 para facultad, 3 para edificio
         List<StatisticsModel> statisticsResult = new ArrayList<>();
@@ -50,6 +55,9 @@ public class StatisticsServiceImpl implements StatisticsService {
                     break;
                 case 3:
                     indexFinded = findIndex(statisticsResult, booking.getClassroom().getBuilding().getId());
+                    break;
+                case 4:
+                    indexFinded = findIndex(statisticsResult, booking.getProgram().getId());
                     break;
             }
             if (indexFinded >= 0) {

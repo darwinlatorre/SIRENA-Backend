@@ -119,4 +119,12 @@ public class BookingModel {
     @JoinColumn(name = "rsv_faculty", nullable = false)
     @Schema(description = "Facultad que realizó la reserva", implementation = FacultyModel.class)
     private FacultyModel faculty;
+
+    /**
+     * Programa que realizó la reserva.
+     */
+    @ManyToOne
+    @JoinColumn(name = "rsv_program", nullable = false)
+    @Schema(description = "Programa que realizó la reserva", implementation = ProgramModel.class)
+    private ProgramModel program;
 }

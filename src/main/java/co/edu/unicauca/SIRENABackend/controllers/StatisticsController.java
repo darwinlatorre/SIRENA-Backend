@@ -34,6 +34,12 @@ public class StatisticsController {
     @Operation(summary = "Obtener las estadisticas de las facultades", description = "Obtiene la id de todas las reservas asociadas a una facultad")
     @GetMapping("/faculties")
     public List<StatisticsModel> getFacultiesStatistics() {
-        return statisticsService.getClassroomsStatistics();
+        return statisticsService.getFacultiesStatistics();
+    }
+
+    @Operation(summary = "Obtener las estadisticas de los programas", description = "Obtiene la id de todas las reservas asociadas a un programa")
+    @GetMapping("/programs")
+    public List<StatisticsModel> getProgramsStatistics() {
+        return statisticsService.getProgramsStatistics();
     }
 }

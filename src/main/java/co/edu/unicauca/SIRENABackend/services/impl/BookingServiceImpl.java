@@ -4,20 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import co.edu.unicauca.SIRENABackend.models.*;
+import co.edu.unicauca.SIRENABackend.repositories.*;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
 import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
 import co.edu.unicauca.SIRENABackend.dtos.response.IncidenceRes;
 import co.edu.unicauca.SIRENABackend.dtos.response.UserRes;
-import co.edu.unicauca.SIRENABackend.models.BookingModel;
-import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
-import co.edu.unicauca.SIRENABackend.models.FacultyModel;
-import co.edu.unicauca.SIRENABackend.models.IncidenceModel;
-import co.edu.unicauca.SIRENABackend.repositories.IBookingRepository;
-import co.edu.unicauca.SIRENABackend.repositories.IClassroomRepository;
-import co.edu.unicauca.SIRENABackend.repositories.IFacultyRepository;
-import co.edu.unicauca.SIRENABackend.repositories.IIncidenceRepository;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
@@ -35,6 +29,7 @@ public class BookingServiceImpl implements BookingService {
     private final IIncidenceRepository incidenceRepository;
     private final IUserRepository userRepository;
     private final IFacultyRepository facultyRepository;
+    private final IProgramRepository programRepository;
 
     /**
      * Crea una nueva reserva en la aplicación.
@@ -96,6 +91,13 @@ public class BookingServiceImpl implements BookingService {
             return null;
         }
 
+        Optional<ProgramModel> programFound=programRepository.findById(bookingModel.getProgramId());
+        if(!programFound.isPresent())
+        {
+            System.out.println("No existe un programa con ese ID");
+            return null;
+        }
+
         BookingModel bookingBuild = BookingModel.builder()
                 .fechaSolicitud(bookingModel.getFechaSolicitud())
                 .fechaReservaInicio(bookingModel.getFechaReservaInicio())
@@ -107,6 +109,7 @@ public class BookingServiceImpl implements BookingService {
                 .classroom(classroomFound)
                 .user(userFound)
                 .faculty(facultyFound.get())
+                .program(programFound.get())
                 .build();
 
         BookingModel BookingSaved = bookingRepository.save(bookingBuild);
@@ -139,6 +142,7 @@ public class BookingServiceImpl implements BookingService {
                 .classroomID(BookingSaved.getClassroom().getId())
                 .user(usenameRes)
                 .facultyId(facultyFound.get().getId())
+                .programId(programFound.get().getId())
                 .build();
 
         return bookingRes;
@@ -236,7 +240,7 @@ public class BookingServiceImpl implements BookingService {
      * Actualiza una reserva por su identificador.
      *
      * @param id                 Identificador de la reserva a actualizar.
-     * @param bookingActualizada Objeto que contiene los datos actualizados de la
+     * @param bookingModel Objeto que contiene los datos actualizados de la
      *                           reserva.
      * @return Un objeto {@code BookingRes} que representa la reserva actualizada.
      */
