@@ -45,31 +45,34 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<BookingModel> bookingList = bookingRepository.findAll();
         for (BookingModel booking : bookingList) {
             // Verificar si ya fue guardado
-            Integer indexFinded = -1;
-            switch (type) {
-                case 1:
-                    indexFinded = findIndex(statisticsResult, booking.getClassroom().getId());
-                    break;
-                case 2:
-                    indexFinded = findIndex(statisticsResult, booking.getFaculty().getId());
-                    break;
-                case 3:
-                    indexFinded = findIndex(statisticsResult, booking.getClassroom().getBuilding().getId());
-                    break;
-                case 4:
-                    indexFinded = findIndex(statisticsResult, booking.getProgram().getId());
-                    break;
-            }
+            Integer indexFinded = switch (type) {
+                case 1 -> findIndex(statisticsResult, booking.getClassroom().getId());
+                case 2 -> findIndex(statisticsResult, booking.getFaculty().getId());
+                case 3 -> findIndex(statisticsResult, booking.getClassroom().getBuilding().getId());
+                case 4 -> findIndex(statisticsResult, booking.getProgram().getId());
+                default -> -1;
+            };
             if (indexFinded >= 0) {
                 statisticsResult.get(indexFinded).getBokings_ids().add(booking.getId());
             } else {
-                StatisticsModel newStatistic = new StatisticsModel();
-                newStatistic.setEntity_id(booking.getClassroom().getId());
-                newStatistic.setBokings_ids(new ArrayList<>());
+                StatisticsModel newStatistic = getStatisticsModel(type, booking);
+                newStatistic.getBokings_ids().add(booking.getId());
                 statisticsResult.add(newStatistic);
             }
         }
         return statisticsResult;
+    }
+
+    private static StatisticsModel getStatisticsModel(int type, BookingModel booking) {
+        StatisticsModel newStatistic = new StatisticsModel();
+        switch (type) {
+            case 1 -> newStatistic.setEntity_id(booking.getClassroom().getId());
+            case 2 -> newStatistic.setEntity_id(booking.getFaculty().getId());
+            case 3 -> newStatistic.setEntity_id(booking.getClassroom().getBuilding().getId());
+            case 4 -> newStatistic.setEntity_id(booking.getProgram().getId());
+        }
+        newStatistic.setBokings_ids(new ArrayList<>());
+        return newStatistic;
     }
 
     private Integer findIndex(List<StatisticsModel> statistics, int id) {
