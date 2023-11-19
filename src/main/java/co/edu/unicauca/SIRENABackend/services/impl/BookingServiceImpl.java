@@ -96,7 +96,7 @@ public class BookingServiceImpl implements BookingService {
             return null;
         }
 
-        BookingModel bookingBuild = BookingModel.builder().id(bookingModel.getId())
+        BookingModel bookingBuild = BookingModel.builder()
                 .fechaSolicitud(bookingModel.getFechaSolicitud())
                 .fechaReservaInicio(bookingModel.getFechaReservaInicio())
                 .horaFin(bookingModel.getHoraFin())
@@ -296,7 +296,7 @@ public class BookingServiceImpl implements BookingService {
                 return null;
             }
 
-            BookingModel bookingBuild = BookingModel.builder().id(bookingModel.getId())
+            BookingModel bookingBuild = BookingModel.builder()
                     .fechaSolicitud(bookingModel.getFechaSolicitud())
                     .fechaReservaInicio(bookingModel.getFechaReservaInicio())
                     .horaFin(bookingModel.getHoraFin())

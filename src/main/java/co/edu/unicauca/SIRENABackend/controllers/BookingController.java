@@ -61,9 +61,6 @@ public class BookingController extends BookingValidation {
         if (!validationObj(bookingModel)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (bookingService.obtenerBookingPorId(bookingModel.getId()).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
 
         BookingRes nuevaBooking = this.bookingService.crearBooking(bookingModel);
         if (nuevaBooking == null) {
@@ -139,14 +136,10 @@ public class BookingController extends BookingValidation {
         if (!validationObj(bookingActualizada)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (bookingService.obtenerBookingPorId(bookingActualizada.getId()).isPresent()) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
 
         Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
-            bookingActualizada.setId(id);
-            var booking = bookingService.actualizarBooking(bookingActualizada.getId(), bookingActualizada);
+            var booking = bookingService.actualizarBooking(id, bookingActualizada);
             return new ResponseEntity<>(booking, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

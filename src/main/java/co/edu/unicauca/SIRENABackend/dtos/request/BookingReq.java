@@ -22,12 +22,6 @@ import lombok.NoArgsConstructor;
 public class BookingReq {
 
     /**
-     * Identificador único de la reserva.
-     */
-    @JsonProperty("rsv_id")
-    private Integer id;
-
-    /**
      * Fecha y hora en que se realizó la solicitud de reserva.
      */
     @JsonProperty("rsv_fecha_solicitud")
