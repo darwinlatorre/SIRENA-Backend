@@ -1,13 +1,23 @@
 package co.edu.unicauca.SIRENABackend.controllers;
 
+import co.edu.unicauca.SIRENABackend.models.BuildingModel;
+import co.edu.unicauca.SIRENABackend.models.ProgramModel;
 import co.edu.unicauca.SIRENABackend.models.StatisticsModel;
 import co.edu.unicauca.SIRENABackend.services.StatisticsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Controlador REST que maneja las operaciones relacionadas con las estadisticas.
@@ -41,5 +51,17 @@ public class StatisticsController {
     @GetMapping("/programs")
     public List<StatisticsModel> getProgramsStatistics() {
         return statisticsService.getProgramsStatistics();
+    }
+
+    @Operation(summary = "Obtener los programas asociados a una facultad", description = "Obtiene todos los programas de una facultad a traves de su id", responses = {
+            @ApiResponse(responseCode = "200", description = "Programas obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProgramModel.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se encontro la facultad", content = @Content(mediaType = "application/json"))
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de la facultad a obtener", required = true, in = ParameterIn.PATH)
+    })
+    @GetMapping("/programs/{id}")
+    public List<ProgramModel> getProgramsFacultie(@PathVariable Integer id) {
+        return statisticsService.getProgramsFacultie(id);
     }
 }

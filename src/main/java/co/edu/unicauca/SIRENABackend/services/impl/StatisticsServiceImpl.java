@@ -3,6 +3,9 @@ package co.edu.unicauca.SIRENABackend.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.unicauca.SIRENABackend.models.ProgramModel;
+import co.edu.unicauca.SIRENABackend.repositories.IProgramRepository;
+import co.edu.unicauca.SIRENABackend.services.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Autowired
     private final IBookingRepository bookingRepository;
+    @Autowired
+    private final IProgramRepository programRepository;
 
     @Override
     public List<StatisticsModel> getClassroomsStatistics() {
@@ -37,6 +42,16 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public List<StatisticsModel> getProgramsStatistics() {
         return getStatisticsBase(4);
+    }
+    @Override
+    public List<ProgramModel> getProgramsFacultie(Integer facultieId){
+        List<ProgramModel> programsList=new ArrayList<>();
+        for(ProgramModel program:programRepository.findAll()){
+            if(program.getFaculty().getId()==facultieId){
+                programsList.add(program);
+            }
+        }
+        return programsList;
     }
 
     private List<StatisticsModel> getStatisticsBase(int type) {
