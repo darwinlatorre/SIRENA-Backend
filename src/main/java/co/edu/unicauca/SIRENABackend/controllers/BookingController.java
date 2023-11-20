@@ -55,18 +55,14 @@ public class BookingController extends BookingValidation {
             @ApiResponse(responseCode = "404", description = "No se creo la reservas", content = @Content(mediaType = "application/json"))
     })
     @PostMapping()
-    public ResponseEntity<BookingRes> crearBooking(@RequestBody BookingReq bookingModel) {
+    public ResponseEntity<String> crearBooking(@RequestBody BookingReq bookingModel) {
 
         bookingModel.setFechaSolicitud(LocalDateTime.now());
         if (!validationObj(bookingModel)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        BookingRes nuevaBooking = this.bookingService.crearBooking(bookingModel);
-        if (nuevaBooking == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(nuevaBooking, HttpStatus.CREATED);
+        return this.bookingService.crearBooking(bookingModel);
     }
 
     /**

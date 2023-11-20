@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import co.edu.unicauca.SIRENABackend.models.*;
 import co.edu.unicauca.SIRENABackend.repositories.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
@@ -38,18 +40,18 @@ public class BookingServiceImpl implements BookingService {
      *                     reserva.
      * @return Objeto {@code BookingRes} que representa la reserva creada.
      */
-    public BookingRes crearBooking(BookingReq bookingModel) {
+    public ResponseEntity<String> crearBooking(BookingReq bookingModel) {
 
         ClassroomModel classroomFound = classroomRepository.findById(bookingModel.getClassroomID()).orElse(null);
         if (classroomFound == null) {
             System.out.println("Id del salon no encontrada");
-            return null;
+            return new ResponseEntity<>("Id del salon no encontrada", HttpStatus.BAD_REQUEST);
         }
 
         // Verificar que el numero de estudiante no supera la capcidad
         if (bookingModel.getNumEstudiantes() > classroomFound.getCapacity()) {
             System.out.println("El numero de estudiante debe ser menor o igual a la capacidad del salon");
-            return null;
+            return new ResponseEntity<>("El numero de estudiante debe ser menor o igual a la capacidad del salon", HttpStatus.BAD_REQUEST);
         }
 
         // Verificar que ese salon no tiene una reserva activa en ese horario
@@ -64,7 +66,7 @@ public class BookingServiceImpl implements BookingService {
                 if (bandera1 && bandera2) {
                     if (!bandera3 && !bandera4) {
                         System.out.println("Ya hay una reserva para el salón en ese horario");
-                        return null;
+                        return new ResponseEntity<>("Ya hay una reserva para el salón en ese horario", HttpStatus.BAD_REQUEST);
                     }
                 }
             }
@@ -75,27 +77,27 @@ public class BookingServiceImpl implements BookingService {
             incidenceFound = incidenceRepository.findById(bookingModel.getIncidenciasID()).orElse(null);
             if (incidenceFound == null) {
                 System.out.println("No existe una incidencia con ese ID");
-                return null;
+                return new ResponseEntity<>("No existe una incidencia con ese ID", HttpStatus.BAD_REQUEST);
             }
         }
 
         UserModel userFound = userRepository.findById(bookingModel.getUserID()).orElse(null);
         if (userFound == null) {
             System.out.println("No existe un usuario con ese ID");
-            return null;
+            return new ResponseEntity<>("No existe un usuario con ese ID", HttpStatus.BAD_REQUEST);
         }
 
         Optional<FacultyModel> facultyFound = facultyRepository.findById(bookingModel.getFacultyId());
         if (!facultyFound.isPresent()) {
             System.out.println("No existe una facultad con ese ID");
-            return null;
+            return new ResponseEntity<>("No existe una facultad con ese ID", HttpStatus.BAD_REQUEST);
         }
 
         Optional<ProgramModel> programFound=programRepository.findById(bookingModel.getProgramId());
         if(!programFound.isPresent())
         {
             System.out.println("No existe un programa con ese ID");
-            return null;
+            return new ResponseEntity<>("No existe un programa con ese ID", HttpStatus.BAD_REQUEST);
         }
 
         BookingModel bookingBuild = BookingModel.builder()
@@ -145,7 +147,7 @@ public class BookingServiceImpl implements BookingService {
                 .programId(programFound.get().getId())
                 .build();
 
-        return bookingRes;
+        return new ResponseEntity<>(bookingRes.toString(), HttpStatus.CREATED);
     }
 
     /**

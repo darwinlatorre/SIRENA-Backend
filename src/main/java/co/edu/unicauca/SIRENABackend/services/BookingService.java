@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
 import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
+import org.springframework.http.ResponseEntity;
 
 /**
  * Interfaz que define los servicios relacionados con las reservas (bookings) en
@@ -17,7 +18,7 @@ public interface BookingService {
      * @param bookingModel La información de la reserva que se va a crear.
      * @return La reserva creada.
      */
-    BookingRes crearBooking(BookingReq bookingModel);
+    ResponseEntity<String> crearBooking(BookingReq bookingModel);
 
     /**
      * Obtiene todas las reservas en el sistema.
