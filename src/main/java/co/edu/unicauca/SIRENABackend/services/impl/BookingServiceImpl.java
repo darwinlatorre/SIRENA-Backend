@@ -100,6 +100,7 @@ public class BookingServiceImpl implements BookingService {
             return new ResponseEntity<>("No existe un programa con ese ID", HttpStatus.BAD_REQUEST);
         }
 
+
         BookingModel bookingBuild = BookingModel.builder()
                 .fechaSolicitud(bookingModel.getFechaSolicitud())
                 .fechaReservaInicio(bookingModel.getFechaReservaInicio())
@@ -131,6 +132,8 @@ public class BookingServiceImpl implements BookingService {
                     .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
                     .build();
         }
+
+        System.out.println(programFound.toString());
 
         BookingRes bookingRes = BookingRes.builder()
                 .id(BookingSaved.getId())
@@ -186,6 +189,7 @@ public class BookingServiceImpl implements BookingService {
                     .classroomID(booking.getClassroom().getId())
                     .user(usenameRes)
                     .facultyId(booking.getFaculty().getId())
+                    .programId(booking.getProgram().getId())
                     .build();
             bookingsRes.add(bookingRes);
         }
