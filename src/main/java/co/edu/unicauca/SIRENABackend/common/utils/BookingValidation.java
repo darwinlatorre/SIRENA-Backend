@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
 import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
+import org.springframework.http.ResponseEntity;
 
 public class BookingValidation {
 

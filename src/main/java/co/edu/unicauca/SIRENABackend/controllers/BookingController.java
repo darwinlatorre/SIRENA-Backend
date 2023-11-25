@@ -56,12 +56,7 @@ public class BookingController extends BookingValidation {
     })
     @PostMapping()
     public ResponseEntity<String> crearBooking(@RequestBody BookingReq bookingModel) {
-
         bookingModel.setFechaSolicitud(LocalDateTime.now());
-        if (!validationObj(bookingModel)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
         return this.bookingService.crearBooking(bookingModel);
     }
 
