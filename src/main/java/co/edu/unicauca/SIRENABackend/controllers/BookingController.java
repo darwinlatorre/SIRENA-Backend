@@ -162,4 +162,16 @@ public class BookingController extends BookingValidation {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(summary = "Obtener las reservas asociadas a un usuario", description = "Obtiene las reservas registradas por un usuario a través de su id.", responses = {
+            @ApiResponse(responseCode = "200", description = "Reservas obtenidas exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del usuario con las reservas a obtener", required = true, in = ParameterIn.PATH)
+    })
+    @GetMapping("/user/{UserID}")
+    public ResponseEntity<List<BookingRes>> getUserBookings(@PathVariable Integer UserID) {
+        List<BookingRes> bookings = this.bookingService.getUserBookings(UserID);
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
+    }
 }

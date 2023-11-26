@@ -51,4 +51,11 @@ public interface BookingService {
      * @param id El ID de la reserva que se va a eliminar.
      */
     void eliminarBooking(Integer id);
+
+    /**
+     * Obtiene todas las reservas registradas por un usuario.
+     *
+     * @return Lista de todas las reservas.
+     */
+    List<BookingRes> getUserBookings(Integer userId);
 }

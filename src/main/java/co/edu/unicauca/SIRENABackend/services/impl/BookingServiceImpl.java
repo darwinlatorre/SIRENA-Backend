@@ -287,16 +287,46 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    public List<BookingRes> getUserBookings(Integer userId){
+        List<BookingModel> bookings = bookingRepository.findAll();
+        List<BookingRes> bookingsRes = new ArrayList<>();
+        for (BookingModel booking : bookings){
+            if(booking.getUser().getId()==userId){
+                IncidenceRes incidenceResponse = null;
+                if (booking.getIncidencias() != null) {
+                    incidenceResponse = IncidenceRes.builder()
+                            .id(booking.getIncidencias().getId())
+                            .name(booking.getIncidencias().getName())
+                            .teacherName(booking.getIncidencias().getTeacherName().getUsername())
+                            .incidenceType(booking.getIncidencias().getInsidenciaType())
+                            .build();
+                }
 
-    private boolean isTimeInRange(LocalDateTime localDate) {
+                UserRes usenameRes = UserRes.builder()
+                        .id(booking.getUser().getId())
+                        .username(booking.getUser().getUsername())
+                        .role(booking.getUser().getRole().getName())
+                        .build();
 
-        LocalTime localTime = localDate.toLocalTime();
-
-        LocalTime startTime = LocalTime.of(6, 0);
-        LocalTime endTime = LocalTime.of(23, 0);
-
-        return !localTime.isBefore(startTime) && !localTime.isAfter(endTime);
+                BookingRes bookingRes = BookingRes.builder().id(booking.getId())
+                        .fechaSolicitud(booking.getFechaSolicitud())
+                        .fechaReservaInicio(booking.getFechaReservaInicio())
+                        .horaFin(booking.getHoraFin())
+                        .numEstudiantes(booking.getNumEstudiantes())
+                        .estado(booking.getEstado())
+                        .detalles(booking.getDetalles())
+                        .incidencias(incidenceResponse)
+                        .classroomID(booking.getClassroom().getId())
+                        .user(usenameRes)
+                        .facultyId(booking.getFaculty().getId())
+                        .programId(booking.getProgram().getId())
+                        .build();
+                bookingsRes.add(bookingRes);
+            }
+        }
+        return bookingsRes;
     }
+
 
     /**
      * Actualiza una reserva por su identificador.
@@ -429,4 +459,13 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    private boolean isTimeInRange(LocalDateTime localDate) {
+
+        LocalTime localTime = localDate.toLocalTime();
+
+        LocalTime startTime = LocalTime.of(6, 0);
+        LocalTime endTime = LocalTime.of(23, 0);
+
+        return !localTime.isBefore(startTime) && !localTime.isAfter(endTime);
+    }
 }
