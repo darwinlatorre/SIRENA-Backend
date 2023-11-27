@@ -280,6 +280,7 @@ public class BookingServiceImpl implements BookingService {
                     .classroomID(booking.getClassroom().getId())
                     .user(usenameRes)
                     .facultyId(booking.getFaculty().getId())
+                    .programId(bookingExistente.get().getProgram().getId())
                     .build();
             return Optional.of(bookingRes);
         } else {
