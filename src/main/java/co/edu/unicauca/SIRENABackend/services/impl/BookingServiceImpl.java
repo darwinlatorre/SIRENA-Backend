@@ -337,63 +337,96 @@ public class BookingServiceImpl implements BookingService {
      *                           reserva.
      * @return Un objeto {@code BookingRes} que representa la reserva actualizada.
      */
-    public BookingRes actualizarBooking(Integer id, BookingReq bookingModel) {
+    public ResponseEntity<String> actualizarBooking(Integer id, BookingReq bookingModel) {
 
         Optional<BookingModel> bookingExistente = bookingRepository.findById(id);
         if (bookingExistente.isPresent()) {
+            bookingModel.setFechaSolicitud(bookingExistente.get().getFechaSolicitud());
+            if (bookingModel.getClassroomID() == null) {
+                System.out.println("El salon no pueden ser nulos");
+                return new ResponseEntity<String>("El salon no pueden ser nulos", HttpStatus.BAD_REQUEST);
+            }
+            if (bookingModel.getFacultyId() == null) {
+                System.out.println("La facultad no puede ser nula");
+                return new ResponseEntity<String>("La facultad no puede ser nula", HttpStatus.BAD_REQUEST);
+            }
+            // Verificar que la fecha de solicitud es anterior a la de inicio
+            if (!bookingModel.getFechaSolicitud().isBefore(bookingModel.getFechaReservaInicio())) {
+                System.out.println("La fecha de solicitud debe ser anterior a la de inicio");
+                return new ResponseEntity<String>("La fecha de solicitud debe ser anterior a la de inicio", HttpStatus.BAD_REQUEST);
+            }
+            // Verificar que la fecha fin es posterior a la de inicio
+            if (!bookingModel.getFechaReservaInicio().isBefore(bookingModel.getHoraFin())) {
+                System.out.println("La fecha de inicio debe ser anterior a la de fin");
+                return new ResponseEntity<String>("La fecha de inicio debe ser anterior a la de fin", HttpStatus.BAD_REQUEST);
+            }
+            // Verificar que la reserva esta en el rango
+            if (!isTimeInRange(bookingModel.getFechaReservaInicio())
+                    || !isTimeInRange(bookingModel.getHoraFin())) {
+                System.out.println("La reserva debe estar entre las 6am y las 11pm");
+                return new ResponseEntity<String>("La reserva debe estar entre las 6am y las 11pm", HttpStatus.BAD_REQUEST);
+            }
 
+            // Verificar que el estado es valido
+            boolean bandera = false;
+            for (BookingStateTypeEnum BookingState : BookingStateTypeEnum.values()) {
+                if (BookingState.equals(bookingModel.getEstado())) {
+                    bandera = true;
+                    break;
+                }
+            }
+            if (!bandera) {
+                System.out.println("El estado no" + bookingModel.getEstado().name() + " es valido");
+                return new ResponseEntity<String>("El estado no" + bookingModel.getEstado().name() + " es valido", HttpStatus.BAD_REQUEST);
+            }
+
+            //Verificar que el salon existe
             ClassroomModel classroomFound = classroomRepository.findById(bookingModel.getClassroomID()).orElse(null);
             if (classroomFound == null) {
                 System.out.println("Id del salon no encontrada");
-                return null;
+                return new ResponseEntity<String>("Id del salon no encontrada", HttpStatus.BAD_REQUEST);
             }
 
             // Verificar que el numero de estudiante no supera la capcidad
             if (bookingModel.getNumEstudiantes() > classroomFound.getCapacity()) {
                 System.out.println("El numero de estudiante debe ser menor o igual a la capacidad del salon");
-                return null;
+                return new ResponseEntity<String>("El numero de estudiante debe ser menor o igual a la capacidad del salon", HttpStatus.BAD_REQUEST);
             }
 
-            // Verificar que ese salon no tiene una reserva activa en ese horario
-            List<BookingModel> bookings = bookingRepository.findAll();
-            for (BookingModel booking : bookings) {
-                if (booking.getClassroom().getId() == classroomFound.getId()) {
-                    boolean bandera1 = booking.getFechaReservaInicio().isBefore(bookingModel.getHoraFin());
-                    boolean bandera2 = booking.getHoraFin().isAfter(bookingModel.getFechaReservaInicio());
-                    boolean bandera3 = booking.getHoraFin().equals(bookingModel.getFechaReservaInicio());
-                    boolean bandera4 = booking.getFechaReservaInicio().equals(bookingModel.getHoraFin());
-
-                    if (bandera1 && bandera2) {
-                        if (!bandera3 && !bandera4) {
-                            System.out.println("Ya hay una reserva para el salón en ese horario");
-                            return null;
-                        }
-                    }
-                }
-            }
-
+            //Verificar que la id de la incidencia existe
             IncidenceModel incidenceFound = null;
             if (bookingModel.getIncidenciasID() != null) {
                 incidenceFound = incidenceRepository.findById(bookingModel.getIncidenciasID()).orElse(null);
                 if (incidenceFound == null) {
                     System.out.println("No existe una incidencia con ese ID");
-                    return null;
+                    return new ResponseEntity<String>("No existe una incidencia con ese ID", HttpStatus.BAD_REQUEST);
                 }
             }
 
+            //Verificar si el usuario existe
             UserModel userFound = userRepository.findById(bookingModel.getUserID()).orElse(null);
             if (userFound == null) {
                 System.out.println("No existe un usuario con ese ID");
-                return null;
+                return new ResponseEntity<String>("No existe un usuario con ese ID", HttpStatus.BAD_REQUEST);
             }
 
+            //Verificar si la facultad existe
             Optional<FacultyModel> facultyFound = facultyRepository.findById(bookingModel.getFacultyId());
             if (!facultyFound.isPresent()) {
                 System.out.println("No existe una facultad con ese ID");
-                return null;
+                return new ResponseEntity<String>("No existe una facultad con ese ID", HttpStatus.BAD_REQUEST);
+            }
+
+            //Verificar si el programa existe
+            Optional<ProgramModel> programFound=programRepository.findById(bookingModel.getProgramId());
+            if(!programFound.isPresent())
+            {
+                System.out.println("No existe un programa con ese ID");
+                return new ResponseEntity<String>("No existe un programa con ese ID", HttpStatus.BAD_REQUEST);
             }
 
             BookingModel bookingBuild = BookingModel.builder()
+                    .id(id)
                     .fechaSolicitud(bookingModel.getFechaSolicitud())
                     .fechaReservaInicio(bookingModel.getFechaReservaInicio())
                     .horaFin(bookingModel.getHoraFin())
@@ -404,6 +437,7 @@ public class BookingServiceImpl implements BookingService {
                     .classroom(classroomFound)
                     .user(userFound)
                     .faculty(facultyFound.get())
+                    .program(programFound.get())
                     .build();
 
             BookingModel BookingSaved = bookingRepository.save(bookingBuild);
@@ -424,6 +458,8 @@ public class BookingServiceImpl implements BookingService {
                         .build();
             }
 
+            System.out.println(programFound.toString());
+
             BookingRes bookingRes = BookingRes.builder()
                     .id(BookingSaved.getId())
                     .fechaSolicitud(BookingSaved.getFechaSolicitud())
@@ -436,11 +472,12 @@ public class BookingServiceImpl implements BookingService {
                     .classroomID(BookingSaved.getClassroom().getId())
                     .user(usenameRes)
                     .facultyId(facultyFound.get().getId())
+                    .programId(programFound.get().getId())
                     .build();
 
-            return bookingRes;
+            return new ResponseEntity<String>("Reserva actulizada con exito", HttpStatus.CREATED);
         } else {
-            throw new RuntimeException("La booking no se encontró con el ID proporcionado.");
+            return new ResponseEntity<String>("No se encontro la booking", HttpStatus.BAD_REQUEST);
         }
     }
 

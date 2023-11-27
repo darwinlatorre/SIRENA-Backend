@@ -121,19 +121,14 @@ public class BookingController extends BookingValidation {
             @Parameter(name = "id", description = "ID de la reserva a obtener", required = true, in = ParameterIn.PATH)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<BookingRes> actualizarBooking(@PathVariable Integer id,
+    public ResponseEntity<String> actualizarBooking(@PathVariable Integer id,
             @RequestBody BookingReq bookingActualizada) {
-
-        if (!validationObj(bookingActualizada)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
         Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
-            var booking = bookingService.actualizarBooking(id, bookingActualizada);
-            return new ResponseEntity<>(booking, HttpStatus.OK);
+            return bookingService.actualizarBooking(id, bookingActualizada);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("Reserva no encontrada",HttpStatus.NOT_FOUND);
         }
     }
 

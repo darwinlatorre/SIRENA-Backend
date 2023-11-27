@@ -43,7 +43,7 @@ public interface BookingService {
      * @param bookingActualizada La información actualizada de la reserva.
      * @return La reserva actualizada.
      */
-    BookingRes actualizarBooking(Integer id, BookingReq bookingActualizada);
+    ResponseEntity<String> actualizarBooking(Integer id, BookingReq bookingActualizada);
 
     /**
      * Elimina una reserva por su ID.
