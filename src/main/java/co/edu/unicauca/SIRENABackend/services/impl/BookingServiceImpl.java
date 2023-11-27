@@ -6,17 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
-import co.edu.unicauca.SIRENABackend.models.*;
-import co.edu.unicauca.SIRENABackend.repositories.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import co.edu.unicauca.SIRENABackend.common.enums.BookingStateTypeEnum;
 import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
 import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
 import co.edu.unicauca.SIRENABackend.dtos.response.IncidenceRes;
 import co.edu.unicauca.SIRENABackend.dtos.response.UserRes;
+import co.edu.unicauca.SIRENABackend.models.BookingModel;
+import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
+import co.edu.unicauca.SIRENABackend.models.FacultyModel;
+import co.edu.unicauca.SIRENABackend.models.IncidenceModel;
+import co.edu.unicauca.SIRENABackend.models.ProgramModel;
+import co.edu.unicauca.SIRENABackend.repositories.IBookingRepository;
+import co.edu.unicauca.SIRENABackend.repositories.IClassroomRepository;
+import co.edu.unicauca.SIRENABackend.repositories.IFacultyRepository;
+import co.edu.unicauca.SIRENABackend.repositories.IIncidenceRepository;
+import co.edu.unicauca.SIRENABackend.repositories.IProgramRepository;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
@@ -55,12 +63,14 @@ public class BookingServiceImpl implements BookingService {
         // Verificar que la fecha de solicitud es anterior a la de inicio
         if (!bookingModel.getFechaSolicitud().isBefore(bookingModel.getFechaReservaInicio())) {
             System.out.println("La fecha de solicitud debe ser anterior a la de inicio");
-            return new ResponseEntity<String>("La fecha de solicitud debe ser anterior a la de inicio", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("La fecha de solicitud debe ser anterior a la de inicio",
+                    HttpStatus.BAD_REQUEST);
         }
         // Verificar que la fecha fin es posterior a la de inicio
         if (!bookingModel.getFechaReservaInicio().isBefore(bookingModel.getHoraFin())) {
             System.out.println("La fecha de inicio debe ser anterior a la de fin");
-            return new ResponseEntity<String>("La fecha de inicio debe ser anterior a la de fin", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("La fecha de inicio debe ser anterior a la de fin",
+                    HttpStatus.BAD_REQUEST);
         }
         // Verificar que la reserva esta en el rango
         if (!isTimeInRange(bookingModel.getFechaReservaInicio())
@@ -79,10 +89,11 @@ public class BookingServiceImpl implements BookingService {
         }
         if (!bandera) {
             System.out.println("El estado no" + bookingModel.getEstado().name() + " es valido");
-            return new ResponseEntity<String>("El estado no" + bookingModel.getEstado().name() + " es valido", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("El estado no" + bookingModel.getEstado().name() + " es valido",
+                    HttpStatus.BAD_REQUEST);
         }
 
-        //Verificar que el salon existe
+        // Verificar que el salon existe
         ClassroomModel classroomFound = classroomRepository.findById(bookingModel.getClassroomID()).orElse(null);
         if (classroomFound == null) {
             System.out.println("Id del salon no encontrada");
@@ -92,7 +103,8 @@ public class BookingServiceImpl implements BookingService {
         // Verificar que el numero de estudiante no supera la capcidad
         if (bookingModel.getNumEstudiantes() > classroomFound.getCapacity()) {
             System.out.println("El numero de estudiante debe ser menor o igual a la capacidad del salon");
-            return new ResponseEntity<String>("El numero de estudiante debe ser menor o igual a la capacidad del salon", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>("El numero de estudiante debe ser menor o igual a la capacidad del salon",
+                    HttpStatus.BAD_REQUEST);
         }
 
         // Verificar que ese salon no tiene una reserva activa en ese horario
@@ -107,13 +119,14 @@ public class BookingServiceImpl implements BookingService {
                 if (bandera1 && bandera2) {
                     if (!bandera3 && !bandera4) {
                         System.out.println("Ya hay una reserva para el salón en ese horario");
-                        return new ResponseEntity<String>("Ya hay una reserva para el salón en ese horario", HttpStatus.BAD_REQUEST);
+                        return new ResponseEntity<String>("Ya hay una reserva para el salón en ese horario",
+                                HttpStatus.BAD_REQUEST);
                     }
                 }
             }
         }
 
-        //Verificar que la id de la incidencia existe
+        // Verificar que la id de la incidencia existe
         IncidenceModel incidenceFound = null;
         if (bookingModel.getIncidenciasID() != null) {
             incidenceFound = incidenceRepository.findById(bookingModel.getIncidenciasID()).orElse(null);
@@ -123,28 +136,26 @@ public class BookingServiceImpl implements BookingService {
             }
         }
 
-        //Verificar si el usuario existe
+        // Verificar si el usuario existe
         UserModel userFound = userRepository.findById(bookingModel.getUserID()).orElse(null);
         if (userFound == null) {
             System.out.println("No existe un usuario con ese ID");
             return new ResponseEntity<String>("No existe un usuario con ese ID", HttpStatus.BAD_REQUEST);
         }
 
-        //Verificar si la facultad existe
+        // Verificar si la facultad existe
         Optional<FacultyModel> facultyFound = facultyRepository.findById(bookingModel.getFacultyId());
         if (!facultyFound.isPresent()) {
             System.out.println("No existe una facultad con ese ID");
             return new ResponseEntity<String>("No existe una facultad con ese ID", HttpStatus.BAD_REQUEST);
         }
 
-        //Verificar si el programa existe
-        Optional<ProgramModel> programFound=programRepository.findById(bookingModel.getProgramId());
-        if(!programFound.isPresent())
-        {
+        // Verificar si el programa existe
+        Optional<ProgramModel> programFound = programRepository.findById(bookingModel.getProgramId());
+        if (!programFound.isPresent()) {
             System.out.println("No existe un programa con ese ID");
             return new ResponseEntity<String>("No existe un programa con ese ID", HttpStatus.BAD_REQUEST);
         }
-
 
         BookingModel bookingBuild = BookingModel.builder()
                 .fechaSolicitud(bookingModel.getFechaSolicitud())
@@ -160,40 +171,41 @@ public class BookingServiceImpl implements BookingService {
                 .program(programFound.get())
                 .build();
 
-        BookingModel BookingSaved = bookingRepository.save(bookingBuild);
+        bookingRepository.save(bookingBuild);
 
-        UserRes usenameRes = UserRes.builder()
-                .id(BookingSaved.getUser().getId())
-                .username(BookingSaved.getUser().getUsername())
-                .role(BookingSaved.getUser().getRole().getName())
-                .build();
+        // BookingModel BookingSaved = bookingRepository.save(bookingBuild);
+        // UserRes usenameRes = UserRes.builder()
+        // .id(BookingSaved.getUser().getId())
+        // .username(BookingSaved.getUser().getUsername())
+        // .role(BookingSaved.getUser().getRole().getName())
+        // .build();
 
-        IncidenceRes incidenceResponse = null;
-        if (BookingSaved.getIncidencias() != null) {
-            incidenceResponse = IncidenceRes.builder()
-                    .id(BookingSaved.getIncidencias().getId())
-                    .name(BookingSaved.getIncidencias().getName())
-                    .teacherName(BookingSaved.getIncidencias().getTeacherName().getUsername())
-                    .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
-                    .build();
-        }
+        // IncidenceRes incidenceResponse = null;
+        // if (BookingSaved.getIncidencias() != null) {
+        // incidenceResponse = IncidenceRes.builder()
+        // .id(BookingSaved.getIncidencias().getId())
+        // .name(BookingSaved.getIncidencias().getName())
+        // .teacherName(BookingSaved.getIncidencias().getTeacherName().getUsername())
+        // .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
+        // .build();
+        // }
 
         System.out.println(programFound.toString());
 
-        BookingRes bookingRes = BookingRes.builder()
-                .id(BookingSaved.getId())
-                .fechaSolicitud(BookingSaved.getFechaSolicitud())
-                .fechaReservaInicio(BookingSaved.getFechaReservaInicio())
-                .horaFin(BookingSaved.getHoraFin())
-                .numEstudiantes(BookingSaved.getNumEstudiantes())
-                .estado(BookingSaved.getEstado())
-                .detalles(BookingSaved.getDetalles())
-                .incidencias(incidenceResponse)
-                .classroomID(BookingSaved.getClassroom().getId())
-                .user(usenameRes)
-                .facultyId(facultyFound.get().getId())
-                .programId(programFound.get().getId())
-                .build();
+        // BookingRes bookingRes = BookingRes.builder()
+        // .id(BookingSaved.getId())
+        // .fechaSolicitud(BookingSaved.getFechaSolicitud())
+        // .fechaReservaInicio(BookingSaved.getFechaReservaInicio())
+        // .horaFin(BookingSaved.getHoraFin())
+        // .numEstudiantes(BookingSaved.getNumEstudiantes())
+        // .estado(BookingSaved.getEstado())
+        // .detalles(BookingSaved.getDetalles())
+        // .incidencias(incidenceResponse)
+        // .classroomID(BookingSaved.getClassroom().getId())
+        // .user(usenameRes)
+        // .facultyId(facultyFound.get().getId())
+        // .programId(programFound.get().getId())
+        // .build();
 
         return new ResponseEntity<String>("Reserva creada con exito", HttpStatus.CREATED);
     }
@@ -288,11 +300,11 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public List<BookingRes> getUserBookings(Integer userId){
+    public List<BookingRes> getUserBookings(Integer userId) {
         List<BookingModel> bookings = bookingRepository.findAll();
         List<BookingRes> bookingsRes = new ArrayList<>();
-        for (BookingModel booking : bookings){
-            if(booking.getUser().getId()==userId){
+        for (BookingModel booking : bookings) {
+            if (booking.getUser().getId() == userId) {
                 IncidenceRes incidenceResponse = null;
                 if (booking.getIncidencias() != null) {
                     incidenceResponse = IncidenceRes.builder()
@@ -328,13 +340,12 @@ public class BookingServiceImpl implements BookingService {
         return bookingsRes;
     }
 
-
     /**
      * Actualiza una reserva por su identificador.
      *
-     * @param id                 Identificador de la reserva a actualizar.
+     * @param id           Identificador de la reserva a actualizar.
      * @param bookingModel Objeto que contiene los datos actualizados de la
-     *                           reserva.
+     *                     reserva.
      * @return Un objeto {@code BookingRes} que representa la reserva actualizada.
      */
     public ResponseEntity<String> actualizarBooking(Integer id, BookingReq bookingModel) {
@@ -353,18 +364,21 @@ public class BookingServiceImpl implements BookingService {
             // Verificar que la fecha de solicitud es anterior a la de inicio
             if (!bookingModel.getFechaSolicitud().isBefore(bookingModel.getFechaReservaInicio())) {
                 System.out.println("La fecha de solicitud debe ser anterior a la de inicio");
-                return new ResponseEntity<String>("La fecha de solicitud debe ser anterior a la de inicio", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>("La fecha de solicitud debe ser anterior a la de inicio",
+                        HttpStatus.BAD_REQUEST);
             }
             // Verificar que la fecha fin es posterior a la de inicio
             if (!bookingModel.getFechaReservaInicio().isBefore(bookingModel.getHoraFin())) {
                 System.out.println("La fecha de inicio debe ser anterior a la de fin");
-                return new ResponseEntity<String>("La fecha de inicio debe ser anterior a la de fin", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>("La fecha de inicio debe ser anterior a la de fin",
+                        HttpStatus.BAD_REQUEST);
             }
             // Verificar que la reserva esta en el rango
             if (!isTimeInRange(bookingModel.getFechaReservaInicio())
                     || !isTimeInRange(bookingModel.getHoraFin())) {
                 System.out.println("La reserva debe estar entre las 6am y las 11pm");
-                return new ResponseEntity<String>("La reserva debe estar entre las 6am y las 11pm", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>("La reserva debe estar entre las 6am y las 11pm",
+                        HttpStatus.BAD_REQUEST);
             }
 
             // Verificar que el estado es valido
@@ -377,10 +391,11 @@ public class BookingServiceImpl implements BookingService {
             }
             if (!bandera) {
                 System.out.println("El estado no" + bookingModel.getEstado().name() + " es valido");
-                return new ResponseEntity<String>("El estado no" + bookingModel.getEstado().name() + " es valido", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>("El estado no" + bookingModel.getEstado().name() + " es valido",
+                        HttpStatus.BAD_REQUEST);
             }
 
-            //Verificar que el salon existe
+            // Verificar que el salon existe
             ClassroomModel classroomFound = classroomRepository.findById(bookingModel.getClassroomID()).orElse(null);
             if (classroomFound == null) {
                 System.out.println("Id del salon no encontrada");
@@ -390,10 +405,12 @@ public class BookingServiceImpl implements BookingService {
             // Verificar que el numero de estudiante no supera la capcidad
             if (bookingModel.getNumEstudiantes() > classroomFound.getCapacity()) {
                 System.out.println("El numero de estudiante debe ser menor o igual a la capacidad del salon");
-                return new ResponseEntity<String>("El numero de estudiante debe ser menor o igual a la capacidad del salon", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<String>(
+                        "El numero de estudiante debe ser menor o igual a la capacidad del salon",
+                        HttpStatus.BAD_REQUEST);
             }
 
-            //Verificar que la id de la incidencia existe
+            // Verificar que la id de la incidencia existe
             IncidenceModel incidenceFound = null;
             if (bookingModel.getIncidenciasID() != null) {
                 incidenceFound = incidenceRepository.findById(bookingModel.getIncidenciasID()).orElse(null);
@@ -403,24 +420,23 @@ public class BookingServiceImpl implements BookingService {
                 }
             }
 
-            //Verificar si el usuario existe
+            // Verificar si el usuario existe
             UserModel userFound = userRepository.findById(bookingModel.getUserID()).orElse(null);
             if (userFound == null) {
                 System.out.println("No existe un usuario con ese ID");
                 return new ResponseEntity<String>("No existe un usuario con ese ID", HttpStatus.BAD_REQUEST);
             }
 
-            //Verificar si la facultad existe
+            // Verificar si la facultad existe
             Optional<FacultyModel> facultyFound = facultyRepository.findById(bookingModel.getFacultyId());
             if (!facultyFound.isPresent()) {
                 System.out.println("No existe una facultad con ese ID");
                 return new ResponseEntity<String>("No existe una facultad con ese ID", HttpStatus.BAD_REQUEST);
             }
 
-            //Verificar si el programa existe
-            Optional<ProgramModel> programFound=programRepository.findById(bookingModel.getProgramId());
-            if(!programFound.isPresent())
-            {
+            // Verificar si el programa existe
+            Optional<ProgramModel> programFound = programRepository.findById(bookingModel.getProgramId());
+            if (!programFound.isPresent()) {
                 System.out.println("No existe un programa con ese ID");
                 return new ResponseEntity<String>("No existe un programa con ese ID", HttpStatus.BAD_REQUEST);
             }
@@ -440,40 +456,42 @@ public class BookingServiceImpl implements BookingService {
                     .program(programFound.get())
                     .build();
 
-            BookingModel BookingSaved = bookingRepository.save(bookingBuild);
+            bookingRepository.save(bookingBuild);
 
-            UserRes usenameRes = UserRes.builder()
-                    .id(BookingSaved.getUser().getId())
-                    .username(BookingSaved.getUser().getUsername())
-                    .role(BookingSaved.getUser().getRole().getName())
-                    .build();
+            // BookingModel BookingSaved = bookingRepository.save(bookingBuild);
 
-            IncidenceRes incidenceResponse = null;
-            if (BookingSaved.getIncidencias() != null) {
-                incidenceResponse = IncidenceRes.builder()
-                        .id(BookingSaved.getIncidencias().getId())
-                        .name(BookingSaved.getIncidencias().getName())
-                        .teacherName(BookingSaved.getIncidencias().getTeacherName().getUsername())
-                        .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
-                        .build();
-            }
+            // UserRes usenameRes = UserRes.builder()
+            // .id(BookingSaved.getUser().getId())
+            // .username(BookingSaved.getUser().getUsername())
+            // .role(BookingSaved.getUser().getRole().getName())
+            // .build();
 
-            System.out.println(programFound.toString());
+            // IncidenceRes incidenceResponse = null;
+            // if (BookingSaved.getIncidencias() != null) {
+            // incidenceResponse = IncidenceRes.builder()
+            // .id(BookingSaved.getIncidencias().getId())
+            // .name(BookingSaved.getIncidencias().getName())
+            // .teacherName(BookingSaved.getIncidencias().getTeacherName().getUsername())
+            // .incidenceType(BookingSaved.getIncidencias().getInsidenciaType())
+            // .build();
+            // }
 
-            BookingRes bookingRes = BookingRes.builder()
-                    .id(BookingSaved.getId())
-                    .fechaSolicitud(BookingSaved.getFechaSolicitud())
-                    .fechaReservaInicio(BookingSaved.getFechaReservaInicio())
-                    .horaFin(BookingSaved.getHoraFin())
-                    .numEstudiantes(BookingSaved.getNumEstudiantes())
-                    .estado(BookingSaved.getEstado())
-                    .detalles(BookingSaved.getDetalles())
-                    .incidencias(incidenceResponse)
-                    .classroomID(BookingSaved.getClassroom().getId())
-                    .user(usenameRes)
-                    .facultyId(facultyFound.get().getId())
-                    .programId(programFound.get().getId())
-                    .build();
+            // System.out.println(programFound.toString());
+
+            // BookingRes bookingRes = BookingRes.builder()
+            // .id(BookingSaved.getId())
+            // .fechaSolicitud(BookingSaved.getFechaSolicitud())
+            // .fechaReservaInicio(BookingSaved.getFechaReservaInicio())
+            // .horaFin(BookingSaved.getHoraFin())
+            // .numEstudiantes(BookingSaved.getNumEstudiantes())
+            // .estado(BookingSaved.getEstado())
+            // .detalles(BookingSaved.getDetalles())
+            // .incidencias(incidenceResponse)
+            // .classroomID(BookingSaved.getClassroom().getId())
+            // .user(usenameRes)
+            // .facultyId(facultyFound.get().getId())
+            // .programId(programFound.get().getId())
+            // .build();
 
             return new ResponseEntity<String>("Reserva actulizada con exito", HttpStatus.CREATED);
         } else {

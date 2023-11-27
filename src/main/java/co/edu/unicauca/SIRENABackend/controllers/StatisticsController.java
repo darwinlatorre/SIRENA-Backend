@@ -1,6 +1,13 @@
 package co.edu.unicauca.SIRENABackend.controllers;
 
-import co.edu.unicauca.SIRENABackend.models.BuildingModel;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import co.edu.unicauca.SIRENABackend.models.ProgramModel;
 import co.edu.unicauca.SIRENABackend.models.StatisticsModel;
 import co.edu.unicauca.SIRENABackend.services.StatisticsService;
@@ -13,14 +20,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
- * Controlador REST que maneja las operaciones relacionadas con las estadisticas.
+ * Controlador REST que maneja las operaciones relacionadas con las
+ * estadisticas.
  */
 @RestController
 @RequestMapping("/statistics")
