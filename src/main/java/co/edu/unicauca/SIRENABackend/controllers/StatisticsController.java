@@ -30,19 +30,19 @@ public class StatisticsController {
     private StatisticsService statisticsService;
 
     @Operation(summary = "Obtener las estadisticas de los salones", description = "Obtiene la id de todas las reservas asociadas a un salon")
-    @GetMapping("/classrooms")
+    @GetMapping("/classroom")
     public List<StatisticsModel> getClassroomsStatistics() {
         return statisticsService.getClassroomsStatistics();
     }
 
     @Operation(summary = "Obtener las estadisticas de los edificios", description = "Obtiene la id de todas las reservas asociadas a un edificio")
-    @GetMapping("/buildings")
+    @GetMapping("/building")
     public List<StatisticsModel> getBuildingsStatistics() {
         return statisticsService.getBuildingsStatistics();
     }
 
     @Operation(summary = "Obtener las estadisticas de las facultades", description = "Obtiene la id de todas las reservas asociadas a una facultad")
-    @GetMapping("/faculties")
+    @GetMapping("/facultie")
     public List<StatisticsModel> getFacultiesStatistics() {
         return statisticsService.getFacultiesStatistics();
     }
