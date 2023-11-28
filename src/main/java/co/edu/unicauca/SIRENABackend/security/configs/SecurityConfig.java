@@ -62,13 +62,17 @@ public class SecurityConfig {
                         .requestMatchers("/role/**").hasRole(ADMIN.name())
                         .requestMatchers("/user/**").hasRole(ADMIN.name())
 
+
                         // Sevicios de la aplicación
                         .requestMatchers("/api/v1/bookings").permitAll()
+                        .requestMatchers("/api/v1/building").permitAll()
                         .requestMatchers("/api/v1/classroom").permitAll()
                         .requestMatchers("/api/v1/classroomType").permitAll()
+                        .requestMatchers("/api/v1/faculty").permitAll()
                         .requestMatchers("/api/v1/incidence").permitAll()
                         .requestMatchers("/api/v1/incidenceType").permitAll()
-                        .requestMatchers("/api/v1/faculty").permitAll()
+                        .requestMatchers("/api/v1/program").permitAll()
+                        .requestMatchers("/api/v1/statistics").permitAll()
 
                         .anyRequest()
                         .authenticated())
