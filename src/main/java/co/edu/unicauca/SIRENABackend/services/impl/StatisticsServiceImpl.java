@@ -3,15 +3,14 @@ package co.edu.unicauca.SIRENABackend.services.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.edu.unicauca.SIRENABackend.models.ProgramModel;
-import co.edu.unicauca.SIRENABackend.repositories.IProgramRepository;
-import co.edu.unicauca.SIRENABackend.services.ProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.SIRENABackend.models.BookingModel;
+import co.edu.unicauca.SIRENABackend.models.ProgramModel;
 import co.edu.unicauca.SIRENABackend.models.StatisticsModel;
 import co.edu.unicauca.SIRENABackend.repositories.IBookingRepository;
+import co.edu.unicauca.SIRENABackend.repositories.IProgramRepository;
 import co.edu.unicauca.SIRENABackend.services.StatisticsService;
 import lombok.RequiredArgsConstructor;
 
@@ -43,11 +42,12 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List<StatisticsModel> getProgramsStatistics() {
         return getStatisticsBase(4);
     }
+
     @Override
-    public List<ProgramModel> getProgramsFacultie(Integer facultieId){
-        List<ProgramModel> programsList=new ArrayList<>();
-        for(ProgramModel program:programRepository.findAll()){
-            if(program.getFaculty().getId()==facultieId){
+    public List<ProgramModel> getProgramsFacultie(Integer facultieId) {
+        List<ProgramModel> programsList = new ArrayList<>();
+        for (ProgramModel program : programRepository.findAll()) {
+            if (program.getFaculty().getId() == facultieId) {
                 programsList.add(program);
             }
         }
