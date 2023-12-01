@@ -30,7 +30,11 @@ public class FacultyServiceImpl implements FacultyService {
      */
     @Transactional(readOnly = false)
     public FacultyModel saveFaculties(FacultyModel faculty) {
-        return facultyReposirtory.save(faculty);
+        if(faculty.getBuilding()!=null)
+        {
+            return facultyReposirtory.save(faculty);
+        }
+        return null;
     }
 
     /**

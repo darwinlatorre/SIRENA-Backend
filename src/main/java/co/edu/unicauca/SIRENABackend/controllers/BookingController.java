@@ -169,4 +169,6 @@ public class BookingController extends BookingValidation {
         List<BookingRes> bookings = this.bookingService.getUserBookings(UserID);
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
+
+
 }

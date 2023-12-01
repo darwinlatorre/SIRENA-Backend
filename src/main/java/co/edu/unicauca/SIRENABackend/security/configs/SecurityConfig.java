@@ -73,6 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/incidenceType").permitAll()
                         .requestMatchers("/api/v1/program").permitAll()
                         .requestMatchers("/api/v1/statistics").permitAll()
+                        .requestMatchers("/api/v1/data").permitAll()
 
                         .anyRequest()
                         .authenticated())

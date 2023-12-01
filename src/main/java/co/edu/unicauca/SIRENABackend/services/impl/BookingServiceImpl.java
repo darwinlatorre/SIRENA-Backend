@@ -68,6 +68,7 @@ public class BookingServiceImpl implements BookingService {
         }
         // Verificar que la fecha fin es posterior a la de inicio
         if (!bookingModel.getFechaReservaInicio().isBefore(bookingModel.getHoraFin())) {
+            System.out.println(bookingModel.getFechaReservaInicio()+"   "+bookingModel.getHoraFin());
             System.out.println("La fecha de inicio debe ser anterior a la de fin");
             return new ResponseEntity<String>("La fecha de inicio debe ser anterior a la de fin",
                     HttpStatus.BAD_REQUEST);
