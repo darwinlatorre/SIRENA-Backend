@@ -15,9 +15,15 @@ import java.util.List;
 @Schema(description = "Entidad que representa estadísticas en el sistema")
 public class StatisticsModel {
 
-    @Schema(description = "Identificador único de la entidad", example = "1")
-    private Integer entity_id;
+    @Schema(description = "Nombre de la entidad", example = "Ciencias contables")
+    private String name;
 
-    @Schema(description = "Lista de identificadores de reservas asociadas a la entidad")
-    private List<Integer> bokings_ids;
+    @Schema(description = "Numero de reservas aceptadas", example = "3")
+    private Integer reservas_aceptadas=0;
+
+    @Schema(description = "Numero de reservas rechazadas", example = "3")
+    private Integer reservas_rechazadas=0;
+
+    @Schema(description = "Numero de reservas pendientes", example = "3")
+    private Integer reservas_pendientes=0;
 }

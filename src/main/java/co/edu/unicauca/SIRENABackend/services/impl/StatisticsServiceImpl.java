@@ -30,12 +30,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public List<StatisticsModel> getBuildingsStatistics() {
-        return getStatisticsBase(2);
+        return getStatisticsBase(3);
     }
 
     @Override
     public List<StatisticsModel> getFacultiesStatistics() {
-        return getStatisticsBase(3);
+        return getStatisticsBase(2);
     }
 
     @Override
@@ -61,17 +61,27 @@ public class StatisticsServiceImpl implements StatisticsService {
         for (BookingModel booking : bookingList) {
             // Verificar si ya fue guardado
             Integer indexFinded = switch (type) {
-                case 1 -> findIndex(statisticsResult, booking.getClassroom().getId());
-                case 2 -> findIndex(statisticsResult, booking.getFaculty().getId());
-                case 3 -> findIndex(statisticsResult, booking.getClassroom().getBuilding().getId());
-                case 4 -> findIndex(statisticsResult, booking.getProgram().getId());
+                case 1 -> findIndex(statisticsResult, booking.getClassroom().getName());
+                case 2 -> findIndex(statisticsResult, booking.getFaculty().getName());
+                case 3 -> findIndex(statisticsResult, booking.getClassroom().getBuilding().getName());
+                case 4 -> findIndex(statisticsResult, booking.getProgram().getName());
                 default -> -1;
             };
             if (indexFinded >= 0) {
-                statisticsResult.get(indexFinded).getBokings_ids().add(booking.getId());
+                if(booking.getEstado().name().equals("Aceptada") || booking.getEstado().name().equals("Finalizada"))
+                    statisticsResult.get(indexFinded).setReservas_aceptadas(statisticsResult.get(indexFinded).getReservas_aceptadas()+1);
+                if(booking.getEstado().name().equals("Rechazada"))
+                    statisticsResult.get(indexFinded).setReservas_rechazadas(statisticsResult.get(indexFinded).getReservas_rechazadas()+1);
+                if(booking.getEstado().name().equals("Pendiente"))
+                    statisticsResult.get(indexFinded).setReservas_pendientes(statisticsResult.get(indexFinded).getReservas_pendientes()+1);
             } else {
                 StatisticsModel newStatistic = getStatisticsModel(type, booking);
-                newStatistic.getBokings_ids().add(booking.getId());
+                if(booking.getEstado().name().equals("Aceptada") || booking.getEstado().name().equals("Finalizada"))
+                    newStatistic.setReservas_aceptadas(1);
+                if(booking.getEstado().name().equals("Rechazada"))
+                    newStatistic.setReservas_rechazadas(1);
+                if(booking.getEstado().name().equals("Pendiente"))
+                    newStatistic.setReservas_pendientes(1);
                 statisticsResult.add(newStatistic);
             }
         }
@@ -81,18 +91,17 @@ public class StatisticsServiceImpl implements StatisticsService {
     private static StatisticsModel getStatisticsModel(int type, BookingModel booking) {
         StatisticsModel newStatistic = new StatisticsModel();
         switch (type) {
-            case 1 -> newStatistic.setEntity_id(booking.getClassroom().getId());
-            case 2 -> newStatistic.setEntity_id(booking.getFaculty().getId());
-            case 3 -> newStatistic.setEntity_id(booking.getClassroom().getBuilding().getId());
-            case 4 -> newStatistic.setEntity_id(booking.getProgram().getId());
+            case 1 -> newStatistic.setName(booking.getClassroom().getName());
+            case 2 -> newStatistic.setName(booking.getFaculty().getName());
+            case 3 -> newStatistic.setName(booking.getClassroom().getBuilding().getName());
+            case 4 -> newStatistic.setName(booking.getProgram().getName());
         }
-        newStatistic.setBokings_ids(new ArrayList<>());
         return newStatistic;
     }
 
-    private Integer findIndex(List<StatisticsModel> statistics, int id) {
+    private Integer findIndex(List<StatisticsModel> statistics, String name) {
         for (StatisticsModel statistic : statistics) {
-            if (statistic.getEntity_id() == id)
+            if (statistic.getName().equals(name))
                 return statistics.indexOf(statistic);
         }
         return -1;
