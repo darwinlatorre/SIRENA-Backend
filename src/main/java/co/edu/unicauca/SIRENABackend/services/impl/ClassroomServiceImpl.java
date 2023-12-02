@@ -34,7 +34,9 @@ public class ClassroomServiceImpl implements ClassroomService{
      */
     @Transactional(readOnly = false)
     public ClassroomModel save(ClassroomModel classroom) {
-        return classroomDao.save(classroom);
+        if(classroom.getCapacity()>0 && classroom.getCapacity()<999 && !classroom.getName().isEmpty())
+            return classroomDao.save(classroom);
+        return null;
     }
 
     /**

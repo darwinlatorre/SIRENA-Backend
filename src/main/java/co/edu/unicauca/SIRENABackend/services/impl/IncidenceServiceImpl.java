@@ -64,12 +64,13 @@ public class IncidenceServiceImpl implements IncidenceService {
     @Override
     @Transactional
     public IncidenceRes saveIncidence(IncidenceReq prmIncidence) {
+        if(prmIncidence.getName().isEmpty())
+            return null;
         IncidenceTypeModel incidenceFound = incidenceTypeRepository
                 .findByName(prmIncidence.getIncidenceType());
         if (incidenceFound == null) {
             return null;
         }
-
         Optional<UserModel> teacherFound = userRepository.findByUsername(prmIncidence.getTeacherName());
         if (!teacherFound.isPresent()) {
             return null;

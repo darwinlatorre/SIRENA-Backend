@@ -53,7 +53,9 @@ public class ClassroomController {
     @PostMapping()
     public ResponseEntity<ClassroomModel> save(@RequestBody ClassroomModel classroom) {
         ClassroomModel savedClassroom = this.ClassroomService.save(classroom);
-        return new ResponseEntity<>(savedClassroom, HttpStatus.CREATED);
+        if(savedClassroom!=null)
+            return new ResponseEntity<>(savedClassroom, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**
