@@ -1,17 +1,16 @@
 package co.edu.unicauca.SIRENABackend.dtos.request;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import co.edu.unicauca.SIRENABackend.models.BuildingModel;
 import co.edu.unicauca.SIRENABackend.models.ClassroomModel;
-import co.edu.unicauca.SIRENABackend.models.FacultyModel;
 import co.edu.unicauca.SIRENABackend.models.ProgramModel;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Data Transfer Object (DTO) que representa la solicitud para crear
